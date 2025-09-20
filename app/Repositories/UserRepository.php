@@ -68,6 +68,6 @@ class UserRepository
     public function restoreUser(int $id): bool
     {
         $user = $this->findUserById($id, true);
-        return $user && !is_null($user->deleted_at) ? (bool) $user->restore() : false;
+        return ($user && $user->deleted_at != null) ? (bool) $user->restore() : false;
     }
 }
