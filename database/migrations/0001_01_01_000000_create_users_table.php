@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->char('cpf', 11)->unique()->nullable();
+            $table->char('cpf', 11)->unique();
             $table->string('profile_picture_path')->nullable();
             $table->char('phone_number', 15)->nullable();
             $table->date('birth_date')->nullable();
