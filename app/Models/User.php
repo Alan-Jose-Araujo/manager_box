@@ -24,6 +24,12 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'cpf',
+        'profile_picture_path',
+        'phone_number',
+        'birth_date',
+        'is_active',
+        'company_id',
     ];
 
     /**
@@ -46,6 +52,7 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'is_active' => 'boolean',
         ];
     }
 }
