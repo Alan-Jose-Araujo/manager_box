@@ -5,7 +5,6 @@ namespace Tests\Unit\Repositories;
 use App\Models\User;
 use App\Repositories\UserRepository;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 
 class UserRepositoryTest extends TestCase
@@ -41,13 +40,13 @@ class UserRepositoryTest extends TestCase
 
     public function testItCanCreateAUser(): void
     {
-        $data = [
-            'name' => 'Test User',
-            'email' => 'testuser@example.com',
-            'password' => Hash::make('password'),
-        ];
+        $data = User::factory()->make()->makeVisible([
+            'password',
+        ])->toArray();
         $createdUser = $this->userRepository->createUser($data);
         $this->assertInstanceOf(User::class, $createdUser);
+        unset($data['password']);
+        unset($data['email_verified_at']);
         $this->assertDatabaseHas('users', $data);
     }
 
