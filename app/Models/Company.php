@@ -11,4 +11,16 @@ class Company extends Model
     /** @use HasFactory<\Database\Factories\CompanyFactory> */
     use HasFactory;
     use SoftDeletes;
+
+    protected $fillable = [
+        'fantasy_name',
+        'corporate_name',
+        'cnpj',
+        'state_registration',
+        'logo_picture_path',
+        'phone_number',
+        'landline_number',
+        'contact_email',
+        'website_url',
+    ];
 }
