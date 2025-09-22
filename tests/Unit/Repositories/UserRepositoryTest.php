@@ -23,8 +23,8 @@ class UserRepositoryTest extends TestCase
 
     public function testItCanFindAUserById(): void
     {
-        User::factory()->create();
-        $foundUser = $this->userRepository->findUserById(1);
+        $createdUser = User::factory()->create();
+        $foundUser = $this->userRepository->findUserById($createdUser->id);
         $this->assertNotNull($foundUser);
         $this->assertInstanceOf(User::class, $foundUser);
         $this->assertEquals(1, $foundUser->id);
@@ -58,17 +58,9 @@ class UserRepositoryTest extends TestCase
             'name' => 'Old Name',
         ]);
         $data = ['name' => 'New Name'];
-        $updatedUser = $this->userRepository->updateUser($user->id, $data);
-        $this->assertNotNull($updatedUser);
+        $updatedUser = $this->userRepository->updateUser($user, $data);
         $this->assertEquals($data['name'], $updatedUser->name);
         $this->assertDatabaseHas('users', ['id' => $user->id]);
-    }
-
-    public function testItReturnsNullWhenUpdatingNonExistentUser(): void
-    {
-        $data = ['name' => 'New Name'];
-        $updatedUser = $this->userRepository->updateUser(999, $data);
-        $this->assertNull($updatedUser);
     }
 
     // Delete User tests.
@@ -76,36 +68,24 @@ class UserRepositoryTest extends TestCase
     public function testItCanSoftDeleteAUser(): void
     {
         $user = User::factory()->create();
-        $result = $this->userRepository->softDeleteUser($user->id);
+        $result = $this->userRepository->softDeleteUser($user);
         $this->assertTrue($result);
         $this->assertSoftDeleted('users', ['id' => $user->id]);
-    }
-
-    public function testItReturnsFalseWhenSoftDeletingNonExistentUser(): void
-    {
-        $result = $this->userRepository->softDeleteUser(999);
-        $this->assertFalse($result);
     }
 
     public function testItCanForceDeleteAUser(): void
     {
         $user = User::factory()->create();
-        $result = $this->userRepository->forceDeleteUser($user->id);
+        $result = $this->userRepository->forceDeleteUser($user);
         $this->assertTrue($result);
         $this->assertDatabaseMissing('users', ['id' => $user->id]);
-    }
-
-    public function testItReturnsFalseWhenForceDeletingNonExistentUser(): void
-    {
-        $result = $this->userRepository->forceDeleteUser(999);
-        $this->assertFalse($result);
     }
 
     public function testItCanForceDeleteASoftDeletedUser(): void
     {
         $user = User::factory()->create();
-        $this->userRepository->softDeleteUser($user->id);
-        $result = $this->userRepository->forceDeleteUser($user->id);
+        $this->userRepository->softDeleteUser($user);
+        $result = $this->userRepository->forceDeleteUser($user);
         $this->assertTrue($result);
         $this->assertDatabaseMissing('users', ['id' => $user->id]);
     }
@@ -115,22 +95,16 @@ class UserRepositoryTest extends TestCase
     public function testItCanRestoreASoftDeletedUser(): void
     {
         $user = User::factory()->create();
-        $this->userRepository->softDeleteUser($user->id);
-        $result = $this->userRepository->restoreUser($user->id);
+        $this->userRepository->softDeleteUser($user);
+        $result = $this->userRepository->restoreUser($user);
         $this->assertTrue($result);
         $this->assertDatabaseHas('users', ['id' => $user->id, 'deleted_at' => null]);
     }
 
-    public function testItReturnsFalseWhenRestoringNonExistentUser(): void
+    public function testItThrowsLogicExceptionWhenRestoringNonSoftDeletedUser(): void
     {
-        $result = $this->userRepository->restoreUser(999);
-        $this->assertFalse($result);
-    }
-
-    public function testItReturnsFalseWhenRestoringNonSoftDeletedUser(): void
-    {
+        $this->expectException(\LogicException::class);
         $user = User::factory()->create();
-        $result = $this->userRepository->restoreUser($user->id);
-        $this->assertFalse($result);
+        $result = $this->userRepository->restoreUser($user);
     }
 }
