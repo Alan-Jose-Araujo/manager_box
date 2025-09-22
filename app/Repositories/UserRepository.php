@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\User;
+use LogicException;
 
 class UserRepository
 {
@@ -29,45 +30,41 @@ class UserRepository
     /**
      * @param int $id
      * @param array $data
-     * @return User|null
+     * @return User
      */
-    public function updateUser(int $id, array $data): ?User
+    public function updateUser(User $user, array $data): User
     {
-        $user = $this->findUserById($id);
-        if ($user) {
-            $user->update($data);
-            return $user;
+        $user->update($data);
+        return $user;
+    }
+
+    /**
+     * @param int $id
+     * @return bool
+     */
+    public function softDeleteUser(User $user): bool
+    {
+        return (bool) $user->delete();
+    }
+
+    /**
+     * @param int $id
+     * @return bool
+     */
+    public function forceDeleteUser(User $user): bool
+    {
+        return (bool) $user->forceDelete();
+    }
+
+    /**
+     * @param int $id
+     * @return bool
+     */
+    public function restoreUser(User $user): bool
+    {
+        if($user->deleted_at === null) {
+            throw new LogicException('Cannot restore a user that is not soft-deleted.');
         }
-        return null;
-    }
-
-    /**
-     * @param int $id
-     * @return bool
-     */
-    public function softDeleteUser(int $id): bool
-    {
-        $user = $this->findUserById($id);
-        return $user ? (bool) $user->delete() : false;
-    }
-
-    /**
-     * @param int $id
-     * @return bool
-     */
-    public function forceDeleteUser(int $id): bool
-    {
-        $user = $this->findUserById($id, true);
-        return $user ? (bool) $user->forceDelete() : false;
-    }
-
-    /**
-     * @param int $id
-     * @return bool
-     */
-    public function restoreUser(int $id): bool
-    {
-        $user = $this->findUserById($id, true);
-        return ($user && $user->deleted_at != null) ? (bool) $user->restore() : false;
+        return (bool) $user->restore();
     }
 }
