@@ -27,7 +27,7 @@ class UserRepositoryTest extends TestCase
         $foundUser = $this->userRepository->findUserById($createdUser->id);
         $this->assertNotNull($foundUser);
         $this->assertInstanceOf(User::class, $foundUser);
-        $this->assertEquals(1, $foundUser->id);
+        $this->assertEquals($createdUser->id, $foundUser->id);
     }
 
     public function testItReturnsNullWhenUserNotFound(): void
@@ -59,6 +59,7 @@ class UserRepositoryTest extends TestCase
         ]);
         $data = ['name' => 'New Name'];
         $updatedUser = $this->userRepository->updateUser($user, $data);
+        $this->assertInstanceOf(User::class, $updatedUser);
         $this->assertEquals($data['name'], $updatedUser->name);
         $this->assertDatabaseHas('users', ['id' => $user->id]);
     }
@@ -105,6 +106,6 @@ class UserRepositoryTest extends TestCase
     {
         $this->expectException(\LogicException::class);
         $user = User::factory()->create();
-        $result = $this->userRepository->restoreUser($user);
+        $this->userRepository->restoreUser($user);
     }
 }
