@@ -27,7 +27,7 @@ class CompanyRepositoryTest extends TestCase
         $foundCompany = $this->companyRepository->findCompanyById($createdCompany->id);
         $this->assertNotNull($foundCompany);
         $this->assertInstanceOf(Company::class, $foundCompany);
-        $this->assertEquals(1, $foundCompany->id);
+        $this->assertEquals($createdCompany->id, $foundCompany->id);
     }
 
     public function testItReturnsNullWhenCompanyNotFound(): void
