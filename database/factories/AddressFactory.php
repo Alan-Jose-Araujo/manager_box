@@ -16,12 +16,18 @@ class AddressFactory extends Factory
      */
     public function definition(): array
     {
+        $addressable = fake()->randomElement([
+            \App\Models\Company::class,
+            \App\Models\User::class,
+        ]);
         return [
             'street' => fake()->streetName(),
             'building_number' => fake()->numerify('#####'),
             'neighborhood' => fake()->streetAddress(),
             'city' => fake()->city(),
             'state' => strtoupper(fake()->randomLetter() . fake()->randomLetter()),
+            'addressable_type' => $addressable,
+            'addressable_id' => $addressable::factory()->create()->id,
         ];
     }
 }
