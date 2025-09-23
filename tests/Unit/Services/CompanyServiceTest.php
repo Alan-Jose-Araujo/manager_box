@@ -119,7 +119,7 @@ class CompanyServiceTest extends TestCase
         Storage::disk('public')->delete('company_logo_pictures/' . basename($company->logo_picture_path));
     }
 
-    public function testItCanDeleteACompanyProfilePicture(): void
+    public function testItCanDeleteACompanyLogoPicture(): void
     {
         $initialFile = $this->generateFakeFile([
             'name' => 'initial_logo_picture.jpg',
@@ -134,5 +134,49 @@ class CompanyServiceTest extends TestCase
         $this->assertFileDoesNotExist(
             storage_path('app/public/company_logo_pictures/' . basename($company->logo_picture_path))
         );
+    }
+
+    // Delete User tests.
+
+    public function testItCanSoftDeleteACompany(): void
+    {
+        $company = Company::factory()->create();
+        $result = $this->companyService->softDelete($company->id);
+        $this->assertTrue($result);
+        $this->assertSoftDeleted('companies', ['id' => $company->id]);
+    }
+
+    public function testItCanForceDeleteACompanyWithoutLogoPicture(): void
+    {
+        $company = Company::factory()->create();
+        $result = $this->companyService->forceDelete($company->id);
+        $this->assertTrue($result);
+        $this->assertDatabaseMissing('companies', ['id' => $company->id]);
+    }
+
+    public function testItCanForceDeleteACompanyWithLogoPicture(): void
+    {
+        $initialFile = $this->generateFakeFile([
+            'name' => 'initial_profile_picture.jpg',
+            'mimeType' => 'image/jpeg',
+        ]);
+        $company = Company::factory()->create([
+            'logo_picture_path' => $this->storeFileAndGetPath($initialFile, 'public', 'company_logo_pictures')
+        ]);
+        $result = $this->companyService->forceDelete($company->id);
+        $this->assertTrue($result);
+        $this->assertDatabaseMissing('companies', ['id' => $company->id]);
+        $this->assertFileDoesNotExist(
+            storage_path('app/public/company_logo_pictures/' . basename($company->logo_picture_path))
+        );
+    }
+
+    public function testItCanRestoreASoftDeletedUser(): void
+    {
+        $company = Company::factory()->create();
+        $this->companyService->softDelete($company->id);
+        $result = $this->companyService->restore($company->id);
+        $this->assertTrue($result);
+        $this->assertDatabaseHas('companies', ['id' => $company->id, 'deleted_at' => null]);
     }
 }
