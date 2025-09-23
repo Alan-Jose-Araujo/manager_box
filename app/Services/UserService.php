@@ -36,16 +36,12 @@ class UserService
      */
     public function create(array $data): User
     {
-        try {
-            if (isset($data['profile_picture_path']) && $data['profile_picture_path'] instanceof UploadedFile) {
-                $uploadedFile = $data['profile_picture_path'];
-                $filePath = $this->storeFileAndGetPath($uploadedFile, 'public', 'user_profile_pictures');
-                $data['profile_picture_path'] = $filePath;
-            }
-            return $this->userRepository->createUser($data);
-        } catch (\Exception $exception) {
-            throw $exception;
+        if (isset($data['profile_picture_path']) && $data['profile_picture_path'] instanceof UploadedFile) {
+            $uploadedFile = $data['profile_picture_path'];
+            $filePath = $this->storeFileAndGetPath($uploadedFile, 'public', 'user_profile_pictures');
+            $data['profile_picture_path'] = $filePath;
         }
+        return $this->userRepository->createUser($data);
     }
 
     /**
@@ -55,17 +51,12 @@ class UserService
      */
     public function update(int $id, array $data): ?User
     {
-        try {
-            $user = $this->userRepository->findUserById($id);
-            if (!$user) {
-                return null;
-            }
-            unset($data['profile_picture_path']);
-            return $this->userRepository->updateUser($user, $data);
-
-        } catch (\Exception $exception) {
-            throw $exception;
+        $user = $this->userRepository->findUserById($id);
+        if (!$user) {
+            return null;
         }
+        unset($data['profile_picture_path']);
+        return $this->userRepository->updateUser($user, $data);
     }
 
     /**
@@ -75,22 +66,17 @@ class UserService
      */
     public function updateProfilePicture(int $id, UploadedFile $uploadedFile): ?User
     {
-        try {
-            $user = $this->userRepository->findUserById($id);
-            if (!$user) {
-                return null;
-            }
-            $filePath = $this->storeFileAndGetPath($uploadedFile, 'public', 'user_profile_pictures');
-            $data['profile_picture_path'] = $filePath;
-
-            if ($user->profile_picture_path) {
-                Storage::disk('public')->delete('user_profile_pictures/' . basename($user->profile_picture_path));
-            }
-            return $this->userRepository->updateUser($user, $data);
-
-        } catch (\Exception $exception) {
-            throw $exception;
+        $user = $this->userRepository->findUserById($id);
+        if (!$user) {
+            return null;
         }
+        $filePath = $this->storeFileAndGetPath($uploadedFile, 'public', 'user_profile_pictures');
+        $data['profile_picture_path'] = $filePath;
+
+        if ($user->profile_picture_path) {
+            Storage::disk('public')->delete('user_profile_pictures/' . basename($user->profile_picture_path));
+        }
+        return $this->userRepository->updateUser($user, $data);
     }
 
     /**
@@ -99,19 +85,15 @@ class UserService
      */
     public function deleteProfilePicture(int $id): bool
     {
-        try {
-            $user = $this->userRepository->findUserById($id);
-            if (!$user || !$user->profile_picture_path) {
-                return false;
-            }
-            Storage::disk('public')->delete('user_profile_pictures/' . basename($user->profile_picture_path));
-            $data['profile_picture_path'] = null;
-            $this->userRepository->updateUser($user, $data);
-            return true;
-
-        } catch (\Exception $exception) {
-            throw $exception;
+        $user = $this->userRepository->findUserById($id);
+        if (!$user || !$user->profile_picture_path) {
+            return false;
         }
+        Storage::disk('public')->delete('user_profile_pictures/' . basename($user->profile_picture_path));
+        $data['profile_picture_path'] = null;
+        $this->userRepository->updateUser($user, $data);
+        return true;
+
     }
 
     /**
