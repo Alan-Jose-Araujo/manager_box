@@ -73,4 +73,17 @@ class AddressService
         }
         return $this->addressRepository->forceDeleteAddress($address);
     }
+
+    /**
+     * @param int $id
+     * @return bool
+     */
+    public function restore(int $id): bool
+    {
+        $address = $this->addressRepository->findAddressById($id, true);
+        if(!$address) {
+            return false;
+        }
+        return $this->addressRepository->restoreAddress($address);
+    }
 }
