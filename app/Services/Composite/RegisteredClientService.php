@@ -9,7 +9,6 @@ use App\Services\AddressService;
 use App\Services\CompanyService;
 use App\Services\UserService;
 use DB;
-use InvalidArgumentException;
 
 class RegisteredClientService
 {
