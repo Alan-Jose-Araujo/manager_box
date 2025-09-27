@@ -5,6 +5,9 @@ namespace App\Services\Composite;
 use App\Dtos\Composite\RegisteredClientCompositeDto;
 use App\Models\Company;
 use App\Models\User;
+use App\Repositories\AddressRepository;
+use App\Repositories\CompanyRepository;
+use App\Repositories\UserRepository;
 use App\Services\AddressService;
 use App\Services\CompanyService;
 use App\Services\UserService;
@@ -66,5 +69,28 @@ class RegisteredClientService
                 $companyAddress
             );
         }, 3);
+    }
+
+    public function softDelete(int $userId): bool
+    {
+        $user = $this->userService->find($userId);
+        if(!$user) {
+            return false;
+        }
+        //TODO: Check if user has the required roles/permissions.
+        $company = $user->company;
+        $userAddress = $user->address;
+        $companyAddress = $company->address;
+
+        (new AddressRepository())->softDeleteAddress($userAddress);
+        (new AddressRepository())->softDeleteAddress($companyAddress);
+        
+        foreach($company->users as $user) {
+            (new UserRepository())->softDeleteUser($user);
+        }
+
+        (new CompanyRepository())->softDeleteCompany($company);
+
+        return true;
     }
 }
