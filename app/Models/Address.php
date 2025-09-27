@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Address extends Model
@@ -23,8 +24,20 @@ class Address extends Model
         'addressable_id',
     ];
 
+    # Relationships.
+
     public function addressable(): MorphTo
     {
         return $this->morphTo('addressable');
+    }
+
+    public function companies(): MorphToMany
+    {
+        return $this->morphedByMany(Company::class, 'addressable');
+    }
+
+    public function users(): MorphToMany
+    {
+        return $this->morphedByMany(User::class, 'addressable');
     }
 }
