@@ -36,9 +36,9 @@ class RegisteredClientService
         $companyAddressData = $data['company_address'] ?? [];
 
         // TODO: Adjust this condition.
-        $useSameAddress = $userAddressData['company_same_user_address'];
+        $userSameAddress = $userAddressData['company_same_user_address'];
 
-        return DB::transaction(function () use ($companyData, $userData, $userAddressData, $companyAddressData, $useSameAddress): RegisteredClientCompositeDto {
+        return DB::transaction(function () use ($companyData, $userData, $userAddressData, $companyAddressData, $userSameAddress): RegisteredClientCompositeDto {
             $company = $this->companyService->create($companyData);
             $userData['company_id'] = $company->id;
             $user = $this->userService->create($userData);
@@ -47,7 +47,7 @@ class RegisteredClientService
             $userAddressData['addressable_id'] = $user->id;
             $userAddress = $this->addressService->create($userAddressData);
 
-            if ($useSameAddress) {
+            if ($userSameAddress) {
                 $addressFields = collect($userAddress->getAttributes())
                     ->only(['street', 'building_number', 'neighborhood', 'city', 'state'])
                     ->toArray();
