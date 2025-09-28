@@ -11,4 +11,8 @@ Route::controller(RegisteredClientController::class)->group(function() {
     Route::middleware('guest')->group(function() {
         Route::post('/register', 'store')->name('client.register');
     });
-});
+
+    Route::middleware('auth')->group(function() {
+        Route::patch('/disable-account');
+    });
+})->prefix('client');
