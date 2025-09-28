@@ -34,3 +34,5 @@ Portanto, torna-se evidente a necessidade de um produto que satisfaça bem todos
 - AWS
 
 ### Funcionalidades implementadas V1.0
+
+- [ X ] Cadastro de cliente (Empresa, Usuário, Endereços) 
