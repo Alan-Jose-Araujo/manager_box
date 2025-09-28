@@ -24,6 +24,7 @@ class AddressFactory extends Factory
             'street' => fake()->streetName(),
             'building_number' => fake()->numerify('#####'),
             'neighborhood' => fake()->streetAddress(),
+            'complement' => fake()->text(),
             'city' => fake()->city(),
             'state' => strtoupper(fake()->randomLetter() . fake()->randomLetter()),
             'addressable_type' => $addressable,
