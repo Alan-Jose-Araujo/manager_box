@@ -8,6 +8,7 @@ use App\Traits\Traits\ExtractData;
 use Illuminate\Http\Request;
 use Log;
 
+// TODO: Add better exception handling.
 class RegisteredClientController extends Controller
 {
     use ExtractData;
@@ -68,5 +69,16 @@ class RegisteredClientController extends Controller
             ], 500);
         }
     }
-    // ...existing code...
+
+    public function disable()
+    {
+        try {
+           // TODO: Create Job and Event to handle it.
+        } catch (\Exception $exception) {
+            Log::error($exception);
+            return response()->json([
+                'success' => false,
+            ], 500);
+        }
+    }
 }
