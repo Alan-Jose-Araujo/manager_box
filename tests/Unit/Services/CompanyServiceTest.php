@@ -102,7 +102,7 @@ class CompanyServiceTest extends TestCase
             'mimeType' => 'image/jpeg',
         ]);
         $company = Company::factory()->create([
-            'logo_picture_path' => $this->storeFileAndGetPath($initialFile, 'public', 'companies_logo_pictures')
+            'logo_picture_path' => $this->storeFileAndGetPath($initialFile, 'public', 'company_logo_pictures')
         ]);
         $newLOgoPicture = $this->generateFakeFile([
             'name' => 'new_profile_picture.jpg',
