@@ -25,6 +25,7 @@ class CompanyFactory extends Factory
             'landline_number' => fake()->numerify('55###########'),
             'contact_email' => fake()->unique()->safeEmail(),
             'website_url' => fake()->url(),
+            'is_active' => true,
         ];
     }
 }

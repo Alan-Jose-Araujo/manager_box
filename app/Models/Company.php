@@ -24,7 +24,15 @@ class Company extends Model
         'landline_number',
         'contact_email',
         'website_url',
+        'is_active',
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'is_active' => 'boolean',
+        ];
+    }
 
     # Relationships.
 

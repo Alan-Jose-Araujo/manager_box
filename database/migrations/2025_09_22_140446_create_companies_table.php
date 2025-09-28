@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('landline_number', 15)->nullable();
             $table->string('contact_email')->unique()->nullable();
             $table->string('website_url')->nullable();
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
             $table->softDeletes();
         });
