@@ -3,9 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Dtos\Composite\RegisteredClientCompositeDto;
+use App\Jobs\DisableRegisteredClientJob;
+use App\Services\CompanyService;
 use App\Services\Composite\RegisteredClientService;
 use App\Traits\Traits\ExtractData;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 use Log;
 
 // TODO: Add better exception handling.
@@ -15,9 +19,12 @@ class RegisteredClientController extends Controller
 
     private RegisteredClientService $registeredClientService;
 
+    private CompanyService $companyService;
+
     public function __construct()
     {
         $this->registeredClientService = new RegisteredClientService();
+        $this->companyService = new CompanyService();
     }
 
     public function store(Request $request)
@@ -62,7 +69,7 @@ class RegisteredClientController extends Controller
                     'client' => $registeredClient,
                 ]);
             }
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             Log::error($exception);
             return response()->json([
                 'success' => false,
@@ -73,8 +80,19 @@ class RegisteredClientController extends Controller
     public function disable()
     {
         try {
-           // TODO: Create Job and Event to handle it.
-        } catch (\Exception $exception) {
+            $companyId = (int) Session::get('company_id');
+            $company = $this->companyService->find($companyId);
+
+            if (!$company) {
+                throw new Exception('The current authenticated company was not found.');
+            }
+
+            DisableRegisteredClientJob::dispatch($company);
+
+            return response()->json([
+                'success' => true,
+            ]);
+        } catch (Exception $exception) {
             Log::error($exception);
             return response()->json([
                 'success' => false,
