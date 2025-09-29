@@ -1,11 +1,14 @@
 <?php
 
+use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\RegisteredClientController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
 });
+
+// Client.
 
 Route::controller(RegisteredClientController::class)->group(function() {
     Route::middleware('guest')->group(function() {
@@ -16,3 +19,11 @@ Route::controller(RegisteredClientController::class)->group(function() {
         Route::patch('/disable-account');
     });
 })->prefix('client');
+
+// Company.
+
+Route::controller(CompanyController::class)->group(function() {
+    Route::middleware('auth')->group(function() {
+        Route::patch('/update-company', 'update');
+    });
+})->prefix('company');
