@@ -41,6 +41,7 @@ class RegisteredClientService
             $company = $this->companyService->create($companyData);
             $userData['company_id'] = $company->id;
             $user = $this->userService->create($userData);
+            $user->assignRole('company_admin');
 
             $userAddressData['addressable_type'] = User::class;
             $userAddressData['addressable_id'] = $user->id;
