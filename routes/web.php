@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\RegisteredClientController;
 use Illuminate\Support\Facades\Route;
 
@@ -16,14 +15,7 @@ Route::controller(RegisteredClientController::class)->group(function() {
     });
 
     Route::middleware('auth')->group(function() {
-        Route::patch('/disable-account');
+        Route::patch('/update-company', 'updateCompany');
+        Route::patch('/disable-account', 'disable');
     });
 })->prefix('client');
-
-// Company.
-
-Route::controller(CompanyController::class)->group(function() {
-    Route::middleware('auth')->group(function() {
-        Route::patch('/update-company', 'update');
-    });
-})->prefix('company');

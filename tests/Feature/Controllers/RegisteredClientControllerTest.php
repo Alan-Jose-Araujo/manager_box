@@ -26,13 +26,13 @@ class RegisteredClientControllerTest extends TestCase
         $userAddressData['company_same_user_address'] = true;
         $requestPayload = [];
 
-        foreach($companyData as $key => $value) {
+        foreach ($companyData as $key => $value) {
             $requestPayload['company_data_' . $key] = $value;
         }
-        foreach($userData as $key => $value) {
+        foreach ($userData as $key => $value) {
             $requestPayload['user_data_' . $key] = $value;
         }
-        foreach($userAddressData as $key => $value) {
+        foreach ($userAddressData as $key => $value) {
             $requestPayload['user_address_data_' . $key] = $value;
         }
 
@@ -62,16 +62,16 @@ class RegisteredClientControllerTest extends TestCase
         $companyAddressData = Address::factory()->make()->toArray();
         $requestPayload = [];
 
-        foreach($companyData as $key => $value) {
+        foreach ($companyData as $key => $value) {
             $requestPayload['company_data_' . $key] = $value;
         }
-        foreach($userData as $key => $value) {
+        foreach ($userData as $key => $value) {
             $requestPayload['user_data_' . $key] = $value;
         }
-        foreach($userAddressData as $key => $value) {
+        foreach ($userAddressData as $key => $value) {
             $requestPayload['user_address_data_' . $key] = $value;
         }
-        foreach($companyAddressData as $key => $value) {
+        foreach ($companyAddressData as $key => $value) {
             $requestPayload['company_address_data_' . $key] = $value;
         }
 
@@ -109,16 +109,16 @@ class RegisteredClientControllerTest extends TestCase
         $companyAddressData = Address::factory()->make()->toArray();
         $requestPayload = [];
 
-        foreach($companyData as $key => $value) {
+        foreach ($companyData as $key => $value) {
             $requestPayload['company_data_' . $key] = $value;
         }
-        foreach($userData as $key => $value) {
+        foreach ($userData as $key => $value) {
             $requestPayload['user_data_' . $key] = $value;
         }
-        foreach($userAddressData as $key => $value) {
+        foreach ($userAddressData as $key => $value) {
             $requestPayload['user_address_data_' . $key] = $value;
         }
-        foreach($companyAddressData as $key => $value) {
+        foreach ($companyAddressData as $key => $value) {
             $requestPayload['company_address_data_' . $key] = $value;
         }
 
@@ -137,5 +137,52 @@ class RegisteredClientControllerTest extends TestCase
             'addressable_type' => Company::class,
         ]);
         Storage::disk('public')->deleteDirectory('user_profile_pictures');
+    }
+
+    public function testItCanUpdateCompanyWithSession(): void
+    {
+        $company = Company::factory()->create();
+        $companyAdmin = User::factory()->create([
+            'company_id' => $company->id,
+        ]);
+        $newData = [
+            'fantasy_name' => 'Updated fantasy name'
+        ];
+
+        $this->actingAs($companyAdmin);
+
+        $response = $this->withSession([
+            'company_id' => $company->id,
+        ])->patch('/update-company', $newData);
+
+        $response->assertStatus(200);
+        $this->assertDatabaseHas('companies', [
+            'id' => $company->id,
+            'fantasy_name' => $newData['fantasy_name'],
+        ]);
+    }
+
+    public function testItCanDisableRegisteredClient(): void
+    {
+        $company = Company::factory()->create();
+        $companyAdmin = User::factory()->create([
+            'company_id' => $company->id,
+        ]);
+
+        $this->actingAs($companyAdmin);
+
+        $response = $this->withSession([
+            'company_id' => $company->id
+        ])->patch('/disable-account');
+
+        $response->assertStatus(200);
+        $this->assertDatabaseHas('companies', [
+            'id' => $company->id,
+            'is_active' => false
+        ]);
+        $this->assertDatabaseHas('users', [
+            'id' => $companyAdmin->id,
+            'is_active' => false,
+        ]);
     }
 }

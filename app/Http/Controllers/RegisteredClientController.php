@@ -77,6 +77,30 @@ class RegisteredClientController extends Controller
         }
     }
 
+    // TODO: Adapt to an appropriate response.
+    public function updateCompany(Request $request)
+    {
+        try {
+            $companyId = Session::get('company_id');
+            $newCompanyData = $request->all();
+            $updatedCompany = $this->companyService->update($companyId, $newCompanyData);
+
+            if (!$updatedCompany) {
+                // TODO: Handle it.
+                throw new Exception('The current authenticated company was not found.');
+            }
+
+            return response()->json([
+                'success' => true,
+                'company' => $updatedCompany,
+            ]);
+        } catch (Exception $exception) {
+            return response()->json([
+                'success' => false,
+            ]);
+        }
+    }
+
     public function disable()
     {
         try {
