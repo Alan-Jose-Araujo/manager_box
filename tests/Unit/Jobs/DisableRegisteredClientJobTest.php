@@ -12,7 +12,7 @@ class DisableRegisteredClientJobTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_it_disables_company_and_related_users_and_deletes_sessions()
+    public function test_it_disables_company_and_related_users_and_deletes_sessions(): void
     {
         $company = Company::factory()->create();
         $users = User::factory()->count(2)->create([
