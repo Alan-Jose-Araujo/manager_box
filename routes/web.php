@@ -8,6 +8,12 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/csrf-token', function() {
+    return [[
+        'csrf-token' => csrf_token(),
+    ]];
+});
+
 // Client.
 
 Route::controller(RegisteredClientController::class)->group(function() {
