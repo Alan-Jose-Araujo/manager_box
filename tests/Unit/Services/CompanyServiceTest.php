@@ -126,7 +126,7 @@ class CompanyServiceTest extends TestCase
             'mimeType' => 'image/jpeg',
         ]);
         $company = Company::factory()->create([
-            'logo_picture_path' => $this->storeFileAndGetPath($initialFile, 'public', 'company_profile_pictures')
+            'logo_picture_path' => $this->storeFileAndGetPath($initialFile, 'public', 'company_logo_pictures')
         ]);
         $result = $this->companyService->deleteProfilePicture($company->id);
         $this->assertTrue($result);
