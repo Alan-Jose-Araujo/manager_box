@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\RegisteredClientController;
 use Illuminate\Support\Facades\Route;
+use Spatie\Permission\Middleware\RoleMiddleware;
 
 Route::get('/', function () {
     return view('welcome');
@@ -15,7 +16,7 @@ Route::controller(RegisteredClientController::class)->group(function() {
     });
 
     Route::middleware('auth')->group(function() {
-        Route::patch('/update-company', 'updateCompany');
-        Route::patch('/disable-account', 'disable');
+        Route::patch('/update-company', 'updateCompany')->middleware(RoleMiddleware::using('company_admin'));
+        Route::patch('/disable-account', 'disable')->middleware(RoleMiddleware::using('company_admin'));
     });
 })->prefix('client');
