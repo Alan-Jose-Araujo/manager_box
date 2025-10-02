@@ -18,6 +18,12 @@ class RegisteredClientControllerTest extends TestCase
     use UploadFiles;
     use ExtractData;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->seed(RolePermissionSeeder::class);
+    }
+
     public function testItCanCreateANewRegisteredClientWithSameAddressData(): void
     {
         $companyData = Company::factory()->make()->toArray();
@@ -36,8 +42,6 @@ class RegisteredClientControllerTest extends TestCase
         foreach ($userAddressData as $key => $value) {
             $requestPayload['user_address_data_' . $key] = $value;
         }
-
-        $this->seed(RolePermissionSeeder::class);
 
         $response = $this->post('/register', $requestPayload);
 
@@ -77,8 +81,6 @@ class RegisteredClientControllerTest extends TestCase
         foreach ($companyAddressData as $key => $value) {
             $requestPayload['company_address_data_' . $key] = $value;
         }
-
-        $this->seed(RolePermissionSeeder::class);
 
         $response = $this->post('/register', $requestPayload);
 
@@ -127,8 +129,6 @@ class RegisteredClientControllerTest extends TestCase
             $requestPayload['company_address_data_' . $key] = $value;
         }
 
-        $this->seed(RolePermissionSeeder::class);
-
         $response = $this->post('/register', $requestPayload);
 
         $response->assertStatus(200);
@@ -156,7 +156,6 @@ class RegisteredClientControllerTest extends TestCase
             'fantasy_name' => 'Updated fantasy name'
         ];
 
-        $this->seed(RolePermissionSeeder::class);
         $this->actingAs($companyAdmin);
         $companyAdmin->assignRole('company_admin');
 
@@ -179,7 +178,6 @@ class RegisteredClientControllerTest extends TestCase
         ]);
 
         $this->actingAs($companyAdmin);
-        $this->seed(RolePermissionSeeder::class);
         $companyAdmin->assignRole('company_admin');
 
         $response = $this->withSession([
