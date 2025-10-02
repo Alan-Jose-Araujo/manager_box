@@ -7,6 +7,7 @@ use App\Models\Address;
 use App\Models\Company;
 use App\Models\User;
 use App\Services\Composite\RegisteredClientService;
+use Database\Seeders\RolePermissionSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -20,6 +21,7 @@ class RegisteredClientServiceTest extends TestCase
     {
         parent::setUp();
         $this->registeredClientService = new RegisteredClientService();
+        $this->seed(RolePermissionSeeder::class);
     }
 
     public function testItCanCreateANewRegisteredClientWithCompanyAddress(): void
