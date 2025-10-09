@@ -15,3 +15,7 @@ Route::get('/csrf-token', function() {
         'csrf-token' => csrf_token(),
     ]];
 });
+
+Route::get('/dashboard', function() {
+    return ['success' => true];
+})->middleware('auth')->name('dashboard');

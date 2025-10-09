@@ -13,6 +13,10 @@ return Application::configure(basePath: dirname(__DIR__))
             // Registered Client.
             Route::middleware('web')
                 ->group(base_path('routes/registered-client.php'));
+
+            // Email Verification.
+            Route::middleware('web')
+                ->group(base_path('routes/email-verification.php'));
         }
     )
     ->withMiddleware(function (Middleware $middleware): void {
