@@ -12,7 +12,7 @@ class AuthService
      * @param bool $remember
      * @return bool
      */
-    public function attemptToLogin(array $credentials, bool $remember = false): bool
+    public function attemptToAuthenticate(array $credentials, bool $remember = false): bool
     {
         return Auth::attempt($credentials, $remember);
     }
@@ -22,7 +22,7 @@ class AuthService
      * @param bool $remember
      * @return void
      */
-    public function loginWithUser(Authenticatable $user, bool $remember = false): void
+    public function authenticateWithUser(Authenticatable $user, bool $remember = false): void
     {
         Auth::login($user, $remember);
     }

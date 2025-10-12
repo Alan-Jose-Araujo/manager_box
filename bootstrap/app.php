@@ -17,6 +17,9 @@ return Application::configure(basePath: dirname(__DIR__))
             // Email Verification.
             Route::middleware('web')
                 ->group(base_path('routes/email-verification.php'));
+
+                //Authentication.
+                Route::middleware('web')->group(base_path('routes/authentication.php'));
         }
     )
     ->withMiddleware(function (Middleware $middleware): void {

@@ -13,6 +13,7 @@ Route::prefix('email-verification')
         /**
          * Url: email-verification/verify
          * HTTP Method: GET
+         * Middleware: auth
          * Controller: EmailVerificationController
          * Controller Method: showVerifyEmailNotice
          * Name: email_verification.notice
@@ -24,6 +25,7 @@ Route::prefix('email-verification')
         /**
          * Url: email-verification/verify
          * HTTP Method: GET
+         * Middlewares: auth, signed
          * Controller: EmailVerificationController
          * Controller Method: showVerifyEmailNotice
          * Name: email_verification.verify
@@ -35,6 +37,7 @@ Route::prefix('email-verification')
         /**
          * Url: email-verification/send-notification
          * HTTP Method: POST
+         * Middlewares: auth, throttle
          * Controller: EmailVerificationController
          * Controller Method: sendEmailVerificationNotification
          * Name: email_verification.send_verification
