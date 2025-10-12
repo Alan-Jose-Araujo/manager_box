@@ -6,7 +6,7 @@ use App\Dtos\Composite\RegisteredClientCompositeDto;
 use App\Jobs\DisableRegisteredClientJob;
 use App\Services\CompanyService;
 use App\Services\Composite\RegisteredClientService;
-use App\Traits\Traits\ExtractData;
+use App\Traits\ExtractData;
 use Exception;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
@@ -65,9 +65,6 @@ class RegisteredClientController extends Controller
             ]);
 
             if ($registeredClient instanceof RegisteredClientCompositeDto) {
-
-                event(new Registered($registeredClient->user));
-
                 return response()->json([
                     'success' => true,
                     'client' => $registeredClient,

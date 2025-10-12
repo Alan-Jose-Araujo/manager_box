@@ -5,7 +5,7 @@ namespace Tests\Feature\Controllers;
 use App\Models\Address;
 use App\Models\Company;
 use App\Models\User;
-use App\Traits\Traits\ExtractData;
+use App\Traits\ExtractData;
 use App\Traits\UploadFiles;
 use Database\Seeders\RolePermissionSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -43,7 +43,7 @@ class RegisteredClientControllerTest extends TestCase
             $requestPayload['user_address_data_' . $key] = $value;
         }
 
-        $response = $this->post('/register', $requestPayload);
+        $response = $this->post('client/register', $requestPayload);
 
         $response->assertStatus(200);
 
@@ -82,7 +82,7 @@ class RegisteredClientControllerTest extends TestCase
             $requestPayload['company_address_data_' . $key] = $value;
         }
 
-        $response = $this->post('/register', $requestPayload);
+        $response = $this->post('/client/register', $requestPayload);
 
         $response->assertStatus(200);
 
@@ -129,7 +129,7 @@ class RegisteredClientControllerTest extends TestCase
             $requestPayload['company_address_data_' . $key] = $value;
         }
 
-        $response = $this->post('/register', $requestPayload);
+        $response = $this->post('/client/register', $requestPayload);
 
         $response->assertStatus(200);
 
@@ -161,7 +161,7 @@ class RegisteredClientControllerTest extends TestCase
 
         $response = $this->withSession([
             'company_id' => $company->id,
-        ])->patch('/update-company', $newData);
+        ])->patch('client/update-company', $newData);
 
         $response->assertStatus(200);
         $this->assertDatabaseHas('companies', [
@@ -182,7 +182,7 @@ class RegisteredClientControllerTest extends TestCase
 
         $response = $this->withSession([
             'company_id' => $company->id
-        ])->patch('/disable-account');
+        ])->patch('client/disable-account');
 
         $response->assertStatus(200);
         $this->assertDatabaseHas('companies', [
