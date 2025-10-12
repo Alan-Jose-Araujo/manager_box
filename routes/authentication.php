@@ -30,10 +30,10 @@ Route::prefix('auth')->group(function () {
      * Name: auth.logout
      */
     Route::post('/logout', [AuthController::class, 'logout'])
-        ->middleware('auth')
+        ->middleware('custom.auth')
         ->name('auth.logout');
 
     Route::get('/test', function() {
         echo auth()->user()->name;
-    })->middleware('auth');
+    })->middleware('custom.auth');
 });
