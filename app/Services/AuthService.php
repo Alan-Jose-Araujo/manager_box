@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use Illuminate\Auth\Authenticatable;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 class AuthService
@@ -22,7 +22,7 @@ class AuthService
      * @param bool $remember
      * @return void
      */
-    public function authenticateWithUser(Authenticatable $user, bool $remember = false): void
+    public function authenticateWithUser(User $user, bool $remember = false): void
     {
         Auth::login($user, $remember);
     }
