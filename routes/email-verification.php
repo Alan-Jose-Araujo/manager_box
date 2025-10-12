@@ -20,7 +20,7 @@ Route::prefix('email-verification')
          */
         Route::get('/verify', [EmailVerificationController::class, 'showVerifyEmailNotice'])
             ->middleware('custom.auth')
-            ->name('email_verification.notice');
+            ->name('verification.notice');
 
         /**
          * Url: email-verification/verify
@@ -30,9 +30,9 @@ Route::prefix('email-verification')
          * Controller Method: showVerifyEmailNotice
          * Name: email_verification.verify
          */
-        Route::get('/verify/{id}/{hash}', [EmailVerificationController::class, 'showVerifyEmailNotice'])
+        Route::get('/verify/{id}/{hash}', [EmailVerificationController::class, 'verifyEmail'])
             ->middleware(['custom.auth', 'signed'])
-            ->name('email_verification.verify');
+            ->name('verification.verify');
 
         /**
          * Url: email-verification/send-notification
@@ -44,5 +44,5 @@ Route::prefix('email-verification')
          */
         Route::post('/send-notification', [EmailVerificationController::class, 'sendEmailVerificationNotification'])
             ->middleware(['custom.auth', 'throttle:6,1'])
-            ->name('email_verification.send_verification');
+            ->name('verification.send');
     });

@@ -10,12 +10,15 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/csrf-token', function() {
-    return [[
+Route::get('/csrf-token', function () {
+    return [
         'csrf-token' => csrf_token(),
-    ]];
+    ];
 });
 
-Route::get('/dashboard', function() {
+Route::get('/dashboard', function () {
     return ['success' => true];
-})->middleware('custom.auth')->name('dashboard');
+})->middleware([
+    'custom.auth',
+    'verified',
+])->name('dashboard');

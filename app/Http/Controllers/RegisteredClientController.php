@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Dtos\Composite\RegisteredClientCompositeDto;
 use App\Jobs\DisableRegisteredClientJob;
+use App\Services\AuthService;
 use App\Services\CompanyService;
 use App\Services\Composite\RegisteredClientService;
 use App\Traits\ExtractData;
@@ -65,6 +66,11 @@ class RegisteredClientController extends Controller
             ]);
 
             if ($registeredClient instanceof RegisteredClientCompositeDto) {
+
+                (new AuthService())->authenticateWithUser($registeredClient->user);
+
+                event(new Registered($registeredClient->user));
+
                 return response()->json([
                     'success' => true,
                     'client' => $registeredClient,

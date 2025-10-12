@@ -159,6 +159,10 @@ class RegisteredClientControllerTest extends TestCase
         $this->actingAs($companyAdmin);
         $companyAdmin->assignRole('company_admin');
 
+        $companyAdmin->update([
+            'email_verified_at' => now(),
+        ]);
+
         $response = $this->withSession([
             'company_id' => $company->id,
         ])->patch('client/update-company', $newData);
@@ -179,6 +183,10 @@ class RegisteredClientControllerTest extends TestCase
 
         $this->actingAs($companyAdmin);
         $companyAdmin->assignRole('company_admin');
+
+        $companyAdmin->update([
+            'email_verified_at' => now(),
+        ]);
 
         $response = $this->withSession([
             'company_id' => $company->id

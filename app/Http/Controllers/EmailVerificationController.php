@@ -20,9 +20,6 @@ class EmailVerificationController extends Controller
 
     public function sendEmailVerificationNotification(Request $request)
     {
-        if($request->user()->hasVerifiedEmail()) {
-            return redirect()->intended(route('dashboard'));
-        }
         $request->user()->sendEmailVerificationNotification();
         return back()->with('message', 'Link de verificação reenviado!');
     }

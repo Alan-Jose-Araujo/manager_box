@@ -35,6 +35,7 @@ Route::prefix('client')
         Route::patch('/update-company', [RegisteredClientController::class, 'updateCompany'])
             ->middleware([
                 'custom.auth',
+                'verified',
                 RoleMiddleware::using('company_admin'),
             ])
             ->name('client.update_company');
@@ -49,6 +50,7 @@ Route::prefix('client')
         Route::patch('/disable-account', [RegisteredClientController::class, 'disable'])
             ->middleware([
                 'custom.auth',
+                'verified',
                 RoleMiddleware::using('company_admin'),
             ])
             ->name('client.disable_account');

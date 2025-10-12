@@ -13,11 +13,11 @@ class RolePermissionSeeder extends Seeder
      */
     public function run(): void
     {
-        Role::create([
+        Role::createOrFirst([
             'name' => 'global_admin',
         ]);
 
-        Role::create([
+        Role::createOrFirst([
             'name' => 'company_admin',
         ]);
     }
