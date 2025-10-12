@@ -21,7 +21,7 @@ Route::prefix('client')
          * Controller Method: store
          * Name: client.register
          */
-        Route::get('register', [RegisteredClientController::class, 'store'])
+        Route::post('register', [RegisteredClientController::class, 'store'])
             ->middleware('guest')
             ->name('client.register');
 
