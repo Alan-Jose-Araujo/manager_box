@@ -19,7 +19,7 @@ Route::prefix('email-verification')
          * Name: email_verification.notice
          */
         Route::get('/verify', [EmailVerificationController::class, 'showVerifyEmailNotice'])
-            ->middleware('auth')
+            ->middleware('custom.auth')
             ->name('email_verification.notice');
 
         /**
@@ -31,7 +31,7 @@ Route::prefix('email-verification')
          * Name: email_verification.verify
          */
         Route::get('/verify/{id}/{hash}', [EmailVerificationController::class, 'showVerifyEmailNotice'])
-            ->middleware(['auth', 'signed'])
+            ->middleware(['custom.auth', 'signed'])
             ->name('email_verification.verify');
 
         /**
@@ -43,6 +43,6 @@ Route::prefix('email-verification')
          * Name: email_verification.send_verification
          */
         Route::post('/send-notification', [EmailVerificationController::class, 'sendEmailVerificationNotification'])
-            ->middleware(['auth', 'throttle:6,1'])
+            ->middleware(['custom.auth', 'throttle:6,1'])
             ->name('email_verification.send_verification');
     });

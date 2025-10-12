@@ -33,7 +33,10 @@ Route::prefix('client')
          * Name: client.update_company
          */
         Route::patch('/update-company', [RegisteredClientController::class, 'updateCompany'])
-            ->middleware(RoleMiddleware::using('company_admin'))
+            ->middleware([
+                'custom.auth',
+                RoleMiddleware::using('company_admin'),
+            ])
             ->name('client.update_company');
 
         /**
@@ -44,7 +47,10 @@ Route::prefix('client')
          * Name: client.disable_account
          */
         Route::patch('/disable-account', [RegisteredClientController::class, 'disable'])
-        ->middleware(RoleMiddleware::using('company_admin'))
-        ->name('client.disable_account');
+            ->middleware([
+                'custom.auth',
+                RoleMiddleware::using('company_admin'),
+            ])
+            ->name('client.disable_account');
 
     });

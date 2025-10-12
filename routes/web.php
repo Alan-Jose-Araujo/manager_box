@@ -18,4 +18,4 @@ Route::get('/csrf-token', function() {
 
 Route::get('/dashboard', function() {
     return ['success' => true];
-})->middleware('auth')->name('dashboard');
+})->middleware('custom.auth')->name('dashboard');
