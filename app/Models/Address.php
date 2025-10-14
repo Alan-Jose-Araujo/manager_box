@@ -41,4 +41,9 @@ class Address extends Model
     {
         return $this->morphedByMany(User::class, 'addressable');
     }
+
+    public function wareHouses(): MorphToMany
+    {
+        return $this->morphedByMany(WareHouse::class, 'addressable');
+    }
 }
