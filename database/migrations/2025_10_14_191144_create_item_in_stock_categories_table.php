@@ -30,8 +30,10 @@ return new class extends Migration {
                 ->constrained('warehouses', 'id')
                 ->onUpdate('cascade')
                 ->onDelete('set null');
-            $table->index('is_active');
-            $table->index('name');
+            $table->index([
+                'is_active',
+                'name',
+            ]);
             $table->timestamps();
             $table->softDeletes();
         });
