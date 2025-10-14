@@ -2,23 +2,29 @@
 
 namespace App\Models;
 
-use App\Enums\ItemInStockCategoryScope;
+use App\Enums\ItemInStockUnityOfMeasure;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class ItemInStockCategory extends Model
+class ItemInStock extends Model
 {
-    /** @use HasFactory<\Database\Factories\ItemInStockCategoryFactory> */
+    /** @use HasFactory<\Database\Factories\ItemInStockFactory> */
     use HasFactory;
     use SoftDeletes;
 
     protected $fillable = [
         'name',
+        'trade_name',
         'description',
-        'scope',
-        'color_hex_code',
+        'sku',
+        'unity_of_measure',
+        'quantity',
+        'minimum_quantity',
+        'maximum_quantity',
+        'cost_price',
+        'sale_price',
         'is_active',
         'company_id',
         'warehouse_id',
@@ -27,7 +33,12 @@ class ItemInStockCategory extends Model
     protected function casts(): array
     {
         return [
-            'scope' => ItemInStockCategoryScope::class,
+            'unity_of_measure' => ItemInStockUnityOfMeasure::class,
+            'quantity' => 'double',
+            'minimum_quantity' => 'double',
+            'maximum_quantity' => 'double',
+            'cost_price' => 'double',
+            'sale_price' => 'double',
             'is_active' => 'boolean',
         ];
     }

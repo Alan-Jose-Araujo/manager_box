@@ -30,6 +30,8 @@ class Warehouse extends Model
         ];
     }
 
+    # Relationships.
+
     public function company(): BelongsTo
     {
         return $this->belongsTo(Company::class, 'company_id');
