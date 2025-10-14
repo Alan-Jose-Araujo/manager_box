@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-enum UnityOfMeasure: string
+enum ItemInStockUnityOfMeasure: string
 {
     case AMPOLA = 'ampola';
     case BALDE = 'balde';
