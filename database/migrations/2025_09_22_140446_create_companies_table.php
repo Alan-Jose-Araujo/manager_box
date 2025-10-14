@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('contact_email')->unique()->nullable();
             $table->string('website_url')->nullable();
             $table->boolean('is_active')->default(true);
+            $table->index('is_active');
             $table->timestamps();
             $table->softDeletes();
         });
