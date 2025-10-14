@@ -14,6 +14,8 @@ class ItemInStock extends Model
     use HasFactory;
     use SoftDeletes;
 
+    protected $table = 'items_in_stock';
+
     protected $fillable = [
         'name',
         'trade_name',
