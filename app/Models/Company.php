@@ -36,14 +36,18 @@ class Company extends Model
 
     # Relationships.
 
+    // It returns the company admin.
     public function admin(): User
     {
         return User::role('company_admin')->where('company_id', $this->id)->first();
     }
 
+    // It returns all employees except the company admin.
     public function employees(): HasMany
     {
-        return $this->hasMany(User::class, 'company_id');
+        return $this->hasMany(User::class, 'company_id')->whereHas('roles', function ($query) {
+            $query->where('name', '!=', 'company_admin');
+        });
     }
 
     public function address(): MorphOne
