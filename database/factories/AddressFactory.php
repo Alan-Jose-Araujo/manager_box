@@ -24,6 +24,7 @@ class AddressFactory extends Factory
             'street' => fake()->streetName(),
             'building_number' => fake()->numerify('#####'),
             'neighborhood' => fake()->streetAddress(),
+            'zip_code' => fake()->numerify('########'),
             'complement' => fake()->text(),
             'city' => fake()->city(),
             'state' => strtoupper(fake()->randomLetter() . fake()->randomLetter()),
