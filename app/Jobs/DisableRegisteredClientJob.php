@@ -28,7 +28,7 @@ class DisableRegisteredClientJob implements ShouldQueue
     public function handle(): void
     {
         try {
-            $companyRelatedUsers = $this->company->users;
+            $companyRelatedUsers = $this->company->generalUsers;
             //TODO: Disable related items in stock.
             foreach($companyRelatedUsers as $user) {
                 DB::table('sessions')->where('user_id', $user->id)->delete();
