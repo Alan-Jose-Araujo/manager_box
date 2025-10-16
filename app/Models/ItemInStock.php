@@ -56,4 +56,15 @@ class ItemInStock extends Model
     {
         return $this->belongsTo(Warehouse::class, 'warehouse_id');
     }
+
+    // Get the categories by pivot table.
+    public function categories()
+    {
+        return $this->belongsToMany(
+            ItemInStockCategory::class,
+            'item_in_stock_has_category',
+            'item_in_stock_id',
+            'item_in_stock_category_id'
+        );
+    }
 }

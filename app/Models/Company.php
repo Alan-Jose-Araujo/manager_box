@@ -36,7 +36,12 @@ class Company extends Model
 
     # Relationships.
 
-    public function users(): HasMany
+    public function admin(): User
+    {
+        return User::role('company_admin')->where('company_id', $this->id)->first();
+    }
+
+    public function employees(): HasMany
     {
         return $this->hasMany(User::class, 'company_id');
     }
@@ -44,5 +49,20 @@ class Company extends Model
     public function address(): MorphOne
     {
         return $this->morphOne(Address::class, 'addressable');
+    }
+
+    public function warehouses(): HasMany
+    {
+        return $this->hasMany(Warehouse::class, 'company_id');
+    }
+
+    public function itemsInStock(): HasMany
+    {
+        return $this->hasMany(ItemInStock::class, 'company_id');
+    }
+
+    public function itemInStockCategories(): HasMany
+    {
+        return $this->hasMany(ItemInStockCategory::class, 'company_id');
     }
 }
