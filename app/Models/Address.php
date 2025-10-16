@@ -18,6 +18,7 @@ class Address extends Model
         'street',
         'building_number',
         'neighborhood',
+        'zip_code',
         'complement',
         'city',
         'state',

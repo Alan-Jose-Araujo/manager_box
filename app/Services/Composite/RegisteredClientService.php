@@ -11,7 +11,7 @@ use App\Repositories\UserRepository;
 use App\Services\AddressService;
 use App\Services\CompanyService;
 use App\Services\UserService;
-use DB;
+use Illuminate\Support\Facades\DB;
 
 class RegisteredClientService
 {
@@ -49,7 +49,7 @@ class RegisteredClientService
 
             if ($userSameAddress) {
                 $addressFields = collect($userAddress->getAttributes())
-                    ->only(['street', 'building_number', 'neighborhood', 'complement', 'city', 'state'])
+                    ->only(['street', 'building_number', 'neighborhood', 'zip_code', 'complement', 'city', 'state'])
                     ->toArray();
                 $addressFields['addressable_type'] = Company::class;
                 $addressFields['addressable_id'] = $company->id;
@@ -84,7 +84,7 @@ class RegisteredClientService
 
         (new AddressRepository())->softDeleteAddress($userAddress);
         (new AddressRepository())->softDeleteAddress($companyAddress);
-        
+
         foreach($company->users as $user) {
             (new UserRepository())->softDeleteUser($user);
         }
