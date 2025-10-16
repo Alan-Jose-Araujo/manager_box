@@ -85,7 +85,7 @@ class RegisteredClientService
         (new AddressRepository())->softDeleteAddress($userAddress);
         (new AddressRepository())->softDeleteAddress($companyAddress);
 
-        foreach($company->users as $user) {
+        foreach($company->generalUsers as $user) {
             (new UserRepository())->softDeleteUser($user);
         }
 

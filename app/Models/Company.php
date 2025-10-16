@@ -50,6 +50,11 @@ class Company extends Model
         });
     }
 
+    public function generalUsers(): HasMany
+    {
+        return $this->hasMany(User::class, 'company_id');
+    }
+
     public function address(): MorphOne
     {
         return $this->morphOne(Address::class, 'addressable');
