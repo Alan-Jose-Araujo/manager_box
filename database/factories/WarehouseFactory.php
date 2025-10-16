@@ -19,7 +19,7 @@ class WarehouseFactory extends Factory
     {
         return [
             'name' => fake()->word(),
-            'descrition' => fake()->text(),
+            'description' => fake()->text(),
             'is_default' => false,
             'is_active' => true,
             'company_id' => Company::factory(),

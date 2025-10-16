@@ -17,7 +17,7 @@ class Warehouse extends Model
 
     protected $fillable = [
         'name',
-        'descrition',
+        'description',
         'is_default',
         'is_active',
         'company_id',
