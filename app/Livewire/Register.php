@@ -368,6 +368,22 @@ class Register extends Component
         $this->user_address_data_cep = preg_replace('/\D/', '', $this->user_address_data_cep);
         $this->company_data_cnpj = preg_replace('/\D/', '', $this->company_data_cnpj);
         $this->company_address_data_cep = preg_replace('/\D/', '', $this->company_address_data_cep);
+
+        $this->validate();
+
+        if (!$this->validateCPF($this->user_data_cpf)) {
+            $this->addError('user_data_cpf', 'O CPF informado é inválido.');
+            return;
+        }
+
+        if (!$this->validateCNPJ($this->company_data_cnpj)) {
+            $this->addError('company_data_cnpj', 'O CNPJ informado é inválido.');
+            return;
+        }
+
+        
+
+        return redirect()->to('/dashboard');
     }
     
     public function render()
