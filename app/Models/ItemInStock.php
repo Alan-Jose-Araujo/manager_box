@@ -25,6 +25,7 @@ class ItemInStock extends Model
         'quantity',
         'minimum_quantity',
         'maximum_quantity',
+        'illustration_picture',
         'cost_price',
         'sale_price',
         'is_active',
