@@ -120,19 +120,19 @@
              {{-- Etapa 4: Endereço da empresa --}}
             @if ($step === 4)
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <x-input label="CEP" wire:model="company_address_data_cep" inputmode="numeric" maxlength="8" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 8)" required />
-                    <x-input label="Número" wire:model="company_address_data_building_number" inputmode="numeric" maxlength="5" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 5)" required />
+                    <x-input label="CEP" wire:model.blur="company_address_data_cep" inputmode="numeric" maxlength="8" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 8)" required />
+                    <x-input label="Número" wire:model.blur="company_address_data_building_number" inputmode="numeric" maxlength="5" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 5)" required />
 
                     <div class="md:col-span-2">
-                        <x-input label="Rua" wire:model="company_address_data_street" oninput="this.value = this.value.replace(/[^a-zA-ZÀ-ÿ0-9\s,.'-]/g, '')" required />
+                        <x-input label="Rua" wire:model.blur="company_address_data_street" oninput="this.value = this.value.replace(/[^a-zA-ZÀ-ÿ0-9\s,.'-]/g, '')" required />
                     </div>
 
                     <div class="md:col-span-2">
-                        <x-input label="Bairro" wire:model="company_address_data_neighborhood" oninput="this.value = this.value.replace(/[^a-zA-ZÀ-ÿ0-9\s'-]/g, '')" required />
+                        <x-input label="Bairro" wire:model.blur="company_address_data_neighborhood" oninput="this.value = this.value.replace(/[^a-zA-ZÀ-ÿ0-9\s'-]/g, '')" required />
                     </div>
 
-                    <x-input label="Cidade" wire:model="company_address_data_city" oninput="this.value = this.value.replace(/[^a-zA-ZÀ-ÿ\s'-]/g, '')" required />
-                    <x-input label="Estado" wire:model="company_address_data_state" oninput="this.value = this.value.replace(/[^a-zA-ZÀ-ÿ\s'-]/g, '')" required />
+                    <x-input label="Cidade" wire:model.blur="company_address_data_city" oninput="this.value = this.value.replace(/[^a-zA-ZÀ-ÿ\s'-]/g, '')" required />
+                    <x-input label="Estado" wire:model.blur="company_address_data_state" oninput="this.value = this.value.replace(/[^a-zA-ZÀ-ÿ\s'-]/g, '')" required />
 
                     <div class="md:col-span-2">
                         <x-input label="Complemento" wire:model="company_address_data_complement" class="h-14"/>

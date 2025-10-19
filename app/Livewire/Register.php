@@ -6,7 +6,6 @@ use Livewire\Component;
 use Livewire\WithFileUploads;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Validate;
-use Illuminate\Support\Facades\Http;
 
 class Register extends Component
 {
@@ -144,6 +143,8 @@ class Register extends Component
     public function nextStep()
     {
 
+        $valid = true;
+
         match ($this->step) {
             1 => $this->validate([
                 'user_data_name' => 'required|min:6|regex:/^[a-zA-ZÀ-ÿ\s\']+$/',
@@ -178,7 +179,28 @@ class Register extends Component
             default => null,
         };
 
-        if ($this->step < 4) {
+
+        if ($this->step === 1 && !$this->validateCPF($this->user_data_cpf)) {
+            $this->addError('user_data_cpf', 'O CPF informado é inválido.');
+            $valid = false;
+        }
+
+        if ($this->step === 3 && !$this->validateCNPJ($this->company_data_cnpj)) {
+            $this->addError('company_data_cnpj', 'O CNPJ informado é inválido.');
+            $valid = false;
+        }
+
+        if ($this->step === 2 && empty($this->user_address_data_street)) {
+            $this->addError('user_address_data_cep', 'CEP inválido ou não encontrado.');
+            $valid = false;
+        }
+
+        if ($this->step === 4 && empty($this->company_address_data_street)) {
+            $this->addError('company_address_data_cep', 'CEP inválido ou não encontrado.');
+            $valid = false;
+        }
+
+        if ($valid && $this->step < 4) {
             $this->step++;
         }
     }
@@ -190,16 +212,25 @@ class Register extends Component
         }
     }
 
-    public function updatedUserAddressDataCep($value)
+   public function updatedUserAddressDataCep($value)
     {
         $cep = preg_replace('/[^0-9]/', '', $value);
 
         if (strlen($cep) === 8) {
-            $this->buscarEnderecoPorCep($cep);
+            $this->searchAddressCep($cep, 'user');
         }
     }
 
-    private function buscarEnderecoPorCep($cep)
+    public function updatedCompanyAddressDataCep($value)
+    {
+        $cep = preg_replace('/[^0-9]/', '', $value);
+
+        if (strlen($cep) === 8) {
+            $this->searchAddressCep($cep, 'company');
+        }
+    }
+
+    private function searchAddressCep($cep, $tipo)
     {
         try {
             $response = \Illuminate\Support\Facades\Http::withoutVerifying()
@@ -208,16 +239,91 @@ class Register extends Component
             if ($response->successful() && !$response->json('erro')) {
                 $dados = $response->json();
 
-                $this->user_address_data_street = $dados['logradouro'] ?? '';
-                $this->user_address_data_neighborhood = $dados['bairro'] ?? '';
-                $this->user_address_data_city = $dados['localidade'] ?? '';
-                $this->user_address_data_state = $dados['uf'] ?? '';
+                if ($tipo === 'user') {
+                    $this->user_address_data_street = $dados['logradouro'] ?? '';
+                    $this->user_address_data_neighborhood = $dados['bairro'] ?? '';
+                    $this->user_address_data_city = $dados['localidade'] ?? '';
+                    $this->user_address_data_state = $dados['uf'] ?? '';
+                } elseif ($tipo === 'company') {
+                    $this->company_address_data_street = $dados['logradouro'] ?? '';
+                    $this->company_address_data_neighborhood = $dados['bairro'] ?? '';
+                    $this->company_address_data_city = $dados['localidade'] ?? '';
+                    $this->company_address_data_state = $dados['uf'] ?? '';
+                }
             } else {
-                $this->addError('user_address_data_cep', 'CEP inválido ou não encontrado.');
+                $field = $tipo === 'user' ? 'user_address_data_cep' : 'company_address_data_cep';
+                $this->addError($field, 'CEP inválido ou não encontrado.');
             }
         } catch (\Exception $e) {
-            $this->addError('user_address_data_cep', 'Erro ao buscar o CEP.');
+            $field = $tipo === 'user' ? 'user_address_data_cep' : 'company_address_data_cep';
+            $this->addError($field, 'Erro ao buscar o CEP.');
         }
+    }
+
+    public function updatedCompanyDataCnpj($value)
+    {
+        if (!$this->validateCNPJ($value)) {
+            $this->addError('company_data_cnpj', 'O CNPJ informado é inválido.');
+        } else {
+            $this->resetErrorBag('company_data_cnpj');
+        }
+    }
+
+    private function validateCNPJ($cnpj)
+    {
+        $cnpj = preg_replace('/\D/', '', $cnpj); 
+
+        if (strlen($cnpj) != 14) return false;
+
+        if (preg_match('/(\d)\1{13}/', $cnpj)) return false;
+
+        for ($t = 12; $t < 14; $t++) {
+            $d = 0;
+            $pos = $t - 7;
+            for ($i = 0; $i < $t; $i++) {
+                $d += $cnpj[$i] * $pos--;
+                if ($pos < 2) $pos = 9;
+            }
+            $digit = ((10 * $d) % 11) % 10;
+            if ($cnpj[$t] != $digit) return false;
+        }
+
+        return true;
+    }
+
+    public function updatedUserDataCpf($value)
+    {
+        if (!$this->validateCPF($value)) {
+            $this->addError('user_data_cpf', 'O CPF informado é inválido.');
+        } else {
+            $this->resetErrorBag('user_data_cpf');
+        }
+    }
+
+    private function validateCPF($cpf)
+    {
+        $cpf = preg_replace('/\D/', '', $cpf);
+
+        if (strlen($cpf) !== 11) {
+            return false;
+        }
+
+        if (preg_match('/(\d)\1{10}/', $cpf)) {
+            return false;
+        }
+
+        for ($t = 9; $t < 11; $t++) {
+            $d = 0;
+            for ($c = 0; $c < $t; $c++) {
+                $d += $cpf[$c] * (($t + 1) - $c);
+            }
+            $digit = ((10 * $d) % 11) % 10;
+            if ($cpf[$t] != $digit) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     public function submit()
