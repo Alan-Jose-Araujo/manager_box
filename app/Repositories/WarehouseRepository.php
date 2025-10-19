@@ -64,7 +64,7 @@ class WarehouseRepository
     public function restoreWarehouse(Warehouse $warehouse): bool
     {
         if($warehouse->deleted_at === null) {
-            throw new LogicException('Cannot restore a user that is not soft-deleted.');
+            throw new LogicException('Cannot restore a warehouse that is not soft-deleted.');
         }
         return (bool) $warehouse->restore();
     }
