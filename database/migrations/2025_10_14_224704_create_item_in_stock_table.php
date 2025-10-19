@@ -25,7 +25,7 @@ return new class extends Migration
             $table->decimal('quantity', 10, 2)->default(0);
             $table->decimal('minimum_quantity', 10, 2)->default(0);
             $table->decimal('maximum_quantity', 10, 2)->nullable();
-            $table->string('illustration_picture')->nullable();
+            $table->string('illustration_picture_path')->nullable();
             $table->decimal('cost_price', 10, 2);
             $table->decimal('sale_price', 10, 2)->nullable();
             $table->boolean('is_active')->default(true);
