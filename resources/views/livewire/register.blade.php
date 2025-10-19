@@ -111,14 +111,14 @@
                     <x-input label="Logomarca" type="file" wire:model="company_data_logo_picture_path"/>
                     <x-input label="Data de Fundação" type="date" wire:model="company_data_foundation_date"/>
                 
-                    <x-checkbox label="O endereço da empresa é o mesmo no qual resido." wire:model="company_data_company_same_user_address"/>
+                    <x-checkbox label="O endereço da empresa é o mesmo no qual resido." wire:model.live="company_data_company_same_user_address"/>
                 </div>
                 
             @endif
 
 
              {{-- Etapa 4: Endereço da empresa --}}
-            @if ($step === 4)
+            @if ($step === 4 && !$company_data_company_same_user_address)
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <x-input label="CEP" wire:model.blur="company_address_data_cep" inputmode="numeric" maxlength="8" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 8)" required />
                     <x-input label="Número" wire:model.blur="company_address_data_building_number" inputmode="numeric" maxlength="5" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 5)" required />
@@ -143,9 +143,9 @@
             {{-- Barra de progresso --}}
             <div class="flex items-center justify-between mt-6 flex-wrap gap-2">
                 <div class="flex-1 bg-gray-200 rounded-full h-2">
-                    <div class="bg-green-700 h-2 rounded-full" style="width: {{ $step * 25 }}%"></div>
+                    <div class="bg-green-700 h-2 rounded-full"  style="width: {{ ($step / $this->totalSteps) * 100 }}%"></div>
                 </div>
-                <span class="text-sm text-gray-600 whitespace-nowrap">Etapa {{ $step }} de 4</span>
+                <span class="text-sm text-gray-600 whitespace-nowrap"> Etapa {{ $step }} de {{ $this->totalSteps }}</span>
             </div>
 
             {{-- Botões --}}
@@ -156,14 +156,13 @@
                     </x-button>
                 @endif
 
-                @if ($step < 4)
+                @if ($step < $totalSteps)
                     <x-button wire:click="nextStep" type="button" class="btn-success order-1 sm:order-2">
-                    Avançar
+                        Avançar
                     </x-button>
-
                 @else
                     <x-button wire:click="submit" type="submit" class="btn-success order-1 sm:order-2">
-                    Enviar
+                        Enviar
                     </x-button>
                 @endif
                 

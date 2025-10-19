@@ -14,6 +14,7 @@ class Register extends Component
     #[Layout('components.layouts.register')]
     
     public $step = 1;
+    public $totalSteps = 4;
 
     // Etapa 1 - Dados Pessoais
     #[Validate('required', message: 'O campo Nome é obrigatório')]
@@ -104,7 +105,7 @@ class Register extends Component
     public $company_data_landline_number;
     public $company_data_logo_picture_path;
     public $company_data_foundation_date;
-    public $company_data_company_same_user_address;
+    public $company_data_company_same_user_address = false;
 
 
     // Etapa 4 - Endereço da Empresa
@@ -140,6 +141,11 @@ class Register extends Component
 
     public $company_address_data_complement;
     
+    public function getTotalStepsProperty()
+    {
+        return $this->company_data_company_same_user_address ? 3 : 4;
+    }
+
     public function nextStep()
     {
 
@@ -200,8 +206,12 @@ class Register extends Component
             $valid = false;
         }
 
-        if ($valid && $this->step < 4) {
-            $this->step++;
+        if ($valid) {
+            if ($this->step < 3) {
+                $this->step++;
+            } elseif ($this->step === 3 && !$this->company_data_company_same_user_address) {
+                $this->step++;
+            }
         }
     }
 
@@ -324,6 +334,32 @@ class Register extends Component
         }
 
         return true;
+    }
+
+    public function updatedCompanyDataCompanySameUserAddress($value)
+    {
+        if ($value) {
+            $this->company_address_data_cep = $this->user_address_data_cep;
+            $this->company_address_data_building_number = $this->user_address_data_building_number;
+            $this->company_address_data_street = $this->user_address_data_street;
+            $this->company_address_data_neighborhood = $this->user_address_data_neighborhood;
+            $this->company_address_data_city = $this->user_address_data_city;
+            $this->company_address_data_state = $this->user_address_data_state;
+            $this->company_address_data_complement = $this->user_address_data_complement;
+
+            $this->totalSteps = 3;
+
+        } else {
+            $this->company_address_data_cep = '';
+            $this->company_address_data_building_number = '';
+            $this->company_address_data_street = '';
+            $this->company_address_data_neighborhood = '';
+            $this->company_address_data_city = '';
+            $this->company_address_data_state = '';
+            $this->company_address_data_complement = '';
+
+            $this->totalSteps = 4;
+        }
     }
 
     public function submit()
