@@ -35,8 +35,6 @@ class Register extends Component
     public $user_data_password_confirmation; 
 
     #[Validate('required', message: 'O campo CPF é obrigatório')]
-    #[Validate('digits:11', message: 'Informe um CPF válido com 11 dígitos')]
-    #[Validate('regex:/^[0-9]{11}$/', message: 'O campo CPF deve conter apenas números')]
     public $user_data_cpf;
 
     public $user_data_phone_number; 
@@ -46,8 +44,7 @@ class Register extends Component
     
     // Etapa 2 - Endereço Pessoal
     #[Validate('required', message: 'O campo CEP é obrigatório')]
-    #[Validate('digits:8', message: 'O campo CEP deve ter 8 dígitos')]
-    #[Validate('regex:/^[0-9]{8}$/', message: 'O campo CEP deve conter apenas números')]
+    #[Validate('min:8', message: 'CEP inválido')]
     public $user_address_data_cep;
 
     #[Validate('required', message: 'O campo Número é obrigatório')]
@@ -90,8 +87,6 @@ class Register extends Component
     public $company_data_corporate_name;
 
     #[Validate('required', message: 'O campo CNPJ é obrigatório')]
-    #[Validate('digits:14', message: 'O campo CNPJ deve ter 14 dígitos')]
-    #[Validate('regex:/^[0-9]{14}$/', message: 'O campo CNPJ deve conter apenas números')]
     public $company_data_cnpj;
     
     #[Validate('required', message: 'O campo Inscrição Estadual é obrigatório')]
@@ -110,8 +105,7 @@ class Register extends Component
 
     // Etapa 4 - Endereço da Empresa
     #[Validate('required', message: 'O campo CEP é obrigatório')]
-    #[Validate('digits:8', message: 'O campo CEP deve ter 8 dígitos')]
-    #[Validate('regex:/^[0-9]{8}$/', message: 'O campo CEP deve conter apenas números')]
+    #[Validate('min:8', message: 'CEP inválido')]
     public $company_address_data_cep;
 
     #[Validate('required', message: 'O campo Número é obrigatório')]
@@ -157,10 +151,10 @@ class Register extends Component
                 'user_data_email' => 'required|email',
                 'user_data_password' => 'required|min:8',
                 'user_data_password_confirmation' => 'required|same:user_data_password',
-                'user_data_cpf' => 'required|digits:11|regex:/^[0-9]{11}$/',
+                'user_data_cpf' => 'required',
             ]),
             2 => $this->validate([
-                'user_address_data_cep' => 'required|digits:8|regex:/^[0-9]{8}$/',
+                'user_address_data_cep' => 'required|min:8',
                 'user_address_data_building_number' => 'required|numeric|regex:/^[0-9]+$/',
                 'user_address_data_street' => 'required|min:3|regex:/^[a-zA-ZÀ-ÿ0-9\s.,\'-]+$/',
                 'user_address_data_neighborhood' => 'required|min:3|regex:/^[a-zA-ZÀ-ÿ\s\'-]+$/',
@@ -170,12 +164,12 @@ class Register extends Component
             3 => $this->validate([
                 'company_data_fantasy_name' => 'required|min:3|regex:/^[a-zA-ZÀ-ÿ0-9\s\'\-\.,&\/]+$/',
                 'company_data_corporate_name' => 'required|min:3|regex:/^[a-zA-ZÀ-ÿ0-9\s.,&\'-\/]+$/',
-                'company_data_cnpj' => 'required|digits:14|regex:/^[0-9]{14}$/',
+                'company_data_cnpj' => 'required',
                 'company_data_state_registration' => 'required',
                 'company_data_contact_email' => 'required|email',
             ]),
             4 => $this->validate([
-                'company_address_data_cep' => 'required|digits:8|regex:/^[0-9]{8}$/',
+                'company_address_data_cep' => 'required|min:8',
                 'company_address_data_building_number' => 'required|numeric|regex:/^[0-9]+$/',
                 'company_address_data_street' => 'required|min:3|regex:/^[a-zA-ZÀ-ÿ0-9\s.,\'-]+$/',
                 'company_address_data_neighborhood' => 'required|min:3|regex:/^[a-zA-ZÀ-ÿ\s\'-]+$/',
@@ -272,11 +266,14 @@ class Register extends Component
 
     public function updatedCompanyDataCnpj($value)
     {
+
+        if (empty($value)) {
+            return;
+        }
+
         if (!$this->validateCNPJ($value)) {
             $this->addError('company_data_cnpj', 'O CNPJ informado é inválido.');
-        } else {
-            $this->resetErrorBag('company_data_cnpj');
-        }
+        } 
     }
 
     private function validateCNPJ($cnpj)
@@ -303,10 +300,13 @@ class Register extends Component
 
     public function updatedUserDataCpf($value)
     {
+        
+        if (empty($value)) {
+            return;
+        }
+
         if (!$this->validateCPF($value)) {
             $this->addError('user_data_cpf', 'O CPF informado é inválido.');
-        } else {
-            $this->resetErrorBag('user_data_cpf');
         }
     }
 
@@ -364,7 +364,10 @@ class Register extends Component
 
     public function submit()
     {
-       
+        $this->user_data_cpf = preg_replace('/\D/', '', $this->user_data_cpf);
+        $this->user_address_data_cep = preg_replace('/\D/', '', $this->user_address_data_cep);
+        $this->company_data_cnpj = preg_replace('/\D/', '', $this->company_data_cnpj);
+        $this->company_address_data_cep = preg_replace('/\D/', '', $this->company_address_data_cep);
     }
     
     public function render()

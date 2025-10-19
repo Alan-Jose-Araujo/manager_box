@@ -57,7 +57,7 @@
                     <x-input label="Endereço de email" type="email" wire:model.blur="user_data_email" required/>
                     <x-password label="Senha" wire:model.blur="user_data_password" required/>
                     <x-password label="Confirmação de senha" wire:model.blur="user_data_password_confirmation" required/>
-                    <x-input label="CPF" wire:model.blur="user_data_cpf" inputmode="numeric" maxLength="11" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 11)" required/>
+                    <x-input label="CPF" wire:model.blur="user_data_cpf" inputmode="numeric" maxLength="14" oninput="formatCPF(this)" required/>
                     <x-input label="Número de celular" wire:model="user_data_phone_number" inputmode="numeric" maxlength="14" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 14)"/>
                     <x-input label="Foto de perfil" type="file" wire:model="user_data_profile_picture_path"/>
                     <x-input label="Data de nascimento" type="date" wire:model="user_data_birth_date"/>
@@ -67,7 +67,7 @@
              {{-- Etapa 2: Endereço pessoal --}}
             @if ($step === 2)
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <x-input label="CEP" wire:model.blur="user_address_data_cep" inputmode="numeric" maxlength="8" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 8)" required />
+                    <x-input label="CEP" wire:model.blur="user_address_data_cep" inputmode="numeric" maxlength="9" oninput="formatCEP(this)" required />
                     <x-input label="Número" wire:model.blur="user_address_data_building_number" inputmode="numeric" maxlength="5" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 5)" required />
 
                     <div class="md:col-span-2">
@@ -98,7 +98,7 @@
                         <x-input label="Razão Social" wire:model.blur="company_data_corporate_name" oninput="this.value = this.value.replace(/[^a-zA-ZÀ-ÿ0-9\s.,&'-/]/g, '')" required />
                     </div>
 
-                    <x-input label="CNPJ" wire:model.blur="company_data_cnpj" inputmode="numeric" maxlength="14" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 14)" required />
+                    <x-input label="CNPJ" wire:model.blur="company_data_cnpj" inputmode="numeric" maxlength="18" oninput="formatCNPJ(this)" required />
                     <x-input label="Inscrição Estadual" wire:model.blur="company_data_state_registration" required />
 
                     <div class="md:col-span-2">
@@ -120,7 +120,7 @@
              {{-- Etapa 4: Endereço da empresa --}}
             @if ($step === 4 && !$company_data_company_same_user_address)
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <x-input label="CEP" wire:model.blur="company_address_data_cep" inputmode="numeric" maxlength="8" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 8)" required />
+                    <x-input label="CEP" wire:model.blur="company_address_data_cep" inputmode="numeric" maxlength="9" oninput="formatCEP(this)" required />
                     <x-input label="Número" wire:model.blur="company_address_data_building_number" inputmode="numeric" maxlength="5" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 5)" required />
 
                     <div class="md:col-span-2">
@@ -169,5 +169,60 @@
             </div>
         </x-form>
     </div>
+
+    @push('scripts')
+        <script>
+        function formatCPF(input) {
+            
+            let value = input.value.replace(/\D/g, '');
+
+           
+            if (value.length > 3) value = value.replace(/^(\d{3})(\d)/, '$1.$2');
+            if (value.length > 6) value = value.replace(/^(\d{3})\.(\d{3})(\d)/, '$1.$2.$3');
+            if (value.length > 9) value = value.replace(/^(\d{3})\.(\d{3})\.(\d{3})(\d)/, '$1.$2.$3-$4');
+
+            input.value = value;
+        }
+        </script>
+    @endpush
+    
+    @push('scripts')
+        <script>
+        function formatCNPJ(input) {
+            
+            let value = input.value.replace(/\D/g, '');
+
+            value = value.slice(0, 14);
+
+            if (value.length > 2 && value.length <= 5) {
+                value = value.replace(/^(\d{2})(\d+)/, '$1.$2');
+            } else if (value.length > 5 && value.length <= 8) {
+                value = value.replace(/^(\d{2})(\d{3})(\d+)/, '$1.$2.$3');
+            } else if (value.length > 8 && value.length <= 12) {
+                value = value.replace(/^(\d{2})(\d{3})(\d{3})(\d+)/, '$1.$2.$3/$4');
+            } else if (value.length > 12) {
+                value = value.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d+)/, '$1.$2.$3/$4-$5');
+            }
+
+            input.value = value;
+        }
+        </script>
+    @endpush
+
+    @push('scripts')
+        <script>
+            function formatCEP(input) {
+                let value = input.value.replace(/\D/g, '');
+                value = value.slice(0, 8); 
+
+                if (value.length > 5) {
+                    value = value.replace(/^(\d{5})(\d+)/, '$1-$2');
+                }
+
+                input.value = value;
+            }
+        </script>
+    @endpush
+    
 </div>
 </div>
