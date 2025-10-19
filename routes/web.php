@@ -1,6 +1,6 @@
 <?php
 
-use App\Livewire\Welcome;
 use Illuminate\Support\Facades\Route;
+use App\Livewire\Register;
 
-Route::get('/', Welcome::class);
+Route::get('/register', Register::class)->name('register');
