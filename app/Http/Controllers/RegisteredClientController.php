@@ -11,8 +11,8 @@ use App\Traits\ExtractData;
 use Exception;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
-use Log;
 
 // TODO: Add better exception handling.
 class RegisteredClientController extends Controller
