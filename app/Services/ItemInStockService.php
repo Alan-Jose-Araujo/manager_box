@@ -51,12 +51,12 @@ class ItemInStockService
      */
     public function update(int $id, array $data): ?ItemInStock
     {
-        $ItemInStock = $this->itemInStockRepository->findItemInStockById($id);
-        if (!$ItemInStock) {
+        $itemInStock = $this->itemInStockRepository->findItemInStockById($id);
+        if (!$itemInStock) {
             return null;
         }
         unset($data['illustration_picture_path']);
-        return $this->itemInStockRepository->updateItemInStock($ItemInStock, $data);
+        return $this->itemInStockRepository->updateItemInStock($itemInStock, $data);
     }
 
     /**
@@ -66,17 +66,17 @@ class ItemInStockService
      */
     public function updateIllustrationPicture(int $id, UploadedFile $uploadedFile): ?ItemInStock
     {
-        $ItemInStock = $this->itemInStockRepository->findItemInStockById($id);
-        if (!$ItemInStock) {
+        $itemInStock = $this->itemInStockRepository->findItemInStockById($id);
+        if (!$itemInStock) {
             return null;
         }
         $filePath = $this->storeFileAndGetPath($uploadedFile, 'public', 'item_in_stock_illustration_pictures');
         $data['illustration_picture_path'] = $filePath;
 
-        if ($ItemInStock->illustration_picture_path) {
-            Storage::disk('public')->delete('item_in_stock_illustration_pictures/' . basename($ItemInStock->illustration_picture_path));
+        if ($itemInStock->illustration_picture_path) {
+            Storage::disk('public')->delete('item_in_stock_illustration_pictures/' . basename($itemInStock->illustration_picture_path));
         }
-        return $this->itemInStockRepository->updateItemInStock($ItemInStock, $data);
+        return $this->itemInStockRepository->updateItemInStock($itemInStock, $data);
     }
 
     /**
@@ -104,11 +104,11 @@ class ItemInStockService
      */
     public function softDelete(int $id, bool $includeTrashed = false, array $columns = ['*']): bool
     {
-        $ItemInStock = $this->itemInStockRepository->findItemInStockById($id, $includeTrashed, $columns);
-        if (!$ItemInStock) {
+        $itemInStock = $this->itemInStockRepository->findItemInStockById($id, $includeTrashed, $columns);
+        if (!$itemInStock) {
             return false;
         }
-        return $this->itemInStockRepository->softDeleteItemInStock($ItemInStock);
+        return $this->itemInStockRepository->softDeleteItemInStock($itemInStock);
     }
 
     /**
@@ -117,11 +117,14 @@ class ItemInStockService
      */
     public function forceDelete(int $id): bool
     {
-        $ItemInStock = $this->itemInStockRepository->findItemInStockById($id, true);
-        if (!$ItemInStock) {
+        $itemInStock = $this->itemInStockRepository->findItemInStockById($id, true);
+        if (!$itemInStock) {
             return false;
         }
-        return $this->itemInStockRepository->forceDeleteItemInStock($ItemInStock);
+         if ($itemInStock->illustration_picture_path) {
+            Storage::disk('public')->delete('item_in_stock_illustration_pictures/' . basename($itemInStock->illustration_picture_path));
+        }
+        return $this->itemInStockRepository->forceDeleteItemInStock($itemInStock);
     }
 
     /**
@@ -130,13 +133,13 @@ class ItemInStockService
      */
     public function restore(int $id): bool
     {
-        $ItemInStock = $this->itemInStockRepository->findItemInStockById($id, true);
-        if (!$ItemInStock) {
+        $itemInStock = $this->itemInStockRepository->findItemInStockById($id, true);
+        if (!$itemInStock) {
             return false;
         }
-        if ($ItemInStock->illustration_picture_path) {
-            Storage::disk('public')->delete('item_in_stock_illustration_pictures/' . basename($ItemInStock->illustration_picture_path));
+        if ($itemInStock->illustration_picture_path) {
+            Storage::disk('public')->delete('item_in_stock_illustration_pictures/' . basename($itemInStock->illustration_picture_path));
         }
-        return $this->itemInStockRepository->restoreItemInStock($ItemInStock);
+        return $this->itemInStockRepository->restoreItemInStock($itemInStock);
     }
 }
