@@ -102,7 +102,7 @@ class ItemInStockServiceTest extends TestCase
             'mimeType' => 'image/jpeg',
         ]);
         $itemInStock = ItemInStock::factory()->create([
-            'illustration_picture_path' => $this->storeFileAndGetPath($initialFile, 'public', 'ItemInStock_Illustration_pictures')
+            'illustration_picture_path' => $this->storeFileAndGetPath($initialFile, 'public', 'item_in_stock_illustration_pictures')
         ]);
         $newIllustrationPicture = $this->generateFakeFile([
             'name' => 'new_profile_picture.jpg',
@@ -126,7 +126,7 @@ class ItemInStockServiceTest extends TestCase
             'mimeType' => 'image/jpeg',
         ]);
         $itemInStock = ItemInStock::factory()->create([
-            'Illustration_picture_path' => $this->storeFileAndGetPath($initialFile, 'public', 'ItemInStock_Illustration_pictures')
+            'Illustration_picture_path' => $this->storeFileAndGetPath($initialFile, 'public', 'item_in_stock_illustration_pictures')
         ]);
         $result = $this->itemInStockService->deleteIllustrationPicture($itemInStock->id);
         $this->assertTrue($result);
