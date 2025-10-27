@@ -15,6 +15,8 @@ class ItemInStockCategory extends Model
     use HasFactory;
     use SoftDeletes;
 
+    protected $table = 'item_in_stock_categories';
+
     protected $fillable = [
         'name',
         'description',
