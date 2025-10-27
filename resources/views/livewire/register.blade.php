@@ -1,22 +1,6 @@
-<div>
 <div class="min-h-screen flex flex-col md:flex-row">
     {{-- Lado esquerdo --}}
-    <div class="w-full md:w-1/3 lg:w-1/4 bg-[#F8F2EC] flex flex-col justify-center items-center p-8 md:p-10">
-        <div class="text-center mt-20 md:mt-0">
-            <div class="mb-4 flex justify-center">
-                <img src="{{ asset('images/manager_box_logo.svg') }}" alt="Logo" class="w-24 h-24 md:w-28 md:h-28">
-            </div>
-            <h1 class="text-2xl font-semibold text-gray-800">Manager Box</h1>
-            <p class="text-gray-600 mt-2">Cadastre-se sem complicações</p>
-        </div>
-
-        <div class="mt-10 md:mt-auto text-center">
-            <p class="text-gray-700">Já possui uma conta?</p>
-            <a href="/login" class="text-green-700 font-semibold hover:underline">
-                Entre agora mesmo
-            </a>
-        </div>
-    </div>
+    <livewire:side-panel/>
 
     {{-- Lado direito --}}
     <div class="w-full md:w-2/3 lg:w-3/4 p-6 sm:p-8 md:p-10 flex flex-col justify-center">
@@ -53,12 +37,12 @@
             {{-- Etapa 1: Dados Pessoais --}}
             @if ($step === 1)
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <x-input label="Nome Completo" wire:model.blur="user_data_name" placeholder="Seu nome" icon="o-user" oninput="this.value = this.value.replace(/[^a-zA-ZÀ-ÿ\s']/g, '')" required/>
-                    <x-input label="Endereço de email" type="email" wire:model.blur="user_data_email" required/>
-                    <x-password label="Senha" wire:model.blur="user_data_password" required/>
-                    <x-password label="Confirmação de senha" wire:model.blur="user_data_password_confirmation" required/>
-                    <x-input label="CPF" wire:model.blur="user_data_cpf" inputmode="numeric" maxLength="14" oninput="formatCPF(this)" required/>
-                    <x-input label="Número de celular" wire:model="user_data_phone_number" inputmode="numeric" maxlength="14" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 14)"/>
+                    <x-input label="Nome Completo" wire:model.live.debounce.1000ms="user_data_name" placeholder="Seu nome" icon="o-user" oninput="this.value = this.value.replace(/[^a-zA-ZÀ-ÿ\s']/g, '')" required/>
+                    <x-input label="Endereço de email" type="email" wire:model.live.debounce.1000ms="user_data_email" required/>
+                    <x-password label="Senha" wire:model.live.debounce.1000ms="user_data_password" required/>
+                    <x-password label="Confirmação de senha" wire:model.live.debounce.1000ms="user_data_password_confirmation" required/>
+                    <x-input label="CPF" x-mask="999.999.999-99" wire:model.live.debounce.1000ms="user_data_cpf" inputmode="numeric" required/>
+                    <x-input label="Número de celular" x-mask="(99) 99999-9999" wire:model="user_data_phone_number" inputmode="numeric"/>
                     <x-input label="Foto de perfil" type="file" wire:model="user_data_profile_picture_path"/>
                     <x-input label="Data de nascimento" type="date" wire:model="user_data_birth_date"/>
                 </div>
@@ -67,19 +51,19 @@
              {{-- Etapa 2: Endereço pessoal --}}
             @if ($step === 2)
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <x-input label="CEP" wire:model.blur="user_address_data_cep" inputmode="numeric" maxlength="9" oninput="formatCEP(this)" required />
-                    <x-input label="Número" wire:model.blur="user_address_data_building_number" inputmode="numeric" maxlength="5" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 5)" required />
+                    <x-input label="CEP" x-mask="99999-999" wire:model.live.debounce.1000ms="user_address_data_cep" inputmode="numeric" required />
+                    <x-input label="Número" wire:model.live.debounce.1000ms="user_address_data_building_number" inputmode="numeric" maxlength="5" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 5)" required />
 
                     <div class="md:col-span-2">
-                        <x-input label="Rua" wire:model.blur="user_address_data_street" oninput="this.value = this.value.replace(/[^a-zA-ZÀ-ÿ0-9\s,.'-]/g, '')" required />
+                        <x-input label="Rua" wire:model.live.debounce.1000ms="user_address_data_street" oninput="this.value = this.value.replace(/[^a-zA-ZÀ-ÿ0-9\s,.'-]/g, '')" required />
                     </div>
 
                     <div class="md:col-span-2">
-                        <x-input label="Bairro" wire:model.blur="user_address_data_neighborhood" oninput="this.value = this.value.replace(/[^a-zA-ZÀ-ÿ0-9\s'-]/g, '')" required />
+                        <x-input label="Bairro" wire:model.live.debounce.1000ms="user_address_data_neighborhood" oninput="this.value = this.value.replace(/[^a-zA-ZÀ-ÿ0-9\s'-]/g, '')" required />
                     </div>
 
-                    <x-input label="Cidade" wire:model.blur="user_address_data_city" oninput="this.value = this.value.replace(/[^a-zA-ZÀ-ÿ\s'-]/g, '')" required/>
-                    <x-input label="Estado" wire:model.blur="user_address_data_state" oninput="this.value = this.value.replace(/[^a-zA-ZÀ-ÿ\s'-]/g, '')" required/>
+                    <x-input label="Cidade" wire:model.live.debounce.1000ms="user_address_data_city" oninput="this.value = this.value.replace(/[^a-zA-ZÀ-ÿ\s'-]/g, '')" required/>
+                    <x-input label="Estado" wire:model.live.debounce.1000ms="user_address_data_state" oninput="this.value = this.value.replace(/[^a-zA-ZÀ-ÿ\s'-]/g, '')" required/>
 
                     <div class="md:col-span-2">
                         <x-input label="Complemento" wire:model="user_address_data_complement" class="h-14"/>
@@ -91,22 +75,22 @@
             @if ($step === 3)
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div class="md:col-span-2">
-                        <x-input label="Nome Fantasia" wire:model.blur="company_data_fantasy_name" oninput="this.value = this.value.replace(/[^a-zA-ZÀ-ÿ0-9\s&'-.,/]/g, '')" required />
+                        <x-input label="Nome Fantasia" wire:model.live.debounce.1000ms="company_data_fantasy_name" oninput="this.value = this.value.replace(/[^a-zA-ZÀ-ÿ0-9\s&'-.,/]/g, '')" required />
                     </div>
 
                     <div class="md:col-span-2">
-                        <x-input label="Razão Social" wire:model.blur="company_data_corporate_name" oninput="this.value = this.value.replace(/[^a-zA-ZÀ-ÿ0-9\s.,&'-/]/g, '')" required />
+                        <x-input label="Razão Social" wire:model.live.debounce.1000ms="company_data_corporate_name" oninput="this.value = this.value.replace(/[^a-zA-ZÀ-ÿ0-9\s.,&'-/]/g, '')" required />
                     </div>
 
-                    <x-input label="CNPJ" wire:model.blur="company_data_cnpj" inputmode="numeric" maxlength="18" oninput="formatCNPJ(this)" required />
-                    <x-input label="Inscrição Estadual" wire:model.blur="company_data_state_registration" required />
+                    <x-input label="CNPJ" x-mask="99.999.999/9999-99" wire:model.live.debounce.1000ms="company_data_cnpj" inputmode="numeric" required />
+                    <x-input label="Inscrição Estadual" wire:model.live.debounce.1000ms="company_data_state_registration" required />
 
                     <div class="md:col-span-2">
-                        <x-input label="Email de Contato" wire:model.blur="company_data_contact_email" required/>
+                        <x-input label="Email de Contato" wire:model.live.debounce.1000ms="company_data_contact_email" required/>
                     </div>
 
-                    <x-input label="Número de Celular" wire:model="company_data_phone_number" inputmode="numeric" maxlength="14" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 14)"/>
-                    <x-input label="Número de Telefone Fixo" wire:model="company_data_landline_number" inputmode="numeric" maxlength="14" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 14)"/>
+                    <x-input label="Número de Celular" x-mask="(99) 99999-9999" wire:model="company_data_phone_number" inputmode="numeric"/>
+                    <x-input label="Número de Telefone Fixo" x-mask="(99) 9999-9999" wire:model="company_data_landline_number" inputmode="numeric"/>
 
                     <x-input label="Logomarca" type="file" wire:model="company_data_logo_picture_path"/>
                     <x-input label="Data de Fundação" type="date" wire:model="company_data_foundation_date"/>
@@ -120,19 +104,19 @@
              {{-- Etapa 4: Endereço da empresa --}}
             @if ($step === 4 && !$company_data_company_same_user_address)
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <x-input label="CEP" wire:model.blur="company_address_data_cep" inputmode="numeric" maxlength="9" oninput="formatCEP(this)" required />
-                    <x-input label="Número" wire:model.blur="company_address_data_building_number" inputmode="numeric" maxlength="5" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 5)" required />
+                    <x-input label="CEP" x-mask="99999-999" wire:model.live.debounce.1000ms="company_address_data_cep" inputmode="numeric" required />
+                    <x-input label="Número" wire:model.live.debounce.1000ms="company_address_data_building_number" inputmode="numeric" maxlength="5" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 5)" required />
 
                     <div class="md:col-span-2">
-                        <x-input label="Rua" wire:model.blur="company_address_data_street" oninput="this.value = this.value.replace(/[^a-zA-ZÀ-ÿ0-9\s,.'-]/g, '')" required />
+                        <x-input label="Rua" wire:model.live.debounce.1000ms="company_address_data_street" oninput="this.value = this.value.replace(/[^a-zA-ZÀ-ÿ0-9\s,.'-]/g, '')" required />
                     </div>
 
                     <div class="md:col-span-2">
-                        <x-input label="Bairro" wire:model.blur="company_address_data_neighborhood" oninput="this.value = this.value.replace(/[^a-zA-ZÀ-ÿ0-9\s'-]/g, '')" required />
+                        <x-input label="Bairro" wire:model.live.debounce.1000ms="company_address_data_neighborhood" oninput="this.value = this.value.replace(/[^a-zA-ZÀ-ÿ0-9\s'-]/g, '')" required />
                     </div>
 
-                    <x-input label="Cidade" wire:model.blur="company_address_data_city" oninput="this.value = this.value.replace(/[^a-zA-ZÀ-ÿ\s'-]/g, '')" required />
-                    <x-input label="Estado" wire:model.blur="company_address_data_state" oninput="this.value = this.value.replace(/[^a-zA-ZÀ-ÿ\s'-]/g, '')" required />
+                    <x-input label="Cidade" wire:model.live.debounce.1000ms="company_address_data_city" oninput="this.value = this.value.replace(/[^a-zA-ZÀ-ÿ\s'-]/g, '')" required />
+                    <x-input label="Estado" wire:model.live.debounce.1000ms="company_address_data_state" oninput="this.value = this.value.replace(/[^a-zA-ZÀ-ÿ\s'-]/g, '')" required />
 
                     <div class="md:col-span-2">
                         <x-input label="Complemento" wire:model="company_address_data_complement" class="h-14"/>
@@ -168,61 +152,5 @@
                 
             </div>
         </x-form>
-    </div>
-
-    @push('scripts')
-        <script>
-        function formatCPF(input) {
-            
-            let value = input.value.replace(/\D/g, '');
-
-           
-            if (value.length > 3) value = value.replace(/^(\d{3})(\d)/, '$1.$2');
-            if (value.length > 6) value = value.replace(/^(\d{3})\.(\d{3})(\d)/, '$1.$2.$3');
-            if (value.length > 9) value = value.replace(/^(\d{3})\.(\d{3})\.(\d{3})(\d)/, '$1.$2.$3-$4');
-
-            input.value = value;
-        }
-        </script>
-    @endpush
-    
-    @push('scripts')
-        <script>
-        function formatCNPJ(input) {
-            
-            let value = input.value.replace(/\D/g, '');
-
-            value = value.slice(0, 14);
-
-            if (value.length > 2 && value.length <= 5) {
-                value = value.replace(/^(\d{2})(\d+)/, '$1.$2');
-            } else if (value.length > 5 && value.length <= 8) {
-                value = value.replace(/^(\d{2})(\d{3})(\d+)/, '$1.$2.$3');
-            } else if (value.length > 8 && value.length <= 12) {
-                value = value.replace(/^(\d{2})(\d{3})(\d{3})(\d+)/, '$1.$2.$3/$4');
-            } else if (value.length > 12) {
-                value = value.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d+)/, '$1.$2.$3/$4-$5');
-            }
-
-            input.value = value;
-        }
-        </script>
-    @endpush
-
-    @push('scripts')
-        <script>
-            function formatCEP(input) {
-                let value = input.value.replace(/\D/g, '');
-                value = value.slice(0, 8); 
-
-                if (value.length > 5) {
-                    value = value.replace(/^(\d{5})(\d+)/, '$1-$2');
-                }
-
-                input.value = value;
-            }
-        </script>
-    @endpush
-    
-</div>
+    </div>  
 </div>
