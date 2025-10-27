@@ -30,6 +30,7 @@ class ItemInStock extends Model
         'sale_price',
         'is_active',
         'company_id',
+        'brand_id',
         'warehouse_id',
     ];
 

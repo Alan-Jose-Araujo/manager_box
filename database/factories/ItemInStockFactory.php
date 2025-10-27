@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Enums\ItemInStockUnityOfMeasure;
+use App\Models\Brand;
 use App\Models\Company;
 use App\Models\Warehouse;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -34,6 +35,7 @@ class ItemInStockFactory extends Factory
             'sale_price' => fake()->randomFloat(2, 0, 1000),
             'is_active' => true,
             'company_id' => Company::factory(),
+            'brand_id' => Brand::factory(),
             'warehouse_id' => Warehouse::factory(),
         ];
     }
