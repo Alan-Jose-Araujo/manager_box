@@ -8,7 +8,7 @@
 
     {{-- Lado direito --}}
     <div class="w-full md:w-2/3 lg:w-3/4 p-6 sm:p-8 md:p-10 flex flex-col justify-center items-center">
-        <x-card class="w-full max-w-3xl">
+        <x-card class="w-full max-w-3xl shadow-lg">
 
             <h2 class="text-xl md:text-2xl font-semibold text-green-700 flex items-center gap-2 mb-2">
                 <img src="{{ asset('images/manager_box_logo.svg') }}" alt="Logo" class="w-7 h-7 md:w-8 md:h-8">
@@ -19,9 +19,9 @@
                 Insira suas credenciais no formulário para entrar.
             </p>
 
-            <x-form wire:submit.prevent="login" class="space-y-4">
-                <x-input label="Endereço de email" type="email" wire:model.live.debounce.1000ms="user_login_email" required />
-                <x-password label="Senha" wire:model.live.debounce.1000ms="user_login_password" required />
+            <x-form wire:submit.prevent="submit" class="space-y-4">
+                <x-input label="Endereço de email" type="email" wire:model.live.debounce.1000ms="user_data_email" required />
+                <x-password label="Senha" wire:model.live.debounce.1000ms="user_data_password" required />
                 <div class="flex items-center justify-between">
                     <x-checkbox label="Mantenha-me conectado." wire:model="remember" />
 
