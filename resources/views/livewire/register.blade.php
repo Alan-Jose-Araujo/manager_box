@@ -141,11 +141,11 @@
                 @endif
 
                 @if ($step < $totalSteps)
-                    <x-button wire:click="nextStep" type="button" class="btn-success order-1 sm:order-2">
+                    <x-button wire:click="nextStep" type="button" class="bg-green-700 hover:bg-green-800 text-white font-semibold order-1 sm:order-2">
                         Avançar
                     </x-button>
                 @else
-                    <x-button wire:click="submit" type="submit" class="btn-success order-1 sm:order-2">
+                    <x-button wire:click="submit" type="submit" class="bg-green-700 hover:bg-green-800 text-white font-semibold order-1 sm:order-2">
                         Enviar
                     </x-button>
                 @endif
