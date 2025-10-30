@@ -25,8 +25,8 @@
                 <div class="flex items-center justify-between">
                     <x-checkbox label="Mantenha-me conectado." wire:model="remember" />
 
-                    <a href="{{ '/register' }}" class="text-green-700 font-semibold hover:underline">
-                        Cadastre-se
+                    <a href="{{ '/' }}" class="text-green-700 font-semibold hover:underline">
+                        Esqueceu sua senha?
                     </a>
                 </div>
                 
