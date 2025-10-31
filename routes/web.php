@@ -4,6 +4,7 @@
  * Here are the routes related to application web context.
  */
 
+use App\Livewire\NotFound;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -15,3 +16,6 @@ Route::get('/', function () {
 Route::get('/dashboard', function() {
     return 'Olá';
 })->middleware(['custom.auth', 'verified'])->name('dashboard');
+
+
+Route::fallback(NotFound::class);
