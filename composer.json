@@ -9,12 +9,9 @@
         "php": "^8.2",
         "laravel/framework": "^12.0",
         "laravel/tinker": "^2.10.1",
-<<<<<<< HEAD
-        "spatie/laravel-permission": "^6.21"
-=======
+        "spatie/laravel-permission": "^6.21",
         "livewire/livewire": "^3.6",
         "robsontenorio/mary": "^2.4"
->>>>>>> register
     },
     "require-dev": {
         "brianium/paratest": "^7.8",
