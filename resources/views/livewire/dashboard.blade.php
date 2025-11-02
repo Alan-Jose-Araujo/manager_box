@@ -1,120 +1,80 @@
-<div class="pb-8">
+<div class="p-4">
 
-    {{-- Grid - desktops (lg) --}}
-    <div class="grid lg:grid-cols-2 gap-6">
-
-        {{-- BLOC 1 --}}
-        <x-card title="Entradas e saídas" class="col-span-1">
-            <x-chart wire:model="chartEntradasSaidas" />
-
-            <div class="mt-4 flex flex-wrap justify-between text-xs text-gray-500 gap-2">
-                <span>Gabinte Gamer Algo DarkFlash</span>
-                <span>Placa de Vídeo Geforce RTX 4090</span>
-                <span>Processador Intel Core I5-13500F</span>
-                <span>Placa Mãe Pichau Danuri B550M PA</span>
-            </div>
-        </x-card>
-
-        {{-- BLOC 2 --}}
-        <x-card title="Itens por Categoria" class="col-span-1">
-            <div class="flex items-center">
-                <div class="w-2/3 h-56">
-                    <x-chart wire:model="chartItensCategoria" />
+    <nav class="flex text-gray-500 text-sm mb-6" aria-label="Breadcrumb">
+        <ol class="inline-flex items-center space-x-1 md:space-x-3">
+            <li class="inline-flex items-center">
+                <a href="#" class="inline-flex items-center text-gray-700 hover:text-gray-900">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                    Home
+                </a>
+            </li>
+            <li>
+                <div class="flex items-center">
+                    <svg class="w-5 h-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20"><path d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" fill-rule="evenodd"></path></svg>
+                    <a href="#" class="ml-1 text-gray-700 hover:text-gray-900 md:ml-2">Relatórios</a>
                 </div>
-
-                <div class="w-1/3 p-4 space-y-3">
-                    <div class="text-sm">
-                        <span class="text-orange-600 font-bold">74</span> <span class="text-xs text-gray-500">10.79%</span>
-                        <div class="text-xs text-gray-600">Placas mãe</div>
-                    </div>
-                    <div class="text-sm">
-                        <span class="text-purple-600 font-bold">150</span> <span class="text-xs text-gray-500">21.87%</span>
-                        <div class="text-xs text-gray-600">Gabinetes</div>
-                    </div>
-                    <div class="text-sm">
-                        <span class="text-red-600 font-bold">182</span> <span class="text-xs text-gray-500">23.82%</span>
-                        <div class="text-xs text-gray-600">Placas de vídeo</div>
-                    </div>
-                    <div class="text-sm">
-                        <span class="text-cyan-600 font-bold">300</span> <span class="text-xs text-gray-500">43.73%</span>
-                        <div class="text-xs text-gray-600">Processadores</div>
-                    </div>
+            </li>
+            <li aria-current="page">
+                <div class="flex items-center">
+                    <svg class="w-5 h-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20"><path d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" fill-rule="evenodd"></path></svg>
+                    <span class="ml-1 font-medium text-gray-500 md:ml-2">Visão geral</span>
                 </div>
+            </li>
+        </ol>
+    </nav>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+        <div class="md:col-span-2 bg-white rounded-xl shadow-lg p-6 h-96">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-lg font-semibold text-gray-800">Entradas e saídas</h2>
+                <span class="text-sm font-medium text-green-600 bg-green-50 px-3 py-1 rounded-full">Entradas</span>
             </div>
-        </x-card>
-    </div>
-
-    <div class="grid lg:grid-cols-4 gap-6 mt-6">
-
-        {{-- BLOC 3 --}}
-        <x-card title="Produtos sem rotatividade" class="col-span-1 h-full">
-            <div class="grid grid-cols-2 gap-4">
-                @foreach($produtosSemRotatividade as $produto)
-                    <div class="border border-base-content/20 p-3 rounded-lg flex flex-col justify-between">
-                        <span class="text-sm font-semibold">{{ $produto['nome'] }}</span>
-                        <span class="text-xs text-gray-500 mt-1">{{ $produto['dias'] }} dias parados</span>
-                    </div>
-                @endforeach
+            <div class="h-80 bg-gray-50 rounded-lg flex items-center justify-center text-gray-400">
+                [Espaço para Gráfico de Entradas e Saídas]
             </div>
-        </x-card>
+        </div>
 
-        {{-- BLOC 4 --}}
-        <x-card title="Saídas neste mês" class="col-span-1 flex items-center justify-center">
-            <div class="flex items-center space-x-6">
-                <div class="radial-progress text-purple-600"
-                    @style([
-                        '--value: 62',
-                        '--size: 7rem',
-                        '--thickness: 0.8rem',
-                    ])
-                >
-                    <span class="text-3xl font-bold">62</span>
-                </div>
-
-                <div class="space-y-2">
-                    <div class="flex items-center text-sm">
-                        <span class="inline-block w-3 h-3 rounded-full bg-purple-500 mr-2"></span>
-                        <span>Placas de vídeo</span>
-                    </div>
-                    <div class="flex items-center text-sm">
-                        <span class="inline-block w-3 h-3 rounded-full bg-red-500 mr-2"></span>
-                        <span>Processadores</span>
-                    </div>
-                    <div class="flex items-center text-sm">
-                        <span class="inline-block w-3 h-3 rounded-full bg-sky-500 mr-2"></span>
-                        <span>Placas mãe</span>
-                    </div>
-                </div>
+        <div class="md:row-span-2 bg-white rounded-xl shadow-lg p-6 h-96 md:h-full">
+            <h2 class="text-lg font-semibold text-gray-800 mb-4">Itens por categoria</h2>
+            <div class="h-full bg-gray-50 rounded-lg flex items-center justify-center text-gray-400">
+                [Espaço para Gráfico de Itens por Categoria]
             </div>
-        </x-card>
+        </div>
 
-        {{-- BLOC 5 --}}
-        <x-card title="Preço médio por categoria" class="col-span-2">
-            <div class="h-64">
-                <x-chart wire:model="chartPrecoMedio" />
+        <div class="bg-white rounded-xl shadow-lg p-6 h-36">
+            <h2 class="text-md font-semibold text-gray-800 mb-2">Produtos sem rotatividade</h2>
+            <div class="h-20 bg-gray-50 rounded flex items-center justify-center text-gray-400 text-sm">
+                [Métrica]
             </div>
-        </x-card>
+        </div>
 
-    </div>
-
-    <div class="grid lg:grid-cols-4 gap-6 mt-6">
-
-        {{-- BLOC 6 --}}
-        <x-card title="Rotatividade de estoque" class="col-span-1">
-            <div class="text-2xl font-bold text-gray-700">
-                {{ $rotatividadeEstoque }}
+        <div class="bg-white rounded-xl shadow-lg p-6 h-36">
+            <h2 class="text-md font-semibold text-gray-800 mb-2">Saídas neste mês</h2>
+            <div class="h-20 bg-gray-50 rounded flex items-center justify-center text-gray-400 text-sm">
+                [Métrica]
             </div>
-        </x-card>
+        </div>
 
-        {{-- BLOC 7 --}}
-        <x-card title="Indicadores-chave de desempenho" class="col-span-1">
-            <div class="space-y-2 text-gray-700">
-                <div class="text-lg">Total de itens: <span class="font-bold">{{ $totalItens }}</span></div>
-                <div class="text-lg">Total de categorias: <span class="font-bold">{{ $totalCategorias }}</span></div>
-                <div class="text-lg">Valor do estoque: <span class="font-bold text-green-600">{{ $valorEstoque }}</span></div>
+        <div class="bg-white rounded-xl shadow-lg p-6 h-36">
+            <h2 class="text-md font-semibold text-gray-800 mb-2">Rotatividade de estoque</h2>
+            <div class="h-20 bg-gray-50 rounded flex items-center justify-center text-gray-400 text-sm">
+                [KPI]
             </div>
-        </x-card>
+        </div>
 
-        <div class="col-span-2"></div>
+        <div class="bg-white rounded-xl shadow-lg p-6 h-36">
+            <h2 class="text-md font-semibold text-gray-800 mb-2">Indicadores-chave de desempenho</h2>
+            <div class="h-20 bg-gray-50 rounded flex items-center justify-center text-gray-400 text-sm">
+                [KPIs]
+            </div>
+        </div>
+
+        <div class="md:col-span-2 bg-white rounded-xl shadow-lg p-6 h-96">
+            <h2 class="text-lg font-semibold text-gray-800 mb-4">Preço médio por categoria</h2>
+            <div class="h-80 bg-gray-50 rounded-lg flex items-center justify-center text-gray-400">
+                [Espaço para Gráfico de Preço Médio]
+            </div>
+        </div>
+
     </div>
 </div>
