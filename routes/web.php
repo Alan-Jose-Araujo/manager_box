@@ -5,20 +5,6 @@
  */
 
 use Illuminate\Support\Facades\Route;
+use App\Livewire\Register;
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
-Route::get('/csrf-token', function () {
-    return [
-        'csrf-token' => csrf_token(),
-    ];
-});
-
-Route::get('/dashboard', function () {
-    return ['success' => true];
-})->middleware([
-    'custom.auth',
-    'verified',
-])->name('dashboard');
+Route::get('/register', Register::class)->name('register');
