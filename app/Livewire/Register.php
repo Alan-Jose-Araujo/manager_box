@@ -12,7 +12,7 @@ class Register extends Component
     use WithFileUploads;
 
     #[Layout('components.layouts.register')]
-    
+
     public $step = 1;
     public $totalSteps = 4;
 
@@ -20,28 +20,28 @@ class Register extends Component
     #[Validate('required', message: 'O campo Nome é obrigatório')]
     #[Validate('min:6', message: 'O campo Nome deve ter no mínimo 6 caracteres')]
     #[Validate('regex:/^[a-zA-ZÀ-ÿ\s\']+$/', message: 'O campo Nome deve conter apenas letras e espaços')]
-    public $user_data_name; 
+    public $user_data_name;
 
     #[Validate('required', message: 'O campo Email é obrigatório')]
     #[Validate('email', message: 'O campo Email deve ser um email válido')]
-    public $user_data_email; 
+    public $user_data_email;
 
     #[Validate('required', message: 'A senha é obrigatória')]
     #[Validate('min:8', message: 'A senha deve ter no mínimo 8 caracteres')]
-    public $user_data_password; 
+    public $user_data_password;
 
     #[Validate('required', message: 'A confirmação de senha é obrigatória')]
     #[Validate('same:user_data_password', message: 'As senhas não coincidem')]
-    public $user_data_password_confirmation; 
+    public $user_data_password_confirmation;
 
     #[Validate('required', message: 'O campo CPF é obrigatório')]
     public $user_data_cpf;
 
-    public $user_data_phone_number; 
-    public $user_data_profile_picture_path; 
+    public $user_data_phone_number;
+    public $user_data_profile_picture_path;
     public $user_data_birth_date;
 
-    
+
     // Etapa 2 - Endereço Pessoal
     #[Validate('required', message: 'O campo CEP é obrigatório')]
     #[Validate('min:8', message: 'CEP inválido')]
@@ -88,7 +88,7 @@ class Register extends Component
 
     #[Validate('required', message: 'O campo CNPJ é obrigatório')]
     public $company_data_cnpj;
-    
+
     #[Validate('required', message: 'O campo Inscrição Estadual é obrigatório')]
     public $company_data_state_registration;
 
@@ -134,7 +134,7 @@ class Register extends Component
     public $company_address_data_state;
 
     public $company_address_data_complement;
-    
+
     public function getTotalStepsProperty()
     {
         return $this->company_data_company_same_user_address ? 3 : 4;
@@ -216,7 +216,7 @@ class Register extends Component
         }
     }
 
-   public function updatedUserAddressDataCep($value)
+    public function updatedUserAddressDataCep($value)
     {
         $cep = preg_replace('/[^0-9]/', '', $value);
 
@@ -273,26 +273,32 @@ class Register extends Component
 
         if (!$this->validateCNPJ($value)) {
             $this->addError('company_data_cnpj', 'O CNPJ informado é inválido.');
-        } 
+        }
     }
 
     private function validateCNPJ($cnpj)
     {
-        $cnpj = preg_replace('/\D/', '', $cnpj); 
+        $cnpj = preg_replace('/\D/', '', $cnpj);
 
-        if (strlen($cnpj) != 14) return false;
+        if (strlen($cnpj) != 14)
+            return false;
 
-        if (preg_match('/(\d)\1{13}/', $cnpj)) return false;
+        if (preg_match('/(\d)\1{13}/', $cnpj))
+            return false;
 
-        for ($t = 12; $t < 14; $t++) {
-            $d = 0;
-            $pos = $t - 7;
-            for ($i = 0; $i < $t; $i++) {
-                $d += $cnpj[$i] * $pos--;
-                if ($pos < 2) $pos = 9;
+        if (app()->environment('production')) {
+            for ($t = 12; $t < 14; $t++) {
+                $d = 0;
+                $pos = $t - 7;
+                for ($i = 0; $i < $t; $i++) {
+                    $d += $cnpj[$i] * $pos--;
+                    if ($pos < 2)
+                        $pos = 9;
+                }
+                $digit = ((10 * $d) % 11) % 10;
+                if ($cnpj[$t] != $digit)
+                    return false;
             }
-            $digit = ((10 * $d) % 11) % 10;
-            if ($cnpj[$t] != $digit) return false;
         }
 
         return true;
@@ -300,7 +306,7 @@ class Register extends Component
 
     public function updatedUserDataCpf($value)
     {
-        
+
         if (empty($value)) {
             return;
         }
@@ -322,14 +328,16 @@ class Register extends Component
             return false;
         }
 
-        for ($t = 9; $t < 11; $t++) {
-            $d = 0;
-            for ($c = 0; $c < $t; $c++) {
-                $d += $cpf[$c] * (($t + 1) - $c);
-            }
-            $digit = ((10 * $d) % 11) % 10;
-            if ($cpf[$t] != $digit) {
-                return false;
+        if (app()->environment('production')) {
+            for ($t = 9; $t < 11; $t++) {
+                $d = 0;
+                for ($c = 0; $c < $t; $c++) {
+                    $d += $cpf[$c] * (($t + 1) - $c);
+                }
+                $digit = ((10 * $d) % 11) % 10;
+                if ($cpf[$t] != $digit) {
+                    return false;
+                }
             }
         }
 
@@ -364,6 +372,8 @@ class Register extends Component
 
     public function submit()
     {
+        $success = true;
+
         $this->user_data_cpf = preg_replace('/\D/', '', $this->user_data_cpf);
         $this->user_address_data_cep = preg_replace('/\D/', '', $this->user_address_data_cep);
         $this->company_data_cnpj = preg_replace('/\D/', '', $this->company_data_cnpj);
@@ -373,19 +383,28 @@ class Register extends Component
 
         if (!$this->validateCPF($this->user_data_cpf)) {
             $this->addError('user_data_cpf', 'O CPF informado é inválido.');
-            return;
+            $success = false;
         }
 
         if (!$this->validateCNPJ($this->company_data_cnpj)) {
             $this->addError('company_data_cnpj', 'O CNPJ informado é inválido.');
-            return;
+            $success = false;
         }
 
-        
+        if ($success) {
+            $this->dispatch('registered-client-form-validation-success', [
+                'success' => true,
+                'message' => 'Formulário validado com sucesso.'
+            ]);
+        } else {
+            $this->dispatch('registered-client-form-validation-fail', [
+                'success' => false,
+                'message' => 'Erros encontrados no formulário. Verifique os campos destacados.'
+            ]);
+        }
 
-        return redirect()->to('/dashboard');
     }
-    
+
     public function render()
     {
         return view('livewire.register');

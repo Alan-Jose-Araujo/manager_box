@@ -32,7 +32,6 @@ Route::prefix('client')
          * Name: client.register
          */
         Route::post('/register', [RegisteredClientController::class, 'store'])
-            ->middleware('guest')
             ->name('client.register');
 
         /**
