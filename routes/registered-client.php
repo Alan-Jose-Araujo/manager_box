@@ -8,20 +8,30 @@
  */
 
 use App\Http\Controllers\RegisteredClientController;
+use App\Livewire\Register;
 use Illuminate\Support\Facades\Route;
 use Spatie\Permission\Middleware\RoleMiddleware;
 
 Route::prefix('client')
     ->group(function () {
 
+
         /**
          * Url: client/register
          * HTTP Method: GET
+         * Component: Register
+         * Name: client.show_register_form
+         */
+        Route::get('/register', Register::class)->name('client.show_register_form');
+
+        /**
+         * Url: client/register
+         * HTTP Method: POST
          * Controller: RegisteredClientController
          * Controller Method: store
          * Name: client.register
          */
-        Route::post('register', [RegisteredClientController::class, 'store'])
+        Route::post('/register', [RegisteredClientController::class, 'store'])
             ->middleware('guest')
             ->name('client.register');
 

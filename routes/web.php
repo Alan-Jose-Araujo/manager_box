@@ -5,6 +5,7 @@
  */
 
 use Illuminate\Support\Facades\Route;
-use App\Livewire\Register;
 
-Route::get('/register', Register::class)->name('register');
+Route::get('/', function () {
+    return redirect()->route('client.show_register_form');
+});
