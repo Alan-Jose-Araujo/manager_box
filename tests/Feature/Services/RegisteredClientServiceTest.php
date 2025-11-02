@@ -30,7 +30,7 @@ class RegisteredClientServiceTest extends TestCase
         $userData = User::factory()->make()->makeVisible('password')->toArray();
         $userAddress = Address::factory()->make()->toArray();
         $companyAddressData = Address::factory()->make()->toArray();
-        $userAddress['company_same_user_address'] = false;
+        $companyData['company_same_user_address'] = false;
 
         $registeredClient = $this->registeredClientService->create([
             'company' => $companyData,
@@ -51,7 +51,7 @@ class RegisteredClientServiceTest extends TestCase
         $companyData = Company::factory()->make()->toArray();
         $userData = User::factory()->make()->makeVisible('password')->toArray();
         $userAddress = Address::factory()->make()->toArray();
-        $userAddress['company_same_user_address'] = true;
+        $companyData['company_same_user_address'] = true;
 
         $registeredClient = $this->registeredClientService->create([
             'company' => $companyData,

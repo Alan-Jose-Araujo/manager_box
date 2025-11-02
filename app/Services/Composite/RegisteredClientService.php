@@ -35,7 +35,7 @@ class RegisteredClientService
         $userAddressData = $data['user_address'];
         $companyAddressData = $data['company_address'] ?? [];
 
-        $userSameAddress = (bool) $userAddressData['company_same_user_address'];
+        $userSameAddress = (bool) $companyData['company_same_user_address'];
 
         return DB::transaction(function () use ($companyData, $userData, $userAddressData, $companyAddressData, $userSameAddress): RegisteredClientCompositeDto {
             $company = $this->companyService->create($companyData);

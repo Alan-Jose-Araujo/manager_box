@@ -30,7 +30,7 @@ class RegisteredClientControllerTest extends TestCase
         $userData = User::factory()->make()->toArray();
         $userData['password'] = 'password';
         $userAddressData = Address::factory()->make()->toArray();
-        $userAddressData['company_same_user_address'] = true;
+        $companyData['company_same_user_address'] = true;
         $requestPayload = [];
 
         foreach ($companyData as $key => $value) {
@@ -65,7 +65,7 @@ class RegisteredClientControllerTest extends TestCase
         $userData = User::factory()->make()->toArray();
         $userData['password'] = 'password';
         $userAddressData = Address::factory()->make()->toArray();
-        $userAddressData['company_same_user_address'] = false;
+        $companyData['company_same_user_address'] = false;
         $companyAddressData = Address::factory()->make()->toArray();
         $requestPayload = [];
 
@@ -112,7 +112,7 @@ class RegisteredClientControllerTest extends TestCase
         ]);
         $userData['password'] = 'password';
         $userAddressData = Address::factory()->make()->toArray();
-        $userAddressData['company_same_user_address'] = false;
+        $companyData['company_same_user_address'] = false;
         $companyAddressData = Address::factory()->make()->toArray();
         $requestPayload = [];
 
