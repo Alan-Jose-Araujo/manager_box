@@ -64,8 +64,8 @@
 
                 {{-- Etapa 2: Endereço pessoal --}}
                 <div class="{{ $step === 2 ? 'grid grid-cols-1 md:grid-cols-2 gap-4' : 'hidden' }}">
-                    <x-input label="CEP" x-mask="99999-999" wire:model.live.debounce.1000ms="user_address_data_cep"
-                        inputmode="numeric" required name="user_address_data_cep" />
+                    <x-input label="CEP" x-mask="99999-999" wire:model.live.debounce.1000ms="user_address_data_zip_code"
+                        inputmode="numeric" required name="user_address_data_zip_code" />
                     <x-input label="Número" wire:model.live.debounce.1000ms="user_address_data_building_number"
                         inputmode="numeric" maxlength="5"
                         oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 5)" required
@@ -141,8 +141,8 @@
                 {{-- Etapa 4: Endereço da empresa --}}
                 <div
                     class="{{ $step === 4 && !$company_data_company_same_user_address ? 'grid grid-cols-1 md:grid-cols-2 gap-4' : 'hidden' }}">
-                    <x-input label="CEP" x-mask="99999-999" wire:model.live.debounce.1000ms="company_address_data_cep"
-                        inputmode="numeric" required name="company_address_data_cep" />
+                    <x-input label="CEP" x-mask="99999-999" wire:model.live.debounce.1000ms="company_address_data_zip_code"
+                        inputmode="numeric" required name="company_address_data_zip_code" />
                     <x-input label="Número" wire:model.live.debounce.1000ms="company_address_data_building_number"
                         inputmode="numeric" maxlength="5"
                         oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 5)" required
