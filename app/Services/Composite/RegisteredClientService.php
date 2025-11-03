@@ -12,6 +12,7 @@ use App\Services\AddressService;
 use App\Services\CompanyService;
 use App\Services\UserService;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class RegisteredClientService
 {
@@ -34,6 +35,16 @@ class RegisteredClientService
         $userData = $data['user'];
         $userAddressData = $data['user_address'];
         $companyAddressData = $data['company_address'] ?? [];
+
+        $companyData['cnpj'] = Str::removeNonDigits($companyData['cnpj']);
+        $companyData['phone_number'] = Str::removeNonDigits($companyData['phone_number']);
+        $companyData['landline_number'] = Str::removeNonDigits($companyData['landline_number']);
+
+        $userData['cpf'] = Str::removeNonDigits($userData['cpf']);
+        $userData['phone_number'] = Str::removeNonDigits($userData['phone_number']);
+
+        $userAddressData['zip_code'] = Str::removeNonDigits($userAddressData['zip_code']);
+        $companyAddressData['zip_code'] = Str::removeNonDigits($companyAddressData['zip_code']);
 
         $userSameAddress = (bool) $companyData['company_same_user_address'];
 
