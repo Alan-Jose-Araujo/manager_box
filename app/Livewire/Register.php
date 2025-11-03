@@ -45,7 +45,7 @@ class Register extends Component
     // Etapa 2 - Endereço Pessoal
     #[Validate('required', message: 'O campo CEP é obrigatório')]
     #[Validate('min:8', message: 'CEP inválido')]
-    public $user_address_data_cep;
+    public $user_address_data_zip_code;
 
     #[Validate('required', message: 'O campo Número é obrigatório')]
     #[Validate('numeric', message: 'O campo deve ser numérico')]
@@ -106,7 +106,7 @@ class Register extends Component
     // Etapa 4 - Endereço da Empresa
     #[Validate('required', message: 'O campo CEP é obrigatório')]
     #[Validate('min:8', message: 'CEP inválido')]
-    public $company_address_data_cep;
+    public $company_address_data_zip_code;
 
     #[Validate('required', message: 'O campo Número é obrigatório')]
     #[Validate('numeric', message: 'O campo deve ser numérico')]
@@ -154,7 +154,7 @@ class Register extends Component
                 'user_data_cpf' => 'required',
             ]),
             2 => $this->validate([
-                'user_address_data_cep' => 'required|min:8',
+                'user_address_data_zip_code' => 'required|min:8',
                 'user_address_data_building_number' => 'required|numeric|regex:/^[0-9]+$/',
                 'user_address_data_street' => 'required|min:3|regex:/^[a-zA-ZÀ-ÿ0-9\s.,\'-]+$/',
                 'user_address_data_neighborhood' => 'required|min:3|regex:/^[a-zA-ZÀ-ÿ\s\'-]+$/',
@@ -169,7 +169,7 @@ class Register extends Component
                 'company_data_contact_email' => 'required|email',
             ]),
             4 => $this->validate([
-                'company_address_data_cep' => 'required|min:8',
+                'company_address_data_zip_code' => 'required|min:8',
                 'company_address_data_building_number' => 'required|numeric|regex:/^[0-9]+$/',
                 'company_address_data_street' => 'required|min:3|regex:/^[a-zA-ZÀ-ÿ0-9\s.,\'-]+$/',
                 'company_address_data_neighborhood' => 'required|min:3|regex:/^[a-zA-ZÀ-ÿ\s\'-]+$/',
@@ -191,12 +191,12 @@ class Register extends Component
         }
 
         if ($this->step === 2 && empty($this->user_address_data_street)) {
-            $this->addError('user_address_data_cep', 'CEP inválido ou não encontrado.');
+            $this->addError('user_address_data_zip_code', 'CEP inválido ou não encontrado.');
             $valid = false;
         }
 
         if ($this->step === 4 && empty($this->company_address_data_street)) {
-            $this->addError('company_address_data_cep', 'CEP inválido ou não encontrado.');
+            $this->addError('company_address_data_zip_code', 'CEP inválido ou não encontrado.');
             $valid = false;
         }
 
@@ -216,25 +216,25 @@ class Register extends Component
         }
     }
 
-    public function updatedUserAddressDataCep($value)
+    public function updatedUserAddressDataZipCode($value)
     {
         $cep = preg_replace('/[^0-9]/', '', $value);
 
         if (strlen($cep) === 8) {
-            $this->searchAddressCep($cep, 'user');
+            $this->searchAddressZipCode($cep, 'user');
         }
     }
 
-    public function updatedCompanyAddressDataCep($value)
+    public function updatedCompanyAddressDataZipCode($value)
     {
         $cep = preg_replace('/[^0-9]/', '', $value);
 
         if (strlen($cep) === 8) {
-            $this->searchAddressCep($cep, 'company');
+            $this->searchAddressZipCode($cep, 'company');
         }
     }
 
-    private function searchAddressCep($cep, $tipo)
+    private function searchAddressZipCode($cep, $tipo)
     {
         try {
             $response = \Illuminate\Support\Facades\Http::withoutVerifying()
@@ -255,11 +255,11 @@ class Register extends Component
                     $this->company_address_data_state = $dados['uf'] ?? '';
                 }
             } else {
-                $field = $tipo === 'user' ? 'user_address_data_cep' : 'company_address_data_cep';
+                $field = $tipo === 'user' ? 'user_address_data_zip_code' : 'company_address_data_zip_code';
                 $this->addError($field, 'CEP inválido ou não encontrado.');
             }
         } catch (\Exception $e) {
-            $field = $tipo === 'user' ? 'user_address_data_cep' : 'company_address_data_cep';
+            $field = $tipo === 'user' ? 'user_address_data_zip_code' : 'company_address_data_zip_code';
             $this->addError($field, 'Erro ao buscar o CEP.');
         }
     }
@@ -347,7 +347,7 @@ class Register extends Component
     public function updatedCompanyDataCompanySameUserAddress($value)
     {
         if ($value) {
-            $this->company_address_data_cep = $this->user_address_data_cep;
+            $this->company_address_data_zip_code = $this->user_address_data_zip_code;
             $this->company_address_data_building_number = $this->user_address_data_building_number;
             $this->company_address_data_street = $this->user_address_data_street;
             $this->company_address_data_neighborhood = $this->user_address_data_neighborhood;
@@ -358,7 +358,7 @@ class Register extends Component
             $this->totalSteps = 3;
 
         } else {
-            $this->company_address_data_cep = '';
+            $this->company_address_data_zip_code = '';
             $this->company_address_data_building_number = '';
             $this->company_address_data_street = '';
             $this->company_address_data_neighborhood = '';
@@ -375,9 +375,9 @@ class Register extends Component
         $success = true;
 
         $this->user_data_cpf = preg_replace('/\D/', '', $this->user_data_cpf);
-        $this->user_address_data_cep = preg_replace('/\D/', '', $this->user_address_data_cep);
+        $this->user_address_data_zip_code = preg_replace('/\D/', '', $this->user_address_data_zip_code);
         $this->company_data_cnpj = preg_replace('/\D/', '', $this->company_data_cnpj);
-        $this->company_address_data_cep = preg_replace('/\D/', '', $this->company_address_data_cep);
+        $this->company_address_data_zip_code = preg_replace('/\D/', '', $this->company_address_data_zip_code);
 
         $this->validate();
 
