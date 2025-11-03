@@ -58,8 +58,6 @@ class RegisteredClientController extends Controller
                 ARRAY_FILTER_USE_KEY
             );
 
-            $companyData['company_same_user_address'] = $data['company_same_user_address'] ?? false;
-
             $registeredClient = $this->registeredClientService->create([
                 'company' => $this->replaceArrayKeysFragment($companyData, 'company_data_'),
                 'user' => $this->replaceArrayKeysFragment($userData, 'user_data_'),

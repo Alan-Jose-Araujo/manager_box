@@ -44,9 +44,8 @@ class RegisteredClientService
         $userData['phone_number'] = Str::removeNonDigits($userData['phone_number']);
 
         $userAddressData['zip_code'] = Str::removeNonDigits($userAddressData['zip_code']);
-        $companyAddressData['zip_code'] = Str::removeNonDigits($companyAddressData['zip_code']);
 
-        $userSameAddress = (bool) $companyData['company_same_user_address'];
+        $userSameAddress = isset($companyData['company_same_user_address']) && $companyData['company_same_user_address'];
 
         return DB::transaction(function () use ($companyData, $userData, $userAddressData, $companyAddressData, $userSameAddress): RegisteredClientCompositeDto {
             $company = $this->companyService->create($companyData);
@@ -66,6 +65,7 @@ class RegisteredClientService
                 $addressFields['addressable_id'] = $company->id;
                 $companyAddress = $this->addressService->create($addressFields);
             } else {
+                $companyAddressData['zip_code'] = Str::removeNonDigits($companyAddressData['zip_code']);
                 $companyAddressData['addressable_type'] = Company::class;
                 $companyAddressData['addressable_id'] = $company->id;
                 $companyAddress = $this->addressService->create($companyAddressData);
