@@ -376,15 +376,6 @@ class Register extends Component
         }
     }
 
-    public function updatedUserDataBirthDate($value)
-    {
-        if($value && Carbon::parse($value)->greaterThan(Carbon::now())){
-            $this->addError('user_data_birth_date', 'A data de nascimento não pode ser uma data futura.');
-        } else if($value && Carbon::parse($value)->diffInYears(Carbon::now()) < 18){
-            $this->addError('user_data_birth_date', 'Você deve ter pelo menos 18 anos de idade para se registrar.');
-        }
-    }
-
     public function submit()
     {
         $success = true;
