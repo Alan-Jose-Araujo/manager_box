@@ -6,6 +6,7 @@ use Livewire\Component;
 use Livewire\WithFileUploads;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Validate;
+use Carbon\Carbon;
 
 class Register extends Component
 {
@@ -38,7 +39,12 @@ class Register extends Component
     public $user_data_cpf;
 
     public $user_data_phone_number;
+
+    #[Validate('mimetypes:image/jpeg,image/jpg,image/png', message: 'A foto de perfil deve ser um arquivo de imagem do tipo JPEG ou PNG')]
+    #[Validate('max:2048', message: 'A foto de perfil não deve ser maior que 2MB')]
     public $user_data_profile_picture_path;
+
+
     public $user_data_birth_date;
 
 
@@ -367,6 +373,15 @@ class Register extends Component
             $this->company_address_data_complement = '';
 
             $this->totalSteps = 4;
+        }
+    }
+
+    public function updatedUserDataBirthDate($value)
+    {
+        if($value && Carbon::parse($value)->greaterThan(Carbon::now())){
+            $this->addError('user_data_birth_date', 'A data de nascimento não pode ser uma data futura.');
+        } else if($value && Carbon::parse($value)->diffInYears(Carbon::now()) < 18){
+            $this->addError('user_data_birth_date', 'Você deve ter pelo menos 18 anos de idade para se registrar.');
         }
     }
 

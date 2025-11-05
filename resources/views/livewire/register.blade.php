@@ -115,7 +115,7 @@
                         name="company_data_cnpj" />
                     <x-input label="Inscrição Estadual"
                         wire:model.live.debounce.1000ms="company_data_state_registration" required
-                        name="company_data_state_registration" />
+                        name="company_data_state_registration" maxlength="15"/>
 
                     <div class="md:col-span-2">
                         <x-input label="Email de Contato" wire:model.live.debounce.1000ms="company_data_contact_email"
