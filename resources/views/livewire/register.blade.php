@@ -217,7 +217,7 @@
 
         function handleRegisteredClientFormValidationFail(event) {
             Swal.fire({
-                title: 'Error!',
+                title: 'Formulário inválido',
                 text: event.detail.message,
                 icon: 'error',
             });
