@@ -6,7 +6,7 @@ use Livewire\Component;
 use Livewire\WithFileUploads;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Validate;
-use Carbon\Carbon;
+use Illuminate\Validation\Rule;
 
 class Register extends Component
 {
@@ -25,6 +25,7 @@ class Register extends Component
 
     #[Validate('required', message: 'O campo Email é obrigatório')]
     #[Validate('email', message: 'O campo Email deve ser um email válido')]
+    #[Validate('unique:users,email', message: 'Este email já está em uso')]
     public $user_data_email;
 
     #[Validate('required', message: 'A senha é obrigatória')]
@@ -36,6 +37,7 @@ class Register extends Component
     public $user_data_password_confirmation;
 
     #[Validate('required', message: 'O campo CPF é obrigatório')]
+    #[Validate('unique:users,cpf', message: 'Este CPF já está em uso')]
     public $user_data_cpf;
 
     public $user_data_phone_number;
@@ -94,6 +96,7 @@ class Register extends Component
     public $company_data_corporate_name;
 
     #[Validate('required', message: 'O campo CNPJ é obrigatório')]
+    #[Validate('unique:companies,cnpj', message: 'O campo CNPJ já está em uso')]
     public $company_data_cnpj;
 
     #[Validate('required', message: 'O campo Inscrição Estadual é obrigatório')]
@@ -101,10 +104,15 @@ class Register extends Component
 
     #[Validate('nullable')]
     #[Validate('email', message: 'O campo Email de contato deve ser um email válido')]
+    #[Validate('unique:companies,contact_email', message: 'Este email de contato já está em uso')]
     public $company_data_contact_email;
 
     public $company_data_phone_number;
     public $company_data_landline_number;
+
+    #[Validate('nullable')]
+    #[Validate('mimetypes:image/jpeg,image/jpg,image/png', message: 'A foto de logomarca deve ser um arquivo de imagem do tipo JPEG ou PNG')]
+    #[Validate('max:2048', message: 'A foto de logomarca não deve ser maior que 2MB')]
     public $company_data_logo_picture_path;
     public $company_data_foundation_date;
     public $company_data_company_same_user_address = false;
@@ -159,6 +167,9 @@ class Register extends Component
                 'user_data_password' => 'required|min:8',
                 'user_data_password_confirmation' => 'required|same:user_data_password',
                 'user_data_cpf' => 'required',
+                'user_data_birth_date' => ['required', 'date', Rule::date()->beforeOrEqual(today()->subYears(18))]
+            ], [
+                'user_data_birth_date.before_or_equal' => 'Você deve ter pelo menos 18 anos de idade.'
             ]),
             2 => $this->validate([
                 'user_address_data_zip_code' => 'required|min:8',
