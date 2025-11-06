@@ -99,7 +99,7 @@ class Register extends Component
     #[Validate('required', message: 'O campo Inscrição Estadual é obrigatório')]
     public $company_data_state_registration;
 
-    #[Validate('required', message: 'O campo Email de contato é obrigatório')]
+    #[Validate('nullable')]
     #[Validate('email', message: 'O campo Email de contato deve ser um email válido')]
     public $company_data_contact_email;
 
