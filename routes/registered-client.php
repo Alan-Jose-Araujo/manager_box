@@ -15,7 +15,6 @@ use Spatie\Permission\Middleware\RoleMiddleware;
 Route::prefix('client')
     ->group(function () {
 
-
         /**
          * Url: client/register
          * HTTP Method: GET

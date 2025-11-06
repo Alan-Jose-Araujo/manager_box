@@ -8,7 +8,7 @@
     </div>
 
     <div class="mt-10 md:mt-auto text-center">
-        <p class="text-gray-700">Já possui uma conta?</p>
+        <p class="text-gray-700"> {{ $infoText }}</p>
         <a href="{{ $buttonLink }}" class="text-green-700 font-semibold hover:underline">
             {{ $buttonText }}
         </a>

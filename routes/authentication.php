@@ -5,9 +5,18 @@
  */
 
 use App\Http\Controllers\AuthController;
+use App\Livewire\LoginPage;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('auth')->group(function () {
+
+    /**
+     * Url: auth/login
+     * HTTP Method: GET
+     * Component: LoinPage
+     * Name: auth.show_login_form
+     */
+    Route::get('/login', LoginPage::class)->name('auth.show_login_form');
 
     /**
      * Url: auth/login
@@ -33,7 +42,7 @@ Route::prefix('auth')->group(function () {
         ->middleware('custom.auth')
         ->name('auth.logout');
 
-    Route::get('/test', function() {
+    Route::get('/test', function () {
         echo auth()->user()->name;
     })->middleware('custom.auth');
 });
