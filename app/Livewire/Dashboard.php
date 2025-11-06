@@ -3,75 +3,89 @@
 namespace App\Livewire;
 
 use Livewire\Component;
+use Illuminate\Support\Collection;
 
 class Dashboard extends Component
 {
-    // Propriedades para dados simples
-    public string $rotatividadeEstoque = '70 itens esta semana';
-    public int $totalItens = 527;
-    public int $totalCategorias = 35;
-    public string $valorEstoque = 'R$597.6K';
-
-    // Propriedade obrigatória para o Chart.js no Mary UI
-    public array $chartEntradasSaidas = [];
-    public array $chartItensCategoria = [];
-    public array $chartPrecoMedio = [];
-
-    // Propriedades para dados do dashboard
-    public array $produtosSemRotatividade = [
-        ['nome' => 'Combo Gamer Pichau Netuno', 'dias' => 7],
-        ['nome' => 'Cadeira Gamer TGT Heron TC2', 'dias' => 5],
-    ];
-
-    public function mount()
-    {
-        // 1. Configuração do Gráfico de Linhas (Entradas e Saídas)
-        $this->chartEntradasSaidas = [
-            'type' => 'line',
-            'data' => [
-                'labels' => ['Janeiro', 'Fevereiro', 'Março', 'Abril'],
-                'datasets' => [
-                    ['label' => 'Entradas', 'data' => [28, 20, 29, 25], 'borderColor' => '#8b5cf6', 'tension' => 0.3], // Roxo
-                    ['label' => 'Saídas', 'data' => [30, 24, 27, 15], 'borderColor' => '#f87171', 'tension' => 0.3], // Vermelho
-                    ['label' => 'Devoluções', 'data' => [5, 9, 4, 11], 'borderColor' => '#06b6d4', 'tension' => 0.3], // Ciano
-                ],
-            ],
-            'options' => [
-                'plugins' => ['legend' => ['display' => false]], // Oculta a legenda do topo do gráfico
-            ]
-        ];
-
-        // 2. Configuração do Gráfico de Pizza (Itens por Categoria)
-        $this->chartItensCategoria = [
-            'type' => 'pie',
-            'data' => [
-                'labels' => ['Gabinetes', 'Placas de vídeo', 'Processadores', 'Placas mãe'],
-                'datasets' => [
-                    ['data' => [150, 182, 300, 74], 'backgroundColor' => ['#8b5cf6', '#f87171', '#06b6d4', '#fb923c']],
-                ],
-            ],
-        ];
-
-        // 3. Configuração do Gráfico de Barras (Preço Médio)
-        $this->chartPrecoMedio = [
-            'type' => 'bar',
-            'data' => [
-                'labels' => ['Gabinetes', 'Placas de vídeo', 'Processadores', 'Placas mãe'],
-                'datasets' => [
-                    ['label' => 'Preço Médio (R$)', 'data' => [4000, 10000, 8000, 6000], 'backgroundColor' => '#8b5cf6'],
-                ],
-            ],
-            'options' => [
-                'scales' => [
-                    'y' => ['beginAtZero' => true],
-                ],
-            ],
-        ];
-    }
 
     public function render()
     {
-        // Certifique-se de que o arquivo Blade está em resources/views/livewire/dashboard.blade.php
-        return view('livewire.dashboard');
+
+        $dbProdutos = [
+            ['nome' => 'Gabinete Gamer DarkFlash', 'janeiro' => 30, 'fevereiro' => 25, 'marco' => 30, 'abril' => 20],
+            ['nome' => 'Placa de Vídeo RTX 4090', 'janeiro' => 20, 'fevereiro' => 18, 'marco' => 24, 'abril' => 15],
+            ['nome' => 'Processador Intel Core i3-13100F', 'janeiro' => 5, 'fevereiro' => 10, 'marco' => 12, 'abril' => 10],
+            ['nome' => 'Placa Mãe Pichau Danuri B550M-PX', 'janeiro' => 2, 'fevereiro' => 5, 'marco' => 8, 'abril' => 10],
+        ];
+
+        $dbItensPorCategoria = [
+            'Gabinetes' => 150,
+            'Placas de vídeo' => 162,
+            'Processadores' => 300,
+            'Placas mãe' => 74,
+        ];
+
+        $dbPrecoMedio = [
+            'Gabinetes' => 4000,
+            'Placas de vídeo' => 10000,
+            'Processadores' => 6000,
+            'Placas mãe' => 5000,
+        ];
+
+        $dbMetricas = [
+            'rotatividade' => '70 itens esta semana',
+            'total_itens' => 527,
+            'total_categorias' => 35,
+            'valor_estoque' => 'R$597.6K',
+            'saidas_mes' => 62,
+        ];
+
+        $dbProdutosParados = [
+            ['nome' => 'Combo Gamer', 'dias' => 7],
+            ['nome' => 'Cadeira Gamer', 'dias' => 5],
+            ['nome' => 'TGT Heron TC2', 'dias' => 3],
+        ];
+
+
+        $labelsProdutos = collect($dbProdutos)->pluck('nome')->toArray();
+        $meses = ['janeiro', 'fevereiro', 'marco', 'abril'];
+        $cores = ['#EC4899', '#F59E0B', '#6366F1', '#34D399'];
+
+        $entradasSaidasData = [
+            'labels' => $labelsProdutos,
+            'datasets' => array_map(function ($mes, $index) use ($dbProdutos, $cores) {
+                return [
+                    'label' => ucfirst($mes),
+                    'data' => collect($dbProdutos)->pluck($mes)->toArray(),
+                    'borderColor' => $cores[$index % count($cores)],
+                ];
+            }, $meses, array_keys($meses)),
+        ];
+
+        $itensCategoriaData = [
+            'labels' => array_keys($dbItensPorCategoria),
+            'data' => array_values($dbItensPorCategoria),
+        ];
+
+        $precoMedioData = [
+            'labels' => array_keys($dbPrecoMedio),
+            'data' => array_values($dbPrecoMedio),
+        ];
+
+        $produtosParadosData = [
+            'labels' => collect($dbProdutosParados)->pluck('nome')->toArray(),
+            'data' => collect($dbProdutosParados)->pluck('dias')->toArray(),
+        ];
+
+        $metricas = array_merge($dbMetricas, [
+            'produtos_parados' => $produtosParadosData,
+        ]);
+
+        return view('livewire.dashboard', [
+            'entradasSaidasData' => $entradasSaidasData,
+            'itensCategoriaData' => $itensCategoriaData,
+            'precoMedioData' => $precoMedioData,
+            'metricas' => $metricas,
+        ]);
     }
 }
