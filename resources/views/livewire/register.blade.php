@@ -36,8 +36,8 @@
             x-on:registered-client-form-validation-success.window="handleRegisteredClientFormValidationSuccess($event)"
             x-on:registered-client-form-validation-fail.window="handleRegisteredClientFormValidationFail($event)">
 
-            <x-form method="POST" action="{{ route('client.register') }}" wire:submit.prevent="submit"
-                class="space-y-4" id="client-registration-form" enctype="multipart/form-data">
+            <x-form method="POST" action="{{ route('client.register') }}" wire:submit.prevent="submit" class="space-y-4"
+                id="client-registration-form" enctype="multipart/form-data">
                 @csrf
                 {{-- Etapa 1: Dados Pessoais --}}
                 <div class="{{ $step === 1 ? 'grid grid-cols-1 md:grid-cols-2 gap-4' : 'hidden' }}">
@@ -115,7 +115,7 @@
                         name="company_data_cnpj" />
                     <x-input label="Inscrição Estadual"
                         wire:model.live.debounce.1000ms="company_data_state_registration" required
-                        name="company_data_state_registration" maxlength="15"/>
+                        name="company_data_state_registration" maxlength="15" />
 
                     <div class="md:col-span-2">
                         <x-input label="Email de Contato" wire:model.live.debounce.1000ms="company_data_contact_email"
@@ -141,8 +141,9 @@
                 {{-- Etapa 4: Endereço da empresa --}}
                 <div
                     class="{{ $step === 4 && !$company_data_company_same_user_address ? 'grid grid-cols-1 md:grid-cols-2 gap-4' : 'hidden' }}">
-                    <x-input label="CEP" x-mask="99999-999" wire:model.live.debounce.1000ms="company_address_data_zip_code"
-                        inputmode="numeric" required name="company_address_data_zip_code" />
+                    <x-input label="CEP" x-mask="99999-999"
+                        wire:model.live.debounce.1000ms="company_address_data_zip_code" inputmode="numeric" required
+                        name="company_address_data_zip_code" />
                     <x-input label="Número" wire:model.live.debounce.1000ms="company_address_data_building_number"
                         inputmode="numeric" maxlength="5"
                         oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 5)" required
@@ -187,17 +188,17 @@
                 {{-- Botões --}}
                 <div class="flex flex-col sm:flex-row sm:justify-end mt-6 gap-2">
                     @if ($step > 1)
-                        <x-button wire:click="prevStep" class="order-2 sm:order-1" type="button">
+                        <x-button wire:click="prevStep" wire:loading.attr="disabled" class="order-2 sm:order-1" type="button">
                             Voltar
                         </x-button>
                     @endif
 
                     @if ($step < $totalSteps)
-                        <x-button wire:click="nextStep" type="button" class="btn-success order-1 sm:order-2">
+                        <x-button wire:click="nextStep" wire:loading.attr="disabled" type="button" class="btn-success order-1 sm:order-2">
                             Avançar
                         </x-button>
                     @else
-                        <x-button type="submit" class="btn-success order-1 sm:order-2">
+                        <x-button type="submit" wire:loading.attr="disabled" class="btn-success order-1 sm:order-2">
                             Enviar
                         </x-button>
                     @endif
@@ -215,7 +216,11 @@
         }
 
         function handleRegisteredClientFormValidationFail(event) {
-            console.log(event)
+            Swal.fire({
+                title: 'Error!',
+                text: event.detail.message,
+                icon: 'error',
+            });
         }
 
     </script>
