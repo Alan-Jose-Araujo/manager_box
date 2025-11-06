@@ -12,7 +12,8 @@ class Register extends Component
 {
     use WithFileUploads;
 
-    #[Layout('components.layouts.register')]
+    // #[Layout('components.layouts.register')]
+    #[Layout('components.layouts.auth-layout')]
 
     public $step = 1;
     public $totalSteps = 4;
