@@ -59,7 +59,7 @@
                     <x-input label="Foto de perfil" type="file" wire:model="user_data_profile_picture_path"
                         name="user_data_profile_picture_path" accept="image/jpeg,image/jpg,image/png" />
                     <x-input label="Data de nascimento" type="date" wire:model="user_data_birth_date" required
-                        name="user_data_birth_date" />
+                        name="user_data_birth_date" min="1900-01-01" max="{{ date('Y-m-d') }}"/>
                 </div>
 
                 {{-- Etapa 2: Endereço pessoal --}}
@@ -88,7 +88,7 @@
                         name="user_address_data_city" />
                     <x-input label="Estado" wire:model.live.debounce.1000ms="user_address_data_state"
                         oninput="this.value = this.value.replace(/[^a-zA-ZÀ-ÿ\s'-]/g, '')" required
-                        name="user_address_data_state" />
+                        name="user_address_data_state" maxlength="2" />
 
                     <div class="md:col-span-2">
                         <x-input label="Complemento" wire:model="user_address_data_complement" class="h-14"
@@ -131,7 +131,7 @@
                     <x-input label="Logomarca" type="file" wire:model="company_data_logo_picture_path"
                         name="company_data_logo_picture_path" accept="image/jpeg,image/jpg,image/png" />
                     <x-input label="Data de Fundação" type="date" wire:model="company_data_foundation_date"
-                        name="company_data_foundation_date" />
+                        name="company_data_foundation_date" min="1800-01-01" max="{{ date('Y-m-d') }}"/>
 
                     <x-checkbox label="O endereço da empresa é o mesmo no qual resido."
                         wire:model.live="company_data_company_same_user_address"
@@ -166,7 +166,7 @@
                         name="company_address_data_city" />
                     <x-input label="Estado" wire:model.live.debounce.1000ms="company_address_data_state"
                         oninput="this.value = this.value.replace(/[^a-zA-ZÀ-ÿ\s'-]/g, '')" required
-                        name="company_address_data_state" />
+                        name="company_address_data_state" maxlength="2"/>
 
                     <div class="md:col-span-2">
                         <x-input label="Complemento" wire:model="company_address_data_complement" class="h-14"
