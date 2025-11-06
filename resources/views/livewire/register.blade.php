@@ -37,7 +37,7 @@
             x-on:registered-client-form-validation-fail.window="handleRegisteredClientFormValidationFail($event)">
 
             <x-form method="POST" action="{{ route('client.register') }}" wire:submit.prevent="submit" class="space-y-4"
-                id="client-registration-form" enctype="multipart/form-data">
+                id="client-registration-form" enctype="multipart/form-data" novalidate>
                 @csrf
                 {{-- Etapa 1: Dados Pessoais --}}
                 <div class="{{ $step === 1 ? 'grid grid-cols-1 md:grid-cols-2 gap-4' : 'hidden' }}">
