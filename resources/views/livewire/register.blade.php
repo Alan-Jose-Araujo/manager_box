@@ -48,10 +48,10 @@
                     <x-input label="Endereço de email" type="email" wire:model.live.debounce.1000ms="user_data_email"
                         required name="user_data_email" />
                     <x-password label="Senha" wire:model.live.debounce.1000ms="user_data_password" required
-                        name="user_data_password" />
+                        name="user_data_password" maxlength="255"/>
                     <x-password label="Confirmação de senha"
                         wire:model.live.debounce.1000ms="user_data_password_confirmation" required
-                        name="user_data_password_confirmation" />
+                        name="user_data_password_confirmation" maxlength="255"/>
                     <x-input label="CPF" x-mask="999.999.999-99" wire:model.live.debounce.1000ms="user_data_cpf"
                         inputmode="numeric" required name="user_data_cpf" />
                     <x-input label="Número de celular" x-mask="(99) 99999-9999" wire:model="user_data_phone_number"
