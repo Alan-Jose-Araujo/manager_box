@@ -58,7 +58,7 @@
                         inputmode="numeric" name="user_data_phone_number" />
                     <x-input label="Foto de perfil" type="file" wire:model="user_data_profile_picture_path"
                         name="user_data_profile_picture_path" accept="image/jpeg,image/jpg,image/png" />
-                    <x-input label="Data de nascimento" type="date" wire:model="user_data_birth_date"
+                    <x-input label="Data de nascimento" type="date" wire:model="user_data_birth_date" required
                         name="user_data_birth_date" />
                 </div>
 
@@ -119,7 +119,7 @@
 
                     <div class="md:col-span-2">
                         <x-input label="Email de Contato" wire:model.live.debounce.1000ms="company_data_contact_email"
-                            required name="company_data_contact_email" />
+                            name="company_data_contact_email" />
                     </div>
 
                     <x-input label="Número de Celular" x-mask="(99) 99999-9999" wire:model="company_data_phone_number"
