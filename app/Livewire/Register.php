@@ -40,6 +40,7 @@ class Register extends Component
 
     public $user_data_phone_number;
 
+    #[Validate('nullable')]
     #[Validate('mimetypes:image/jpeg,image/jpg,image/png', message: 'A foto de perfil deve ser um arquivo de imagem do tipo JPEG ou PNG')]
     #[Validate('max:2048', message: 'A foto de perfil não deve ser maior que 2MB')]
     public $user_data_profile_picture_path;
