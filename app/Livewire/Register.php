@@ -77,7 +77,7 @@ class Register extends Component
     public $user_address_data_city;
 
     #[Validate('required', message: 'O campo Estado é obrigatório')]
-    #[Validate('min:2', message: 'O campo Estado deve ter no mínimo 2 caracteres')]
+    #[Validate('size:2', message: 'O campo Estado deve ter no exatamente 2 caracteres')]
     #[Validate('regex:/^[a-zA-ZÀ-ÿ\s\'-]+$/', message: 'O campo Estado deve conter apenas letras e espaços')]
     public $user_address_data_state;
 
@@ -144,7 +144,7 @@ class Register extends Component
     public $company_address_data_city;
 
     #[Validate('required', message: 'O campo Estado é obrigatório')]
-    #[Validate('min:2', message: 'O campo Estado deve ter no mínimo 2 caracteres')]
+    #[Validate('size:2', message: 'O campo Estado deve ter no exatamente 2 caracteres')]
     #[Validate('regex:/^[a-zA-ZÀ-ÿ\s\'-]+$/', message: 'O campo Estado deve conter apenas letras e espaços')]
     public $company_address_data_state;
 
@@ -177,7 +177,7 @@ class Register extends Component
                 'user_address_data_street' => 'required|min:3|regex:/^[a-zA-ZÀ-ÿ0-9\s.,\'-]+$/',
                 'user_address_data_neighborhood' => 'required|min:3|regex:/^[a-zA-ZÀ-ÿ\s\'-]+$/',
                 'user_address_data_city' => 'required|min:3|regex:/^[a-zA-ZÀ-ÿ\s\'-]+$/',
-                'user_address_data_state' => 'required|min:2|regex:/^[a-zA-ZÀ-ÿ\s\'-]+$/',
+                'user_address_data_state' => 'required|size:2|regex:/^[a-zA-ZÀ-ÿ\s\'-]+$/',
             ]),
             3 => $this->validate([
                 'company_data_fantasy_name' => 'required|min:3|regex:/^[a-zA-ZÀ-ÿ0-9\s\'\-\.,&\/]+$/',
@@ -192,7 +192,7 @@ class Register extends Component
                 'company_address_data_street' => 'required|min:3|regex:/^[a-zA-ZÀ-ÿ0-9\s.,\'-]+$/',
                 'company_address_data_neighborhood' => 'required|min:3|regex:/^[a-zA-ZÀ-ÿ\s\'-]+$/',
                 'company_address_data_city' => 'required|min:3|regex:/^[a-zA-ZÀ-ÿ\s\'-]+$/',
-                'company_address_data_state' => 'required|min:2|regex:/^[a-zA-ZÀ-ÿ\s\'-]+$/',
+                'company_address_data_state' => 'required|size:2|regex:/^[a-zA-ZÀ-ÿ\s\'-]+$/',
             ]),
             default => null,
         };
