@@ -12,18 +12,23 @@ class LoginPage extends Component
 
     #[Validate('required', message: 'O campo Email é obrigatório')]
     #[Validate('email', message: 'O campo Email deve ser um email válido')]
-    #[Validate('exists:users,email', message: 'O email informado não está cadastrado')]
     public $user_data_email;
 
     #[Validate('required', message: 'A senha é obrigatória')]
     #[Validate('min:8', message: 'A senha deve ter no mínimo 8 caracteres')]
     public $user_data_password;
 
+    #[Validate('boolean')]
+    public $user_data_remember = false;
+
     public function submit()
     {
-        $this->validate();
+        $this->validate([
+            'user_data_email' => 'required|email|max:255|exists:users,email',
+            'user_data_password' => 'required|min:8|max:255',
+        ]);
 
-        if(!$this->getErrorBag()->isEmpty()) {
+        if ($this->getErrorBag()->isEmpty()) {
             $this->dispatch('auth-login-form-validation-success', [
                 'success' => true,
                 'message' => 'Formulário validado com sucesso.'

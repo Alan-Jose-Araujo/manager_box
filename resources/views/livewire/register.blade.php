@@ -41,18 +41,18 @@
                 @csrf
                 {{-- Etapa 1: Dados Pessoais --}}
                 <div class="{{ $step === 1 ? 'grid grid-cols-1 md:grid-cols-2 gap-4' : 'hidden' }}">
-                    <x-input label="Nome Completo" wire:model.live.debounce.1000ms="user_data_name"
+                    <x-input label="Nome Completo" wire:model.live.debounce.500ms="user_data_name"
                         placeholder="Seu nome" icon="o-user"
                         oninput="this.value = this.value.replace(/[^a-zA-ZÀ-ÿ\s']/g, '')" required
                         name="user_data_name" />
-                    <x-input label="Endereço de email" type="email" wire:model.live.debounce.1000ms="user_data_email"
+                    <x-input label="Endereço de email" type="email" wire:model.live.debounce.500ms="user_data_email"
                         required name="user_data_email" />
-                    <x-password label="Senha" wire:model.live.debounce.1000ms="user_data_password" required
+                    <x-password label="Senha" wire:model.live.debounce.500ms="user_data_password" required
                         name="user_data_password" maxlength="255"/>
                     <x-password label="Confirmação de senha"
-                        wire:model.live.debounce.1000ms="user_data_password_confirmation" required
+                        wire:model.live.debounce.500ms="user_data_password_confirmation" required
                         name="user_data_password_confirmation" maxlength="255"/>
-                    <x-input label="CPF" x-mask="999.999.999-99" wire:model.live.debounce.1000ms="user_data_cpf"
+                    <x-input label="CPF" x-mask="999.999.999-99" wire:model.live.debounce.500ms="user_data_cpf"
                         inputmode="numeric" required name="user_data_cpf" />
                     <x-input label="Número de celular" x-mask="(99) 99999-9999" wire:model="user_data_phone_number"
                         inputmode="numeric" name="user_data_phone_number" />
@@ -64,29 +64,29 @@
 
                 {{-- Etapa 2: Endereço pessoal --}}
                 <div class="{{ $step === 2 ? 'grid grid-cols-1 md:grid-cols-2 gap-4' : 'hidden' }}">
-                    <x-input label="CEP" x-mask="99999-999" wire:model.live.debounce.1000ms="user_address_data_zip_code"
+                    <x-input label="CEP" x-mask="99999-999" wire:model.live.debounce.500ms="user_address_data_zip_code"
                         inputmode="numeric" required name="user_address_data_zip_code" />
-                    <x-input label="Número" wire:model.live.debounce.1000ms="user_address_data_building_number"
+                    <x-input label="Número" wire:model.live.debounce.500ms="user_address_data_building_number"
                         inputmode="numeric" maxlength="5"
                         oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 5)" required
                         name="user_address_data_building_number" />
 
                     <div class="md:col-span-2">
-                        <x-input label="Rua" wire:model.live.debounce.1000ms="user_address_data_street"
+                        <x-input label="Rua" wire:model.live.debounce.500ms="user_address_data_street"
                             oninput="this.value = this.value.replace(/[^a-zA-ZÀ-ÿ0-9\s,.'-]/g, '')" required
                             name="user_address_data_street" />
                     </div>
 
                     <div class="md:col-span-2">
-                        <x-input label="Bairro" wire:model.live.debounce.1000ms="user_address_data_neighborhood"
+                        <x-input label="Bairro" wire:model.live.debounce.500ms="user_address_data_neighborhood"
                             oninput="this.value = this.value.replace(/[^a-zA-ZÀ-ÿ0-9\s'-]/g, '')" required
                             name="user_address_data_neighborhood" />
                     </div>
 
-                    <x-input label="Cidade" wire:model.live.debounce.1000ms="user_address_data_city"
+                    <x-input label="Cidade" wire:model.live.debounce.500ms="user_address_data_city"
                         oninput="this.value = this.value.replace(/[^a-zA-ZÀ-ÿ\s'-]/g, '')" required
                         name="user_address_data_city" />
-                    <x-input label="Estado" wire:model.live.debounce.1000ms="user_address_data_state"
+                    <x-input label="Estado" wire:model.live.debounce.500ms="user_address_data_state"
                         oninput="this.value = this.value.replace(/[^a-zA-ZÀ-ÿ\s'-]/g, '')" required
                         name="user_address_data_state" maxlength="2" />
 
@@ -99,26 +99,26 @@
                 {{-- Etapa 3: Dados da Empresa --}}
                 <div class="{{ $step === 3 ? 'grid grid-cols-1 md:grid-cols-2 gap-4' : 'hidden' }}">
                     <div class="md:col-span-2">
-                        <x-input label="Nome Fantasia" wire:model.live.debounce.1000ms="company_data_fantasy_name"
+                        <x-input label="Nome Fantasia" wire:model.live.debounce.500ms="company_data_fantasy_name"
                             oninput="this.value = this.value.replace(/[^a-zA-ZÀ-ÿ0-9\s&'-.,/]/g, '')" required
                             name="company_data_fantasy_name" />
                     </div>
 
                     <div class="md:col-span-2">
-                        <x-input label="Razão Social" wire:model.live.debounce.1000ms="company_data_corporate_name"
+                        <x-input label="Razão Social" wire:model.live.debounce.500ms="company_data_corporate_name"
                             oninput="this.value = this.value.replace(/[^a-zA-ZÀ-ÿ0-9\s.,&'-/]/g, '')" required
                             name="company_data_corporate_name" />
                     </div>
 
                     <x-input label="CNPJ" x-mask="99.999.999/9999-99"
-                        wire:model.live.debounce.1000ms="company_data_cnpj" inputmode="numeric" required
+                        wire:model.live.debounce.500ms="company_data_cnpj" inputmode="numeric" required
                         name="company_data_cnpj" />
                     <x-input label="Inscrição Estadual"
-                        wire:model.live.debounce.1000ms="company_data_state_registration" required
+                        wire:model.live.debounce.500ms="company_data_state_registration" required
                         name="company_data_state_registration" maxlength="15" />
 
                     <div class="md:col-span-2">
-                        <x-input label="Email de Contato" wire:model.live.debounce.1000ms="company_data_contact_email"
+                        <x-input label="Email de Contato" wire:model.live.debounce.500ms="company_data_contact_email"
                             name="company_data_contact_email" />
                     </div>
 
@@ -142,29 +142,29 @@
                 <div
                     class="{{ $step === 4 && !$company_data_company_same_user_address ? 'grid grid-cols-1 md:grid-cols-2 gap-4' : 'hidden' }}">
                     <x-input label="CEP" x-mask="99999-999"
-                        wire:model.live.debounce.1000ms="company_address_data_zip_code" inputmode="numeric" required
+                        wire:model.live.debounce.500ms="company_address_data_zip_code" inputmode="numeric" required
                         name="company_address_data_zip_code" />
-                    <x-input label="Número" wire:model.live.debounce.1000ms="company_address_data_building_number"
+                    <x-input label="Número" wire:model.live.debounce.500ms="company_address_data_building_number"
                         inputmode="numeric" maxlength="5"
                         oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 5)" required
                         name="company_address_data_building_number" />
 
                     <div class="md:col-span-2">
-                        <x-input label="Rua" wire:model.live.debounce.1000ms="company_address_data_street"
+                        <x-input label="Rua" wire:model.live.debounce.500ms="company_address_data_street"
                             oninput="this.value = this.value.replace(/[^a-zA-ZÀ-ÿ0-9\s,.'-]/g, '')" required
                             name="company_address_data_street" />
                     </div>
 
                     <div class="md:col-span-2">
-                        <x-input label="Bairro" wire:model.live.debounce.1000ms="company_address_data_neighborhood"
+                        <x-input label="Bairro" wire:model.live.debounce.500ms="company_address_data_neighborhood"
                             oninput="this.value = this.value.replace(/[^a-zA-ZÀ-ÿ0-9\s'-]/g, '')" required
                             name="company_address_data_neighborhood" />
                     </div>
 
-                    <x-input label="Cidade" wire:model.live.debounce.1000ms="company_address_data_city"
+                    <x-input label="Cidade" wire:model.live.debounce.500ms="company_address_data_city"
                         oninput="this.value = this.value.replace(/[^a-zA-ZÀ-ÿ\s'-]/g, '')" required
                         name="company_address_data_city" />
-                    <x-input label="Estado" wire:model.live.debounce.1000ms="company_address_data_state"
+                    <x-input label="Estado" wire:model.live.debounce.500ms="company_address_data_state"
                         oninput="this.value = this.value.replace(/[^a-zA-ZÀ-ÿ\s'-]/g, '')" required
                         name="company_address_data_state" maxlength="2"/>
 

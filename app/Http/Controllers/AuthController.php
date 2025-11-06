@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Auth\LoginRequest;
 use App\Services\AuthService;
 use Exception;
 use Illuminate\Http\Request;
-use Log;
+use Illuminate\Support\Facades\Log;
 
 // TODO: Return appropriate redirects.
 class AuthController extends Controller
@@ -18,7 +17,7 @@ class AuthController extends Controller
         $this->authService = new AuthService();
     }
 
-    public function login(LoginRequest $request)
+    public function login(Request $request)
     {
         try {
             $credentials = $request->only([
@@ -30,10 +29,9 @@ class AuthController extends Controller
             $result = $this->authService->attemptToAuthenticate($credentials, $remember);
 
             if (!$result) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Invalid credentials',
-                ], 401);
+                return redirect()->back()->withErrors([
+                    'authetication' => 'Credenciais inválidas.',
+                ])->withInput($request->except('password'));
             }
 
             $request->session()->regenerate();

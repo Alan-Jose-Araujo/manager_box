@@ -1,10 +1,7 @@
 <div class="min-h-screen flex flex-col md:flex-row">
     {{-- Lado esquerdo --}}
-    <livewire:side-panel
-        infoText="Ainda não possui uma conta?"
-        buttonText="Cadastre-se agora mesmo"
-        buttonLink="/register"
-    />
+    <livewire:side-panel infoText="Ainda não possui uma conta?" buttonText="Cadastre-se agora mesmo"
+        buttonLink="{{ route('client.show_register_form') }}" />
 
     {{-- Lado direito --}}
     <div class="w-full md:w-2/3 lg:w-3/4 p-6 sm:p-8 md:p-10 flex flex-col justify-center items-center">
@@ -19,19 +16,41 @@
                 Insira suas credenciais no formulário para entrar.
             </p>
 
-            <x-form wire:submit.prevent="submit" class="space-y-4">
-                <x-input label="Endereço de email" type="email" wire:model.live.debounce.1000ms="user_data_email" required />
-                <x-password label="Senha" wire:model.live.debounce.1000ms="user_data_password" required />
-                <div class="flex items-center justify-between">
-                    <x-checkbox label="Mantenha-me conectado." wire:model="remember" />
+            <div x-data x-on:auth-login-form-validation-success.window="handleAuthLoginFormValidationSuccess($event)"
+                x-on:auth-login-form-validation-fail.window="handlAuthLoginFormValidationFail($event)">
 
-                    <a href="{{ '/' }}" class="text-green-700 font-semibold hover:underline">
-                        Esqueceu sua senha?
-                    </a>
-                </div>
+                <x-form wire:submit.prevent="submit" method="POST" action="{{ route('auth.login') }}"
+                    class="space-y-4" id="authentication-form" enctype="multipart/form-data" novalidate>
+                    @csrf
+                    <x-input label="Endereço de email" type="email" wire:model.live.debounce.500ms="user_data_email"
+                        required name="email" maxlength="255"/>
+                    <x-password label="Senha" wire:model.live.debounce.500ms="user_data_password" required name="password" maxlength="255"/>
+                    <div class="flex items-center justify-between">
+                        <x-checkbox label="Mantenha-me conectado." wire:model="user_data_remember" name="remember" value="true"/>
 
-                <x-button class=" bg-green-700 hover:bg-green-800 text-white font-semibold">Entrar</x-button>
-            </x-form>
+                        <a href="{{ '/' }}" class="text-green-700 font-semibold hover:underline">
+                            Esqueceu sua senha?
+                        </a>
+                    </div>
+
+                    <x-button type="submit" class=" bg-green-700 hover:bg-green-800 text-white font-semibold">Entrar</x-button>
+                </x-form>
+
+            </div>
         </x-card>
     </div>
+
+    <script>
+
+        function handleAuthLoginFormValidationSuccess(event) {
+            document.getElementById('authentication-form').submit();
+        }
+
+        function handlAuthLoginFormValidationFail(event) {
+            // Lógica para lidar com o sucesso da validação do formulário de login
+            console.log('Validação mal-sucedida:', event.detail);
+        }
+
+    </script>
+
 </div>
