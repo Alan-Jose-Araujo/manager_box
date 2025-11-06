@@ -12,6 +12,7 @@ class LoginPage extends Component
 
     #[Validate('required', message: 'O campo Email é obrigatório')]
     #[Validate('email', message: 'O campo Email deve ser um email válido')]
+    #[Validate('exists:users,email', message: 'O email informado não está cadastrado')]
     public $user_data_email;
 
     #[Validate('required', message: 'A senha é obrigatória')]
@@ -22,6 +23,17 @@ class LoginPage extends Component
     {
         $this->validate();
 
+        if(!$this->getErrorBag()->isEmpty()) {
+            $this->dispatch('auth-login-form-validation-success', [
+                'success' => true,
+                'message' => 'Formulário validado com sucesso.'
+            ]);
+        } else {
+            $this->dispatch('auth-login-form-validation-fail', [
+                'success' => false,
+                'message' => 'Erros encontrados no formulário. Verifique os campos destacados.'
+            ]);
+        }
     }
 
     public function render()
