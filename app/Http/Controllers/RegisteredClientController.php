@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Dtos\Composite\RegisteredClientCompositeDto;
+use App\Jobs\CreateCompanyDefaultWarehouseJob;
 use App\Jobs\DisableRegisteredClientJob;
 use App\Services\AuthService;
 use App\Services\CompanyService;
@@ -64,6 +65,8 @@ class RegisteredClientController extends Controller
                 'user_address' => $this->replaceArrayKeysFragment($userAddressData, 'user_address_data_'),
                 'company_address' => $this->replaceArrayKeysFragment($companyAddressData, 'company_address_data_'),
             ]);
+
+            CreateCompanyDefaultWarehouseJob::dispatch($registeredClient);
 
             if ($registeredClient instanceof RegisteredClientCompositeDto) {
 
