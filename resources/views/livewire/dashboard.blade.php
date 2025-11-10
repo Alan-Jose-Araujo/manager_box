@@ -102,12 +102,11 @@
 
 {{-- Backend Data Injection (Using Js::from() to avoid editor parsing errors)) --}}
 <script>
-    window.entradasSaidasData = // {!! Js::from($entradasSaidasData) !!};
-    window.itensCategoriaData = // {!! Js::from($itensCategoriaData) !!};
-    window.precoMedioData = // {!! Js::from($precoMedioData) !!};
-    window.metricasData = // {!! Js::from($metricas) !!};
+    window.entradasSaidasData = @json($entradasSaidasData);
+    window.itensCategoriaData = @json($itensCategoriaData);
+    window.precoMedioData = @json($precoMedioData);
+    window.metricasData = @json($metricas);
 </script>
-
 <script>
 document.addEventListener("DOMContentLoaded", function() {
 
