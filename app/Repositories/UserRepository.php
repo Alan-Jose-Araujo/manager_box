@@ -2,11 +2,40 @@
 
 namespace App\Repositories;
 
+use App\Interfaces\Interfaces\FilteredIndexer;
 use App\Models\User;
+use Illuminate\Pagination\LengthAwarePaginator;
 use LogicException;
 
-class UserRepository
+class UserRepository implements FilteredIndexer
 {
+
+    /**
+     * @param mixed $query
+     * @param array<string, mixed> $filters ['column' => ['operator', 'value']]
+     * @return mixed
+     */
+    private function applyFilters(&$query, array $filters)
+    {
+        if(!empty($filters)) {
+            foreach($filters as $column => $searchValues) {
+                $query->where($column, $searchValues['operator'], $searchValues['value']);
+            }
+        }
+    }
+
+    /**
+     * @param array $filters
+     * @param int $perPage
+     * @return LengthAwarePaginator
+     */
+    public function paginate(array $filters = [], int $perPage = 15): LengthAwarePaginator
+    {
+        $query = User::query();
+        $this->applyFilters($query, $filters);
+        return $query->paginate($perPage);
+    }
+
     /**
      * @param int $id
      * @param bool $includeTrashed

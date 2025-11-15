@@ -5,6 +5,7 @@ namespace Tests\Unit\Repositories;
 use App\Models\User;
 use App\Repositories\UserRepository;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Tests\TestCase;
 
 class UserRepositoryTest extends TestCase
@@ -17,6 +18,43 @@ class UserRepositoryTest extends TestCase
     {
         parent::setUp();
         $this->userRepository = new UserRepository();
+    }
+
+    // Paginate Users.
+
+    public function testItCanPaginateUsersWithoutFilters(): void
+    {
+        // Creating users to paginate.
+        $userCount = 10;
+        User::factory()->count($userCount)->create();
+
+        $paginatedResults = $this->userRepository->paginate();
+
+        $this->assertInstanceOf(LengthAwarePaginator::class, $paginatedResults);
+        $this->assertEquals($userCount, $paginatedResults->total());
+    }
+
+    public function testItCanPaginateUsersWithFilters(): void
+    {
+        // Creating users to paginate.
+        $userCount = 10;
+        User::factory()->count($userCount)->create([
+            'name' => 'Test User Count: ',
+        ])->each(function(User $user, int $index) {
+            $user->name = $user->name . $index;
+        });
+
+        $filters = [
+            'id' => [
+                'operator' => '>',
+                'value' => 5,
+            ],
+        ];
+
+        $paginatedResults = $this->userRepository->paginate($filters);
+
+        $this->assertInstanceOf(LengthAwarePaginator::class, $paginatedResults);
+        $this->assertEquals(5, $paginatedResults->total());
     }
 
     // Find User by ID tests.
