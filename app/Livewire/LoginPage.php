@@ -18,6 +18,8 @@ class LoginPage extends Component
     #[Validate('min:8', message: 'A senha deve ter no mínimo 8 caracteres')]
     public $user_data_password; 
 
+    public $remember = false;
+
     public function submit()
     {
         $this->validate();
