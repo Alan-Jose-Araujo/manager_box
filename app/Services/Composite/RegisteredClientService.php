@@ -76,7 +76,7 @@ class RegisteredClientService
                 $companyAddress = $this->addressService->create($companyAddressData);
             }
 
-            //TODO: Assign 'company_admin' permission to the user here if needed
+            $user->assignRole('company_admin');
 
             return new RegisteredClientCompositeDto(
                 $company,
