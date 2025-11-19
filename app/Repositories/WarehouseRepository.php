@@ -2,11 +2,28 @@
 
 namespace App\Repositories;
 
+use App\Interfaces\Interfaces\FilteredIndexer;
 use App\Models\Warehouse;
+use App\Traits\Traits\DefineFilters;
+use Illuminate\Pagination\LengthAwarePaginator;
 use LogicException;
 
-class WarehouseRepository
+class WarehouseRepository implements FilteredIndexer
 {
+    use DefineFilters;
+
+    /**
+     * @param array $filters
+     * @param int $perPage
+     * @return LengthAwarePaginator
+     */
+    public function paginate(array $filters = [], int $perPage = 15): LengthAwarePaginator
+    {
+        $query = Warehouse::query();
+        $this->applyFilters($query, $filters);
+        return $query->paginate($perPage);
+    }
+
     /**
      * @param int $id
      * @param bool $includeTrashed

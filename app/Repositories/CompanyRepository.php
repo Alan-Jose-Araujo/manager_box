@@ -2,11 +2,28 @@
 
 namespace App\Repositories;
 
+use App\Interfaces\Interfaces\FilteredIndexer;
 use App\Models\Company;
+use App\Traits\Traits\DefineFilters;
+use Illuminate\Pagination\LengthAwarePaginator;
 use LogicException;
 
-class CompanyRepository
+class CompanyRepository implements FilteredIndexer
 {
+    use DefineFilters;
+
+    /**
+     * @param array $filters
+     * @param int $perPage
+     * @return void
+     */
+    public function paginate(array $filters = [], int $perPage = 15): LengthAwarePaginator
+    {
+        $query = Company::query();
+        $this->applyFilters($query, $filters);
+        return $query->paginate($perPage);
+    }
+
     /**
      * @param int $id
      * @param bool $includeTrashed
