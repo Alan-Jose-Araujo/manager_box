@@ -2,11 +2,28 @@
 
 namespace App\Repositories;
 
+use App\Interfaces\Interfaces\FilteredIndexer;
 use App\Models\Address;
+use App\Traits\Traits\DefineFilters;
+use Illuminate\Pagination\LengthAwarePaginator;
 use LogicException;
 
-class AddressRepository
+class AddressRepository implements FilteredIndexer
 {
+    use DefineFilters;
+
+    /**
+     * @param array $filters
+     * @param int $perPage
+     * @return LengthAwarePaginator
+     */
+    public function paginate(array $filters = [], int $perPage = 15): LengthAwarePaginator
+    {
+        $query = Address::query();
+        $this->applyFilters($query, $filters);
+        return $query->paginate($perPage);
+    }
+
     /**
      * @param int $id
      * @param bool $includeTrashed

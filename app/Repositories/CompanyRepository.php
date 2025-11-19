@@ -15,7 +15,7 @@ class CompanyRepository implements FilteredIndexer
     /**
      * @param array $filters
      * @param int $perPage
-     * @return void
+     * @return LengthAwarePaginator
      */
     public function paginate(array $filters = [], int $perPage = 15): LengthAwarePaginator
     {

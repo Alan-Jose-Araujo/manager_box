@@ -3,7 +3,6 @@
 namespace App\Repositories;
 
 use App\Interfaces\Interfaces\FilteredIndexer;
-use App\Models\ItemInStock;
 use App\Models\ItemInStockCategory;
 use App\Traits\Traits\DefineFilters;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -20,7 +19,7 @@ class ItemInStockCategoryRepository implements FilteredIndexer
      */
     public function paginate(array $filters = [], int $perPage = 15): LengthAwarePaginator
     {
-        $query = ItemInStock::query();
+        $query = ItemInStockCategory::query();
         $this->applyFilters($query, $filters);
         return $query->paginate($perPage);
     }
