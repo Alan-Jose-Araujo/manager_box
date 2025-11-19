@@ -4,25 +4,14 @@ namespace App\Repositories;
 
 use App\Interfaces\Interfaces\FilteredIndexer;
 use App\Models\User;
+use App\Traits\Traits\DefineFilters;
 use Illuminate\Pagination\LengthAwarePaginator;
 use LogicException;
 
 class UserRepository implements FilteredIndexer
 {
 
-    /**
-     * @param mixed $query
-     * @param array<string, mixed> $filters ['column' => ['operator', 'value']]
-     * @return mixed
-     */
-    private function applyFilters(&$query, array $filters)
-    {
-        if(!empty($filters)) {
-            foreach($filters as $column => $searchValues) {
-                $query->where($column, $searchValues['operator'], $searchValues['value']);
-            }
-        }
-    }
+    use DefineFilters;
 
     /**
      * @param array $filters
