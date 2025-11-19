@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Services\ItemInStockCategoryService;
+use Exception;
+use Illuminate\Support\Facades\Log;
 
 class ItemInStockCategoryController extends Controller
 {
@@ -15,9 +17,22 @@ class ItemInStockCategoryController extends Controller
         $this->itemInStockCategoryService = $itemInStockCategoryService;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        //
+        try {
+            $filters = $request->array('filters');
+            $perPage = $request->input('per_page', config('pagination.default_items_per_page'));
+            $itemInStockCategories = $this->itemInStockCategoryService->index($filters, $perPage);
+            return response()->json([
+                'success' => true,
+                'categories' => $itemInStockCategories,
+            ]);
+        } catch (Exception $exception) {
+            Log::error($exception);
+            return response()->json([
+                'success' => false,
+            ], 500);
+        }
     }
 
     public function store(Request $request)
@@ -62,7 +77,7 @@ class ItemInStockCategoryController extends Controller
         if (!$category) {
             return response()->json(['success' => false], 404);
         }
-        return response()->json(['success' => true, 
+        return response()->json(['success' => true,
         'categoria' => $category], 201);
     }
 

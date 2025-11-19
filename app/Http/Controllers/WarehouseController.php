@@ -3,21 +3,36 @@
 namespace App\Http\Controllers;
 
 use App\Services\WarehouseService;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class WarehouseController extends Controller
 {
 
     private WarehouseService  $warehouseService;
 
-    public function __construct(WarehouseService $warehouseService) 
+    public function __construct(WarehouseService $warehouseService)
     {
         $this->warehouseService = $warehouseService;
     }
-    
-    public function index()
+
+    public function index(Request $request)
     {
-        //
+        try {
+            $filters = $request->array('filters');
+            $perPage = $request->input('per_page', config('pagination.default_items_per_page'));
+            $warehouses = $this->warehouseService->index($filters, $perPage);
+            return response()->json([
+                'success' => true,
+                'warehouses' => $warehouses,
+            ]);
+        } catch (Exception $exception) {
+            Log::error($exception);
+            return response()->json([
+                'success' => false,
+            ], 500);
+        }
     }
 
     public function store(Request $request)

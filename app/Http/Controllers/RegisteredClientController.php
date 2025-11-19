@@ -30,6 +30,24 @@ class RegisteredClientController extends Controller
         $this->companyService = new CompanyService();
     }
 
+    public function index(Request $request)
+    {
+        try {
+            $filters = $request->array('filters');
+            $perPage = $request->input('per_page', config('pagination.default_items_per_page'));
+            $registeredClients = $this->registeredClientService->index($filters, $perPage);
+            return response()->json([
+                'success' => true,
+                'registered_clients' => $registeredClients
+            ]);
+        } catch (Exception $exception) {
+            Log::error($exception);
+            return response()->json([
+                'success' => false,
+            ], 500);
+        }
+    }
+
     public function store(Request $request)
     {
         try {
