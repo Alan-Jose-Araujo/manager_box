@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Warehouse;
 use App\Repositories\WarehouseRepository;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class WarehouseService
 {
@@ -12,6 +13,16 @@ class WarehouseService
     public function __construct()
     {
         $this->warehouseRepository = new WarehouseRepository();
+    }
+
+    /**
+     * @param array $filters
+     * @param int $perPage
+     * @return LengthAwarePaginator
+     */
+    public function index(array $filters = [], int $perPage = 15): LengthAwarePaginator
+    {
+        return $this->warehouseRepository->paginate($filters, $perPage);
     }
 
     /**

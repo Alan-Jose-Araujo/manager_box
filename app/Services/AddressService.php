@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Repositories\AddressRepository;
 use App\Models\Address;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class AddressService
 {
@@ -12,6 +13,16 @@ class AddressService
     public function __construct()
     {
         $this->addressRepository = new AddressRepository();
+    }
+
+    /**
+     * @param array $filters
+     * @param int $perPage
+     * @return LengthAwarePaginator
+     */
+    public function index(array $filters = [], int $perPage = 15): LengthAwarePaginator
+    {
+        return $this->addressRepository->paginate($filters, $perPage);
     }
 
     /**

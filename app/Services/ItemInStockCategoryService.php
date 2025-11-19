@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\ItemInStockCategory;
 use App\Repositories\ItemInStockCategoryRepository;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class ItemInStockCategoryService
 {
@@ -12,6 +13,16 @@ class ItemInStockCategoryService
     public function __construct()
     {
         $this->itemInStockCategoryRepository = new ItemInStockCategoryRepository();
+    }
+
+    /**
+     * @param array $filters
+     * @param int $perPage
+     * @return LengthAwarePaginator
+     */
+    public function index(array $filters = [], int $perPage = 15): LengthAwarePaginator
+    {
+        return $this->itemInStockCategoryRepository->paginate($filters, $perPage);
     }
 
     /**

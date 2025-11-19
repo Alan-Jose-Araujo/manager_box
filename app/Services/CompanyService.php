@@ -6,6 +6,7 @@ use App\Repositories\CompanyRepository;
 use App\Models\Company;
 use App\Traits\UploadFiles;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Storage;
 
 class CompanyService
@@ -17,6 +18,16 @@ class CompanyService
     public function __construct()
     {
         $this->companyRepository = new CompanyRepository();
+    }
+
+    /**
+     * @param array $filters
+     * @param int $perPage
+     * @return LengthAwarePaginator
+     */
+    public function index(array $filters = [], int $perPage = 15): LengthAwarePaginator
+    {
+        return $this->companyRepository->paginate($filters, $perPage);
     }
 
     /**

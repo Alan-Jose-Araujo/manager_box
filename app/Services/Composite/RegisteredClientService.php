@@ -29,6 +29,11 @@ class RegisteredClientService
         $this->addressService = new AddressService();
     }
 
+    public function index(array $filters = [], int $perPage = 15)
+    {
+        return $this->companyService->index($filters, $perPage);
+    }
+
     public function create(array $data): RegisteredClientCompositeDto
     {
         $companyData = $data['company'];

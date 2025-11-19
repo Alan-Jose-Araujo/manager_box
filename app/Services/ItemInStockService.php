@@ -6,6 +6,7 @@ use App\Models\ItemInStock;
 use App\Repositories\ItemInStockRepository;
 use App\Traits\UploadFiles;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Storage;
 
 class ItemInStockService
@@ -17,6 +18,16 @@ class ItemInStockService
     public function __construct()
     {
         $this->itemInStockRepository = new ItemInStockRepository();
+    }
+
+    /**
+     * @param array $filters
+     * @param int $perPage
+     * @return LengthAwarePaginator
+     */
+    public function index(array $filters = [], int $perPage = 15): LengthAwarePaginator
+    {
+        return $this->itemInStockRepository->paginate($filters, $perPage);
     }
 
     /**
