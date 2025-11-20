@@ -5,6 +5,7 @@
  */
 
 use App\Livewire\NotFound;
+use App\Livewire\Stock\StockListing;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -17,5 +18,6 @@ Route::get('/dashboard', function() {
     return 'Olá';
 })->middleware(['custom.auth', 'verified'])->name('dashboard');
 
+ Route::get('/teste', StockListing::class);
 
 Route::fallback(NotFound::class);
