@@ -7,6 +7,7 @@
 use App\Livewire\NotFound;
 use Illuminate\Support\Facades\Route;
 
+
 Route::get('/', function () {
     return redirect()->route('client.show_register_form');
 });
