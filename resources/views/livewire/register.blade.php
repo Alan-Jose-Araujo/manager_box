@@ -216,11 +216,11 @@
         }
 
         function handleRegisteredClientFormValidationFail(event) {
-            Swal.fire({
-                title: 'Formulário inválido',
-                text: event.detail.message,
-                icon: 'error',
-            });
+            // Swal.fire({
+            //     title: 'Formulário inválido',
+            //     text: event.detail.message,
+            //     icon: 'error',
+            // });
         }
 
     </script>
