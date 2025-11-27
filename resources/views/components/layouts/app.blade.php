@@ -202,7 +202,8 @@
                 <div id="profileMenu" class="profile-menu relative cursor-pointer">
                     <div
                         class="w-10 h-10 rounded-full overflow-hidden shrink-0 border-2 border-transparent hover:border-gray-500 transition-colors duration-200">
-                        <img src="{{ asset('images/ana_carolina_avatar.png') }}" alt="Ana Carolina"
+                        {{-- TODO: Retrieve the current user profile picture from storage. --}}
+                        <img src="{{ asset('images/default_user_icon.png') }}" alt="Ana Carolina"
                             class="w-full h-full object-cover">
                     </div>
 
@@ -211,7 +212,8 @@
                         <div class="p-4 border-b border-gray-200">
                             <div class="flex items-center space-x-3">
                                 <div class="w-12 h-12 rounded-full overflow-hidden shrink-0">
-                                    <img src="{{ asset('images/ana_carolina_avatar.png') }}" alt="Ana Carolina"
+                                    {{-- TODO: Retrieve the current user profile picture from storage. --}}
+                                    <img src="{{ asset('images/default_user_icon.png') }}" alt="Ana Carolina"
                                         class="w-full h-full object-cover">
                                 </div>
                                 <div>
