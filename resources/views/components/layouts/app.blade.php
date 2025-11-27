@@ -99,7 +99,7 @@
 <body class="flex h-screen overflow-hidden">
 
     <aside id="sidebar" class="sidebar shadow-xl shadow-gray-100/50 flex flex-col p-4 z-20">
-        <div class="flex items-center justify-start h-16 mb-4 px-2">
+        <div class="flex items-center justify-start h-16 mb-4">
             <img src="{{ asset('images/manager_box_logo.svg') }}" alt="Logo" class="w-12 h-12 shrink-0">
         </div>
 
@@ -150,6 +150,22 @@
                 </div>
             @endforeach
         </nav>
+
+        <div class="relative">
+            <a href="#">
+                <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M15 20C17.7614 20 20 17.7614 20 15C20 12.2386 17.7614 10 15 10C12.2386 10 10 12.2386 10 15C10 17.7614 12.2386 20 15 20Z"
+                        stroke="black" stroke-opacity="0.5" stroke-width="1.5" />
+                    <path
+                        d="M18.75 11.25L23.75 6.25M6.25 23.75L11.25 18.75M11.25 11.25L6.25 6.25M23.75 23.75L18.75 18.75"
+                        stroke="black" stroke-opacity="0.5" stroke-width="1.5" />
+                    <path
+                        d="M11.765 2.92366C13.8841 2.3537 16.1163 2.35457 18.235 2.92616C24.9037 4.71366 28.86 11.5674 27.0737 18.2349C25.2862 24.9037 18.4337 28.8599 11.765 27.0737C5.0962 25.2874 1.13995 18.4337 2.92495 11.7649C3.48909 9.64411 4.60433 7.71034 6.15745 6.15991"
+                        stroke="black" stroke-opacity="0.5" stroke-width="1.5" stroke-linecap="round" />
+                </svg>
+            </a>
+        </div>
     </aside>
 
     <div class="flex flex-col flex-1 overflow-x-hidden overflow-y-auto">
@@ -160,7 +176,7 @@
 
             <div class="flex items-center space-x-4">
                 <div id="navbarMenuToggle"
-                    class="p-2 text-gray-500 hover:text-gray-700 cursor-pointer rounded-lg hover:bg-stone-200">
+                    class="p-2 text-black hover:text-gray-800 cursor-pointer rounded-lg hover:bg-stone-200">
                     <svg class="w-6 h-6 navbar-icon" width="40" height="40" viewBox="0 0 40 40" fill="none"
                         xmlns="http://www.w3.org/2000/svg">
                         <path
