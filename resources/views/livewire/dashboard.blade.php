@@ -8,6 +8,11 @@
             ]
         ])
 
+        @livewire('navigation.section-head-info', [
+            'title' => 'Visão Geral',
+            'subtitle' => 'Acompanhe as métricas de seu estoque'
+        ])
+
         {{-- The main grid is the key, with 3 columns. --}}
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
 
