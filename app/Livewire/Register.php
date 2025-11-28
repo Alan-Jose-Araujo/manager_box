@@ -151,6 +151,45 @@ class Register extends Component
 
     public $company_address_data_complement;
 
+    public function mount()
+    {
+        $this->user_data_name = old('user_data_name');
+        $this->user_data_email = old('user_data_email');
+        $this->user_data_password = old('user_data_password');
+        $this->user_data_password_confirmation = old('user_data_password_confirmation');
+        $this->user_data_cpf = old('user_data_cpf');
+        $this->user_data_phone_number = old('user_data_phone_number');
+        $this->user_data_profile_picture_path = old('user_data_profile_picture_path');
+        $this->user_data_birth_date = old('user_data_birth_date');
+
+        $this->user_address_data_zip_code = old('user_address_data_zip_code');
+        $this->user_address_data_building_number = old('user_address_data_building_number');
+        $this->user_address_data_street = old('user_address_data_street');
+        $this->user_address_data_neighborhood = old('user_address_data_neighborhood');
+        $this->user_address_data_city = old('user_address_data_city');
+        $this->user_address_data_state = old('user_address_data_state');
+        $this->user_address_data_complement = old('user_address_data_complement');
+
+        $this->company_data_fantasy_name = old('company_data_fantasy_name');
+        $this->company_data_corporate_name = old('company_data_corporate_name');
+        $this->company_data_cnpj = old('company_data_cnpj');
+        $this->company_data_state_registration = old('company_data_state_registration');
+        $this->company_data_contact_email = old('company_data_contact_email');
+        $this->company_data_phone_number = old('company_data_phone_number');
+        $this->company_data_landline_number = old('company_data_landline_number');
+        $this->company_data_logo_picture_path = old('company_data_logo_picture_path');
+        $this->company_data_foundation_date = old('company_data_foundation_date');
+        $this->company_data_company_same_user_address = old('company_data_company_same_user_address');
+
+        $this->company_address_data_zip_code = old('company_address_data_zip_code');
+        $this->company_address_data_building_number = old('company_address_data_building_number');
+        $this->company_address_data_street = old('company_address_data_street');
+        $this->company_address_data_neighborhood = old('company_address_data_neighborhood');
+        $this->company_address_data_city = old('company_address_data_city');
+        $this->company_address_data_state = old('company_address_data_state');
+        $this->company_address_data_complement = old('company_address_data_complement');
+    }
+
     public function getTotalStepsProperty()
     {
         return $this->company_data_company_same_user_address ? 3 : 4;
