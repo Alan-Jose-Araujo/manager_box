@@ -3,10 +3,12 @@
 namespace App\Livewire;
 
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 
 class ErrorScreen extends Component
 {
+    #[Title('Erro interno')]
     #[Layout('components.layouts.not-found')]
 
     function home()
@@ -16,6 +18,6 @@ class ErrorScreen extends Component
 
     public function render()
     {
-        return view('livewire.error-screen');
+        return view('errors.500');
     }
 }
