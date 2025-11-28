@@ -28,7 +28,6 @@
         .sidebar:hover,
         .sidebar.sidebar-fixed {
             width: 14rem;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
         }
 
         .sidebar-text,
@@ -98,7 +97,7 @@
 
 <body class="flex h-screen overflow-hidden">
 
-    <aside id="sidebar" class="sidebar shadow-xl shadow-gray-100/50 flex flex-col p-4 z-20">
+    <aside id="sidebar" class="sidebar flex flex-col p-4 z-20">
         <div class="flex items-center justify-start h-16 mb-4">
             <img src="{{ asset('images/manager_box_logo.svg') }}" alt="Logo" class="w-12 h-12 shrink-0">
         </div>
@@ -119,6 +118,8 @@
                         'sub' => ['Listar', 'Adicionar novo']
                     ],
                 ];
+
+                $authUser = auth()->user();
             @endphp
             @foreach($menu as $title => $item)
                 <div class="nav-item">
@@ -171,7 +172,7 @@
     <div class="flex flex-col flex-1 overflow-x-hidden overflow-y-auto">
 
         <header
-            class="h-16 flex items-center justify-between border-b border-gray-100/50 shadow-sm px-6 sticky top-0 z-10"
+            class="h-16 flex items-center justify-between border-b border-gray-100/50 px-6 sticky top-0 z-10"
             style="background-color: #F8F2EC;">
 
             <div class="flex items-center space-x-4">
@@ -218,8 +219,7 @@
                 <div id="profileMenu" class="profile-menu relative cursor-pointer">
                     <div
                         class="w-10 h-10 rounded-full overflow-hidden shrink-0 border-2 border-transparent hover:border-gray-500 transition-colors duration-200">
-                        {{-- TODO: Retrieve the current user profile picture from storage. --}}
-                        <img src="{{ asset('images/default_user_icon.png') }}" alt="Ana Carolina"
+                        <img src="{{ asset('storage/' . $authUser->profile_picture_path ) ?? asset('images/default_user_icon.png') }}" alt="{{ $authUser->name }}"
                             class="w-full h-full object-cover">
                     </div>
 
@@ -228,17 +228,17 @@
                         <div class="p-4 border-b border-gray-200">
                             <div class="flex items-center space-x-3">
                                 <div class="w-12 h-12 rounded-full overflow-hidden shrink-0">
-                                    {{-- TODO: Retrieve the current user profile picture from storage. --}}
-                                    <img src="{{ asset('images/default_user_icon.png') }}" alt="Ana Carolina"
+                                    <img src="{{ asset('storage/' . $authUser->profile_picture_path ) ?? asset('images/default_user_icon.png') }}" alt="{{ $authUser->name }}"
                                         class="w-full h-full object-cover">
                                 </div>
                                 <div>
                                     <div class="flex items-center space-x-2">
-                                        <p class="text-lg font-semibold text-gray-800">Ana Carolina</p>
+                                        <p class="text-lg font-semibold text-gray-800">{{ $authUser->name }}</p>
+                                        {{-- TODO: Translate roles names and get here. --}}
                                         <span
-                                            class="text-xs font-medium bg-green-500 text-white px-2 py-0.5 rounded-full">Admin</span>
+                                            class="text-xs font-medium bg-green-500 text-white px-2 py-0.5 rounded-full">{{ $authUser->roles()->first(['name'])->name }}</span>
                                     </div>
-                                    <p class="text-sm text-gray-500">ana.carolina@example.com</p>
+                                    <p class="text-sm text-gray-500">{{ $authUser->email }}</p>
                                 </div>
                             </div>
                         </div>
@@ -271,14 +271,15 @@
                                 </svg>
                             </div>
 
-                            <div class="flex justify-between items-center px-4 py-2 text-gray-700">
+                            {{-- Disabled for now. --}}
+                            {{-- <div class="flex justify-between items-center px-4 py-2 text-gray-700">
                                 Idioma
                                 <span
                                     class="text-sm font-medium bg-stone-100 text-gray-700 px-2 py-1 rounded-full flex items-center space-x-2">
                                     Português <img src="https://flagcdn.com/16x12/br.png" width="16" height="12"
                                         alt="Bandeira do Brasil">
                                 </span>
-                            </div>
+                            </div> --}}
 
                             <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-stone-100">Configurações da
                                 conta</a>
