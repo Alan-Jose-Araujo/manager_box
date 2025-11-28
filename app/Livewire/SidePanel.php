@@ -11,7 +11,7 @@ class SidePanel extends Component
     public $subtitle = 'Cadastre-se sem complicações';
     public $infoText = 'Já possui uma conta?';
     public $buttonText = 'Entre agora mesmo';
-    public $buttonLink = '/login';
+    public $buttonLink = '/auth/login';
 
     public function render()
     {
