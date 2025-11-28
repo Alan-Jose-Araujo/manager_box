@@ -36,9 +36,7 @@ class AuthController extends Controller
 
             $request->session()->regenerate();
 
-            return response()->json([
-                'success' => true,
-            ]);
+            return redirect()->route('dashboard');
         } catch (Exception $exception) {
             Log::error($exception);
             return response()->json([
