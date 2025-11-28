@@ -12,13 +12,9 @@ Route::get('/', function () {
     return redirect()->route('client.show_register_form');
 });
 
-
 // Provisory dashboard route.
-// Route::get('/dashboard', function() {
-//     return 'Olá';
-// })->middleware(['custom.auth', 'verified'])->name('dashboard');
-
-
-Route::get('/dashboard', Dashboard::class)->name('dashboard');
+Route::get('/dashboard', Dashboard::class)
+->middleware(['custom.auth', 'verified'])
+->name('dashboard');
 
 Route::fallback(NotFound::class);

@@ -2,8 +2,10 @@
 
 namespace App\Services;
 
+use App\Dtos\Composite\RegisteredClientCompositeDto;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class AuthService
 {
@@ -25,6 +27,13 @@ class AuthService
     public function authenticateWithUser(User $user, bool $remember = false): void
     {
         Auth::login($user, $remember);
+    }
+
+    public function setPostLoginSessionData(RegisteredClientCompositeDto $registeredClientCompositeDto)
+    {
+        Session::put([
+            'company_id' => $registeredClientCompositeDto->company->id,
+        ]);
     }
 
     /**

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Dtos\Composite\RegisteredClientCompositeDto;
 use App\Jobs\CreateCompanyDefaultWarehouseJob;
 use App\Jobs\DisableRegisteredClientJob;
 use App\Services\AuthService;
@@ -24,10 +23,13 @@ class RegisteredClientController extends Controller
 
     private CompanyService $companyService;
 
+    private AuthService $authService;
+
     public function __construct()
     {
         $this->registeredClientService = new RegisteredClientService();
         $this->companyService = new CompanyService();
+        $this->authService = new AuthService();
     }
 
     public function index(Request $request)
@@ -86,22 +88,17 @@ class RegisteredClientController extends Controller
 
             CreateCompanyDefaultWarehouseJob::dispatch($registeredClient);
 
-            if ($registeredClient instanceof RegisteredClientCompositeDto) {
+            $request->session()->regenerate();
 
-                (new AuthService())->authenticateWithUser($registeredClient->user);
+            $this->authService->authenticateWithUser($registeredClient->user);
+            $this->authService->setPostLoginSessionData($registeredClient);
 
-                event(new Registered($registeredClient->user));
+            event(new Registered($registeredClient->user));
 
-                return response()->json([
-                    'success' => true,
-                    'client' => $registeredClient,
-                ]);
-            }
+            return redirect()->route('dashboard');
         } catch (Exception $exception) {
             Log::error($exception);
-            return response()->json([
-                'success' => false,
-            ], 500);
+            return redirect()->back()->withInput();
         }
     }
 
