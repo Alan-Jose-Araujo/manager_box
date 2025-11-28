@@ -44,9 +44,7 @@ class RegisteredClientController extends Controller
             ]);
         } catch (Exception $exception) {
             Log::error($exception);
-            return response()->json([
-                'success' => false,
-            ], 500);
+            abort(500);
         }
     }
 
@@ -98,7 +96,7 @@ class RegisteredClientController extends Controller
             return redirect()->route('dashboard');
         } catch (Exception $exception) {
             Log::error($exception);
-            return redirect()->back()->withInput();
+            abort(500);
         }
     }
 
@@ -120,9 +118,8 @@ class RegisteredClientController extends Controller
                 'company' => $updatedCompany,
             ]);
         } catch (Exception $exception) {
-            return response()->json([
-                'success' => false,
-            ]);
+            Log::error($exception);
+            abort(500);
         }
     }
 
@@ -143,9 +140,7 @@ class RegisteredClientController extends Controller
             ]);
         } catch (Exception $exception) {
             Log::error($exception);
-            return response()->json([
-                'success' => false,
-            ], 500);
+            abort(500);
         }
     }
 }
