@@ -19,7 +19,8 @@
 
                     <h3 class="text-1xl text-black/100 font-bold">Olá, {{ $firstName }}!</h3>
                     <p class="mt-3">
-                        É bom ter você em nossa plataforma. Antes de começarmos precisamos fazer a verificação de seu email,
+                        É bom ter você em nossa plataforma. Antes de começarmos precisamos fazer a verificação de seu
+                        email,
                         verifique sua caixa de emails e siga as instruções. Caso não tenha recebido nosso email,
                         clique no botão abaixo para reenviá-lo.
                     </p>
@@ -63,4 +64,4 @@
 
     </div>
 
-</x-layouts.auth-layout>
+    </x-layouts.auth-layout>
