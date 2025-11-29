@@ -285,7 +285,11 @@
                                 conta</a>
 
                             <div class="pt-2 mt-2 border-t border-gray-100">
-                                <a href="#" class="block px-4 py-2 text-red-600 hover:bg-red-50 rounded-b-xl">Sair</a>
+                                {{-- <a href="#" class="block px-4 py-2 text-red-600 hover:bg-red-50 rounded-b-xl">Sair</a> --}}
+                                <form method="POST" action="{{ route('auth.logout') }}">
+                                    @csrf
+                                    <button type="submit" class="w-full text-start cursor-pointer px-4 py-2 text-red-600 hover:bg-red-50 rounded-b-xl">Sair</button>
+                                </form>
                             </div>
                         </div>
                     </div>
