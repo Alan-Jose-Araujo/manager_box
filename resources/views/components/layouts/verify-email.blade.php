@@ -4,12 +4,12 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>{{ $title }}</title>
+    <title>Manager Box</title>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
 </head>
-<body class=" bg-[#F8F2EC]">
+<body class="flex h-screen overflow-hidden">
     {{ $slot }}
 </body>
 </html>

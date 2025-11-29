@@ -11,6 +11,5 @@
 </head>
 <body class=" bg-white">
     {{ $slot }}
-
 </body>
 </html>
