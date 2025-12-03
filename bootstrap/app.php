@@ -4,6 +4,7 @@ use App\Http\Middleware\EnsureUserIsAuthenticated;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Support\Facades\Route;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -19,8 +20,13 @@ return Application::configure(basePath: dirname(__DIR__))
             Route::middleware('web')
                 ->group(base_path('routes/email-verification.php'));
 
-                //Authentication.
-                Route::middleware('web')->group(base_path('routes/authentication.php'));
+            // Authentication.
+            Route::middleware('web')
+            ->group(base_path('routes/authentication.php'));
+
+            // Stock.
+            Route::middleware('web')
+            ->group(base_path('routes/stock.php'));
         }
     )
     ->withMiddleware(function (Middleware $middleware): void {

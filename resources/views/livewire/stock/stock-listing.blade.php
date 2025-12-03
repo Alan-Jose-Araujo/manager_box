@@ -1,6 +1,20 @@
 <div>
-    
-    <x-header title="Lista de itens em estoque" separator progress-indicator>
+
+    <div class="p-4 bg-white h-full">
+
+        @livewire('navigation.breadcrumps', [
+            'links' => [
+                'Estoque' => '#',
+                'Listar' => '#'
+            ]
+        ])
+
+        @livewire('navigation.section-head-info', [
+            'title' => 'Listar itens em estoque',
+            'subtitle' => 'Visualize seus itens em estoque'
+        ])
+
+    <x-header separator progress-indicator>
         <x-slot:middle class="!justify-end">
             <x-input placeholder="Buscar..." wire:model.live.debounce="search" clearable icon="o-magnifying-glass" />
         </x-slot:middle>
@@ -16,12 +30,14 @@
                     Não possui itens cadastrados.
                 </div>
 
-        </x-card>   
-    
+        </x-card>
+
     @else
         <x-card shadow separator>
             <x-table :headers="$this->headers()" :rows="$this->items_in_stock()" :sort-by="$sortBy" with-pagination/>
-        </x-card>  
+        </x-card>
     @endif
-    
+
+    </div>
+
 </div>
