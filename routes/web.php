@@ -6,7 +6,6 @@
 
 use App\Livewire\Dashboard;
 use App\Livewire\NotFound;
-use App\Livewire\Stock\StockListing;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
