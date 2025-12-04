@@ -17,10 +17,23 @@ class ItemInStockRepository implements FilteredIndexer
      * @param int $perPage
      * @return LengthAwarePaginator
      */
-    public function paginate(array $filters = [], int $perPage = 15): LengthAwarePaginator
+    public function paginate(array $filters = [], int $perPage = 15, string|array|callable|null $orderBy = null): LengthAwarePaginator
     {
         $query = ItemInStock::query();
         $this->applyFilters($query, $filters);
+
+        if($orderBy) {
+
+            if(is_string($orderBy)) {
+                $query->orderBy($orderBy);
+            } else if(is_array($orderBy)) {
+                $query->orderBy(...array_values($orderBy));
+            } else if(is_callable($orderBy)) {
+                $query->orderBy($orderBy());
+            }
+
+        }
+
         return $query->paginate($perPage);
     }
 

@@ -4,9 +4,8 @@ namespace App\Livewire\Stock;
 
 use Livewire\Component;
 use Livewire\Attributes\Layout;
-use App\Models\ItemInStock;
+use App\Services\ItemInStockService;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Database\Eloquent\Builder;
 use Livewire\Attributes\Title;
 use Livewire\WithPagination;
 
@@ -16,7 +15,6 @@ class StockListing extends Component
 
     #[Layout('components.layouts.app')]
     #[Title('Listar itens em estoque')]
-
 
     public string $search = '';
 
@@ -42,15 +40,24 @@ class StockListing extends Component
 
     public function items_in_stock(): LengthAwarePaginator
     {
-        return ItemInStock::query()
-        ->when($this->search, fn(Builder $q) =>
-            $q->where('name', 'like', "%$this->search%")
-            ->orWhere('sku', 'like', "%$this->search%")
-            ->orWhere('description', 'like', "%$this->search%")
-            ->orWhere('id', 'like', "%$this->search%")
-        )
-        ->orderBy(...array_values($this->sortBy))
-        ->paginate(10);
+
+        return (new ItemInStockService())->index([
+            'name' => [
+                'operator' => 'like',
+                'value' => "%$this->search%",
+                'logical' => 'or',
+            ],
+            'sku' => [
+                'operator' => 'like',
+                'value' => "%$this->search%",
+                'logical' => 'or',
+            ],
+            'description' => [
+                'operator' => 'like',
+                'value' => "%$this->search%",
+                'logical' => 'or',
+            ],
+        ], orderBy: $this->sortBy);
     }
 
     public function render()

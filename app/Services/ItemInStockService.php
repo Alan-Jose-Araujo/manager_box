@@ -25,9 +25,9 @@ class ItemInStockService
      * @param int $perPage
      * @return LengthAwarePaginator
      */
-    public function index(array $filters = [], int $perPage = 15): LengthAwarePaginator
+    public function index(array $filters = [], int $perPage = 15, string|array|callable|null $orderBy = null): LengthAwarePaginator
     {
-        return $this->itemInStockRepository->paginate($filters, $perPage);
+        return $this->itemInStockRepository->paginate($filters, $perPage, $orderBy);
     }
 
     /**
