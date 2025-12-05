@@ -99,7 +99,7 @@
     {{-- Backend Data Injection (Using Js::from() to avoid editor parsing errors)) --}}
     <script type="module">
         window.entradasSaidasData = @json($entradasSaidasData);
-        window.itensCategoriaData = @json($itensCategoriaData);
+        window.itensCategoriaData = @json($this->getItemsCountByCategory());
         window.precoMedioData = @json($precoMedioData);
         window.metricasData = @json($metricas);
 
@@ -109,6 +109,8 @@
             const itensCategoriaData = window.itensCategoriaData;
             const precoMedioData = window.precoMedioData;
             const metricasData = window.metricasData;
+
+            console.log(itensCategoriaData);
 
             const COLORS = ['#8B5CF6', '#EF4444', '#10B981', '#3B82F6', '#F59E0B', '#EC4899'];
 
@@ -149,9 +151,11 @@
                 data: {
                     labels: itensCategoriaData.labels,
                     datasets: [{
-                        data: itensCategoriaData.data,
-                        backgroundColor: [COLORS[0], COLORS[1], COLORS[2], COLORS[3]],
+                        data: itensCategoriaData.values,
+                        backgroundColor: [...itensCategoriaData.colors],
                         hoverOffset: 8,
+                        borderColor: 'black',
+                        borderWidth: 1,
                     }]
                 },
                 options: {
