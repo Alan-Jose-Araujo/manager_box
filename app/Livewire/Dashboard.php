@@ -2,12 +2,26 @@
 
 namespace App\Livewire;
 
+use App\Services\DashboardDataService;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 
 #[Title('Dashboard')]
 class Dashboard extends Component
 {
+    public function getItemsCountByCategory()
+    {
+        $result = (new DashboardDataService())->getItemsCountByCategoryData();
+        $labels = $result->pluck('category_name')->toArray();
+        $values = $result->pluck('items_count')->toArray();
+        $colors = $result->pluck('color_code')->toArray();
+        return [
+            'labels' => $labels,
+            'values' => $values,
+            'colors' => $colors,
+        ];
+    }
+
     public function render()
     {
         $dbProdutos = [
