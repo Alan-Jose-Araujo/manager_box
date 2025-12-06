@@ -100,7 +100,7 @@
     <script type="module">
         window.entradasSaidasData = @json($entradasSaidasData);
         window.itensCategoriaData = @json($this->getItemsCountByCategory());
-        window.precoMedioData = @json($precoMedioData);
+        window.precoMedioData = @json($this->getAveragePriceByCategory());
         window.metricasData = @json($metricas);
 
         document.addEventListener("DOMContentLoaded", function () {
@@ -247,8 +247,8 @@
                     labels: precoMedioData.labels,
                     datasets: [{
                         label: 'Preço médio (R$)',
-                        data: precoMedioData.data,
-                        backgroundColor: COLORS[0],
+                        data: precoMedioData.values,
+                        backgroundColor: [...precoMedioData.colors],
                         borderRadius: 5,
                     }]
                 },
