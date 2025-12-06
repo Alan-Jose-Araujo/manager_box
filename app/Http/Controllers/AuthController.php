@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Services\AuthService;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Session;
 
 // TODO: Return appropriate redirects.
 class AuthController extends Controller
@@ -35,6 +37,8 @@ class AuthController extends Controller
             }
 
             $request->session()->regenerate();
+
+            Session::put('company_id', Auth::user()->company_id);
 
             return redirect()->route('dashboard');
         } catch (Exception $exception) {
