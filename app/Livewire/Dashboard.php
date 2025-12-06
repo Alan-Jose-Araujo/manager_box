@@ -22,6 +22,19 @@ class Dashboard extends Component
         ];
     }
 
+    public function getAveragePriceByCategory()
+    {
+        $result = (new DashboardDataService())->getAveragePriceByCategoryData();
+        $labels = $result->pluck('category_name')->toArray();
+        $values = $result->pluck('average_sale_price')->toArray();
+        $colors = $result->pluck('color_code')->toArray();
+        return [
+            'labels' => $labels,
+            'values' => $values,
+            'colors' => $colors,
+        ];
+    }
+
     public function render()
     {
         $dbProdutos = [
