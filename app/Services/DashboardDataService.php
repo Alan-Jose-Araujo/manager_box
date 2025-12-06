@@ -2,8 +2,6 @@
 
 namespace App\Services;
 
-use App\Models\Company;
-use App\Repositories\CompanyRepository;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 
