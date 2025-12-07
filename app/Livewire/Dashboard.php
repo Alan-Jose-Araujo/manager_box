@@ -9,9 +9,16 @@ use Livewire\Component;
 #[Title('Dashboard')]
 class Dashboard extends Component
 {
+    private DashboardDataService $dashboardDataService;
+
+    public function mount()
+    {
+        $this->dashboardDataService = new DashboardDataService();
+    }
+
     public function getItemsCountByCategory()
     {
-        $result = (new DashboardDataService())->getItemsCountByCategoryData();
+        $result = $this->dashboardDataService->getItemsCountByCategoryData();
         $labels = $result->pluck('category_name')->toArray();
         $values = $result->pluck('items_count')->toArray();
         $colors = $result->pluck('color_code')->toArray();
@@ -24,7 +31,7 @@ class Dashboard extends Component
 
     public function getAveragePriceByCategory()
     {
-        $result = (new DashboardDataService())->getAveragePriceByCategoryData();
+        $result = $this->dashboardDataService->getAveragePriceByCategoryData();
         $labels = $result->pluck('category_name')->toArray();
         $values = $result->pluck('average_sale_price')->toArray();
         $colors = $result->pluck('color_code')->toArray();
