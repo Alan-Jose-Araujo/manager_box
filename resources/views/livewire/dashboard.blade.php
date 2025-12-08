@@ -1,6 +1,8 @@
 <div>
     <div class="p-4 bg-white h-full">
 
+        {{-- {{ dd($this->getStockMovementsGroupedByMonth(\App\Enums\StockMovementType::CHECKIN)) }} --}}
+
         @livewire('navigation.breadcrumps', [
             'links' => [
                 'Relatórios' => '#',
@@ -98,7 +100,7 @@
 
     {{-- Backend Data Injection (Using Js::from() to avoid editor parsing errors)) --}}
     <script type="module">
-        window.entradasSaidasData = @json($entradasSaidasData);
+        window.entradasSaidasData = @json($this->getStockMovementsGroupedByMonth(\App\Enums\StockMovementType::CHECKIN));
         window.itensCategoriaData = @json($this->getItemsCountByCategory());
         window.precoMedioData = @json($this->getAveragePriceByCategory());
         window.metricasData = @json($metricas);
@@ -109,42 +111,31 @@
             const itensCategoriaData = window.itensCategoriaData;
             const precoMedioData = window.precoMedioData;
             const metricasData = window.metricasData;
-
-            console.log(itensCategoriaData);
-
             const COLORS = ['#8B5CF6', '#EF4444', '#10B981', '#3B82F6', '#F59E0B', '#EC4899'];
 
-
             new Chart(document.getElementById('entradasSaidasChart'), {
-                type: 'line',
-                data: {
-                    labels: entradasSaidasData.labels,
-                    datasets: entradasSaidasData.datasets.map(dataset => ({
-                        ...dataset,
-                        tension: 0.3,
-                        fill: false,
-                        pointRadius: 4,
-                    }))
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            position: 'bottom',
-                            labels: {
-                                usePointStyle: true,
-                            }
-                        },
-                    },
-                    scales: {
-                        x: {
-                            ticks: { maxRotation: 45, minRotation: 45, autoSkip: false },
-                        },
-                        y: { beginAtZero: true }
-                    }
-                }
-            });
+    type: 'bar', // Specify the chart type as 'bar'
+    data: {
+        labels: entradasSaidasData.labels, // X-axis labels
+        datasets: [{
+            label: '', // Label for the dataset (appears in legend/tooltips)
+            data: entradasSaidasData.values, // The actual data points (Y-axis values)
+            // backgroundColor: [...entradasSaidasData.colors],
+            borderColor: '#000',
+            borderWidth: 1 // Border width in pixels
+        }],
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+            y: {
+                beginAtZero: true, // Ensure the Y-axis starts at zero
+            }
+        },
+        padding: true,
+    }
+});
 
             new Chart(document.getElementById('itensCategoriaChart'), {
                 type: 'doughnut',

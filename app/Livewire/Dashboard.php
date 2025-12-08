@@ -2,7 +2,9 @@
 
 namespace App\Livewire;
 
+use App\Enums\StockMovementType;
 use App\Services\DashboardDataService;
+use Illuminate\Support\Carbon;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 
@@ -14,6 +16,27 @@ class Dashboard extends Component
     public function mount()
     {
         $this->dashboardDataService = new DashboardDataService();
+    }
+
+    public function getStockMovementsGroupedByMonth(StockMovementType $movementType)
+    {
+        $result = $this->dashboardDataService->getThisYearStockMovementsGroupedByMonthData($movementType);
+        $labels = $result->pluck('movement_month')->toArray();
+        $values = $result->pluck('quantity_moved')->toArray();
+        $colors = array_map(function($value) {
+            return fake()->rgbaCssColor();
+        }, $values);
+
+        $labelsAsMonthNames = array_map(function($label) {
+            $monthDate = Carbon::create(date('Y'), $label);
+            return $monthDate->format('F');
+        }, $labels);
+
+        return [
+            'labels' => $labelsAsMonthNames,
+            'values' => $values,
+            'colors' => $colors,
+        ];
     }
 
     public function getItemsCountByCategory()

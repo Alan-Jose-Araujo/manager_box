@@ -13,39 +13,30 @@ class DashboardDataService
     {
         $companyId = Auth::user()->company_id;
         $firstDayOfYearDate = Carbon::parse('first day of January this year')->format('Y-m-d');
-        $lastDayOfYearDate = Carbon::parse('last day of January this year')->format('Y-m-d');
-        $results = DB::table('items_in_stock as stock')
-            ->select(
-                'stock.id as item_id',
-                'stock.name as item_name',
-                DB::raw('MONTH(movements.created_at) AS movement_month'),
-                'movements.quantity_moved AS moved_quantity'
-            )->join(
-                'item_in_stock_movements as movements',
-                'movements.item_in_stock_id',
-                '=',
-                'stock.id'
-            )->where(
-                'movements.movement_type',
-                $movementType->value
-            )->where(
-                'stock.company_id',
-                $companyId
-            )->whereBetween(
-                'movements.created_at',
-                [
-                    $firstDayOfYearDate,
-                    $lastDayOfYearDate
-                ]
-            )->groupBy(
-                'item_id',
-                'item_name',
-                'movement_month',
-                'moved_quantity'
-            )->orderBy('movement_month')
-            ->get();
+        $lastDayOfYearDate = Carbon::parse('last day of December this year')->format('Y-m-d');
+        $results = DB::table('item_in_stock_movements as movements')
+        ->select(
+            DB::raw('MONTH(movements.created_at) as movement_month'),
+            DB::raw('SUM(movements.quantity_moved) as quantity_moved'),
+        )->where(
+            'movements.company_id',
+            $companyId,
+        )->where(
+            'movements.movement_type',
+            $movementType->value
+        )->whereBetween(
+            'movements.created_at',
+            [
+                $firstDayOfYearDate,
+                $lastDayOfYearDate,
+            ]
+        )->groupBy(
+            'movement_month',
+        )->orderBy(
+            'movement_month'
+        )->get();
 
-            return $results;
+        return $results;
     }
 
     public function getItemsCountByCategoryData()
