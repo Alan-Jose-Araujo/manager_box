@@ -2,14 +2,19 @@
 
 namespace App\Services;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Session;
 
 class DashboardDataService
 {
+    public function getThisYearStockMovementsGroupedByMonthData()
+    {
+        $companyId = Auth::user()->company_id;
+    }
+
     public function getItemsCountByCategoryData()
     {
-        $companyId = Session::get('company_id');
+        $companyId = Auth::user()->company_id;
         $results = DB::table('item_in_stock_categories as c')
             ->select(
                 'c.id as category_id',
@@ -29,7 +34,7 @@ class DashboardDataService
 
     public function getAveragePriceByCategoryData()
     {
-        $companyId = Session::get('company_id');
+        $companyId = Auth::user()->company_id;
         $results = DB::table('item_in_stock_categories as c')
             ->select(
                 'c.id as category_id',
