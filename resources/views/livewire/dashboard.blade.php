@@ -21,7 +21,7 @@
             <div class="md:col-span-2 space-y-6">
                 <div class="bg-white rounded-xl shadow-lg p-6 h-96 border border-gray-900">
                     <div class="flex justify-between items-center mb-4">
-                        <h2 class="text-lg font-semibold text-gray-800">Entradas e saídas</h2>
+                        <h2 class="text-lg font-semibold text-gray-800">Entradas e saídas este ano</h2>
                         <span
                             class="text-sm font-medium text-green-600 bg-green-50 px-3 py-1 rounded-full">Entradas</span>
                     </div>
@@ -114,28 +114,33 @@
             const COLORS = ['#8B5CF6', '#EF4444', '#10B981', '#3B82F6', '#F59E0B', '#EC4899'];
 
             new Chart(document.getElementById('entradasSaidasChart'), {
-    type: 'bar', // Specify the chart type as 'bar'
-    data: {
-        labels: entradasSaidasData.labels, // X-axis labels
-        datasets: [{
-            label: '', // Label for the dataset (appears in legend/tooltips)
-            data: entradasSaidasData.values, // The actual data points (Y-axis values)
-            // backgroundColor: [...entradasSaidasData.colors],
-            borderColor: '#000',
-            borderWidth: 1 // Border width in pixels
-        }],
-    },
-    options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: {
-            y: {
-                beginAtZero: true, // Ensure the Y-axis starts at zero
-            }
-        },
-        padding: true,
-    }
-});
+                type: 'bar',
+                data: {
+                    labels: entradasSaidasData.labels,
+                    datasets: [{
+                        label: '',
+                        data: entradasSaidasData.values,
+                        backgroundColor: [...entradasSaidasData.colors],
+                        borderColor: '#000',
+                        borderWidth: 1,
+                    }],
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                        }
+                    },
+                    padding: true,
+                    plugins: {
+                        legend: {
+                            display: false,
+                        }
+                    }
+                }
+            });
 
             new Chart(document.getElementById('itensCategoriaChart'), {
                 type: 'doughnut',
