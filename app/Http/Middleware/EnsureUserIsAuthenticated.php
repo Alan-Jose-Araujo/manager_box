@@ -17,7 +17,7 @@ class EnsureUserIsAuthenticated
     public function handle(Request $request, Closure $next): Response
     {
         if(!Auth::check()) {
-            return redirect('/');
+            return redirect()->route('auth.show_login_form');
         }
 
         return $next($request);
