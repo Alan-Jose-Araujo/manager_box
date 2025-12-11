@@ -23,6 +23,11 @@ class CreateStockItem extends Component
     public $foto_ilustrativa;
     public $complemento;
 
+    // (Tab 2)
+    public $marca;
+    public $armazem;
+    public $ativo = true; // toggle
+
     /**
      * (wire:click).
      * @param int $tab O  (1 ou 2).
@@ -31,9 +36,6 @@ class CreateStockItem extends Component
     {
         $this->currentTab = $tab;
     }
-// In the future, the validation and saving logic will be included here
-
-//public function saveItem()
 
     public function render()
     {
