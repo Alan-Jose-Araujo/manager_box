@@ -9,6 +9,8 @@
     <title>{{ $title ?? 'Page Title' }}</title>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    {{-- Necessário para o Livewire --}}
+    <livewire:styles />
 
     <style>
         :root {
@@ -95,7 +97,6 @@
         }
     </style>
 </head>
-
 <body class="flex h-screen overflow-hidden">
 
     <aside id="sidebar" class="sidebar flex flex-col p-4 z-20">
@@ -170,7 +171,7 @@
         </div>
     </aside>
 
-    <div class="flex flex-col flex-1 overflow-x-hidden overflow-y-auto">
+<div class="flex flex-col flex-1 overflow-x-hidden overflow-y-auto">
 
         <header
             class="h-16 flex items-center justify-between border-b border-gray-100/50 px-6 sticky top-0 z-10"
@@ -187,35 +188,19 @@
                     </svg>
                 </div>
             </div>
+            {{-- ESPAÇO PARA FUTURAS OPÇÕES À ESQUERDA --}}
+        </div>
 
-            <div class="flex items-center space-x-4">
-
-                <div
-                    class="p-2 text-gray-500 hover:text-gray-700 cursor-pointer rounded-lg hover:bg-stone-200 relative">
-                    <svg class="w-6 h-6 navbar-icon" width="23" height="23" viewBox="0 0 23 23" fill="none"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path
-                            d="M18.7083 7.25C20.4341 7.25 21.8333 5.85089 21.8333 4.125C21.8333 2.39911 20.4341 1 18.7083 1C16.9824 1 15.5833 2.39911 15.5833 4.125C15.5833 5.85089 16.9824 7.25 18.7083 7.25Z"
-                            stroke="currentColor" stroke-opacity="0.5" stroke-width="2" />
-                        <path
-                            d="M6.20833 13.5H15.5833M6.20833 17.1458H12.4583M1 11.4167C1 16.3271 1 18.7823 2.525 20.3073C4.05208 21.8333 6.50625 21.8333 11.4167 21.8333C16.3271 21.8333 18.7823 21.8333 20.3073 20.3073C21.8333 18.7833 21.8333 16.3271 21.8333 11.4167V9.85417M12.9792 1H11.4167C6.50625 1 4.05104 1 2.525 2.525C1.51146 3.53958 1.17083 4.96563 1.05729 7.25"
-                            stroke="currentColor" stroke-opacity="0.5" stroke-width="2" stroke-linecap="round" />
-                    </svg>
-                    <span
-                        class="absolute top-1 right-1 block w-2 h-2 rounded-full bg-red-500 border border-white"></span>
-                </div>
-
-                <div class="p-2 text-gray-500 hover:text-gray-700 cursor-pointer rounded-lg hover:bg-stone-200">
-                    <svg class="w-6 h-6 navbar-icon" width="25" height="25" viewBox="0 0 25 25" fill="none"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path
-                            d="M18.9374 8.37495L19.4197 7.89162C19.8037 7.50747 20.3246 7.2916 20.8678 7.2915C21.411 7.29141 21.9319 7.50709 22.3161 7.8911C22.7002 8.27511 22.9161 8.796 22.9162 9.33917C22.9163 9.88234 22.7006 10.4033 22.3166 10.7875L21.8343 11.2708M18.9374 8.37495C18.9374 8.37495 18.9978 9.39995 19.9031 10.3052C20.8083 11.2104 21.8343 11.2708 21.8343 11.2708M18.9374 8.37495L14.4999 12.8125C14.1978 13.1125 14.0478 13.2635 13.9187 13.4291C13.7659 13.625 13.636 13.8354 13.5291 14.0604C13.4385 14.25 13.3718 14.451 13.2374 14.8541L12.8072 16.1458L12.6676 16.5635M21.8343 11.2708L17.3968 15.7083C17.0947 16.0104 16.9447 16.1604 16.7791 16.2895C16.5833 16.4423 16.3728 16.5722 16.1478 16.6791C15.9583 16.7697 15.7572 16.8364 15.3541 16.9708L14.0624 17.401L13.6447 17.5406M12.6676 16.5635L12.5291 16.9822C12.4968 17.0794 12.4922 17.1837 12.5158 17.2834C12.5394 17.383 12.5903 17.4742 12.6627 17.5466C12.7351 17.619 12.8262 17.6698 12.9259 17.6934C13.0256 17.717 13.1298 17.7124 13.227 17.6802L13.6447 17.5406M12.6676 16.5635L13.6447 17.5406"
-                            stroke="currentColor" stroke-opacity="0.5" stroke-width="2" />
-                        <path
-                            d="M8.33333 13.5416H10.9375M8.33333 9.37492H15.1042M8.33333 17.7083H9.89583M3.125 14.5833V10.4166C3.125 6.48846 3.125 4.52388 4.34583 3.30409C5.56667 2.08429 7.53021 2.08325 11.4583 2.08325H13.5417C17.4698 2.08325 19.4344 2.08325 20.6542 3.30409M21.875 14.5833C21.875 18.5114 21.875 20.476 20.6542 21.6958M20.6542 21.6958C19.4344 22.9166 17.4698 22.9166 13.5417 22.9166H11.4583C7.53021 22.9166 5.56562 22.9166 4.34583 21.6958M20.6542 21.6958C21.6375 20.7135 21.8281 19.2499 21.8656 16.6666"
-                            stroke="currentColor" stroke-opacity="0.5" stroke-width="2" stroke-linecap="round" />
-                    </svg>
-                </div>
+        {{-- AÇÕES E PERFIL --}}
+        <div class="flex items-center space-x-4">
+            {{-- 2. Notificações (SVG FORNECIDO) --}}
+            <div class="p-2 text-gray-500 hover:text-gray-700 cursor-pointer rounded-lg hover:bg-stone-200 relative">
+                <svg class="w-6 h-6 navbar-icon" width="23" height="23" viewBox="0 0 23 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M18.7083 7.25C20.4341 7.25 21.8333 5.85089 21.8333 4.125C21.8333 2.39911 20.4341 1 18.7083 1C16.9824 1 15.5833 2.39911 15.5833 4.125C15.5833 5.85089 16.9824 7.25 18.7083 7.25Z" stroke="currentColor" stroke-opacity="0.5" stroke-width="2"/>
+                    <path d="M6.20833 13.5H15.5833M6.20833 17.1458H12.4583M1 11.4167C1 16.3271 1 18.7823 2.525 20.3073C4.05208 21.8333 6.50625 21.8333 11.4167 21.8333C16.3271 21.8333 18.7823 21.8333 20.3073 20.3073C21.8333 18.7833 21.8333 16.3271 21.8333 11.4167V9.85417M12.9792 1H11.4167C6.50625 1 4.05104 1 2.525 2.525C1.51146 3.53958 1.17083 4.96563 1.05729 7.25" stroke="currentColor" stroke-opacity="0.5" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+                <span class="absolute top-1 right-1 block w-2 h-2 rounded-full bg-red-500 border border-white"></span>
+            </div>
 
                 <div id="profileMenu" class="profile-menu relative cursor-pointer">
                     <div
@@ -311,78 +296,90 @@
             </div>
         </header>
 
-        <main class="flex-1 p-6 overflow-y-auto">
-            {{ $slot }}
-        </main>
-    </div>
+    <main class="flex-1 p-6 overflow-y-auto">
+        {{-- ESTE É O SLOT QUE RECEBE O CONTEÚDO DE OUTRAS VIEWS/COMPONENTES --}}
+        {{ $slot }}
+    </main>
+</div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const sidebar = document.getElementById('sidebar');
-            const navItems = document.querySelectorAll('.nav-item');
-            const navbarToggle = document.getElementById('navbarMenuToggle');
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const sidebar = document.getElementById('sidebar');
+        const navItems = document.querySelectorAll('.nav-item');
+        const navbarToggle = document.getElementById('navbarMenuToggle');
 
-            const profileMenu = document.getElementById('profileMenu');
-            const profileDropdown = document.getElementById('profileDropdown');
+        // Variáveis para o Dropdown
+        const profileMenu = document.getElementById('profileMenu');
+        const profileDropdown = document.getElementById('profileDropdown');
 
-            if (profileMenu && profileDropdown) {
-                profileMenu.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    profileMenu.classList.toggle('profile-menu-open');
-                });
-                document.addEventListener('click', (e) => {
-                    if (!profileMenu.contains(e.target) && profileMenu.classList.contains('profile-menu-open')) {
-                        profileMenu.classList.remove('profile-menu-open');
-                    }
-                });
-            }
+        // LÓGICA DO DROPDOWN (Toggle)
+        if (profileMenu && profileDropdown) {
+            profileMenu.addEventListener('click', (e) => {
+                e.stopPropagation(); // Previne fechar imediatamente
+                profileMenu.classList.toggle('profile-menu-open');
+            });
 
-
-            if (navbarToggle && sidebar) {
-                navbarToggle.addEventListener('click', () => {
-                    sidebar.classList.toggle('sidebar-fixed');
-                });
-            }
-
-            navItems.forEach(item => {
-                const parentDiv = item.querySelector('[data-toggle="submenu"]');
-                const submenu = item.querySelector('.submenu');
-                const arrow = parentDiv.querySelector('svg:last-child');
-
-                if (parentDiv && submenu) {
-                    let isExpanded = submenu.classList.contains('expanded');
-
-                    parentDiv.addEventListener('click', (e) => {
-                        if (sidebar.clientWidth > 100 || sidebar.classList.contains('sidebar-fixed')) {
-                            e.stopPropagation();
-                            isExpanded = !isExpanded;
-                            submenu.classList.toggle('expanded', isExpanded);
-
-                            if (arrow) {
-                                arrow.classList.toggle('rotate-180', isExpanded);
-                            }
-                        }
-                    });
+            // Fechar dropdown ao clicar fora
+            document.addEventListener('click', (e) => {
+                if (!profileMenu.contains(e.target) && profileMenu.classList.contains('profile-menu-open')) {
+                    profileMenu.classList.remove('profile-menu-open');
                 }
             });
+        }
 
-            sidebar.addEventListener('transitionend', () => {
-                const isSidebarExpanded = sidebar.clientWidth > 100 || sidebar.classList.contains('sidebar-fixed');
 
-                navItems.forEach(item => {
-                    const submenu = item.querySelector('.submenu');
-                    const arrow = item.querySelector('.submenu').previousElementSibling.querySelector('svg:last-child');
+        // 1. LÓGICA DO CLIQUE NO ÍCONE DA NAVBAR
+        if (navbarToggle && sidebar) {
+            navbarToggle.addEventListener('click', () => {
+                // Alterna a classe 'sidebar-fixed' que força a Sidebar a ficar expandida
+                sidebar.classList.toggle('sidebar-fixed');
+            });
+        }
 
-                    if (!isSidebarExpanded) {
-                        submenu.classList.remove('expanded');
-                        if (arrow) {
-                            arrow.classList.remove('rotate-180');
+        // 2. LÓGICA DE EXPANSÃO/TOGGLE DOS SUBMENUS
+        navItems.forEach(item => {
+            const parentDiv = item.querySelector('[data-toggle="submenu"]');
+            const submenu = item.querySelector('.submenu');
+            const arrow = parentDiv.querySelector('svg:last-child'); // A seta do menu principal
+
+            if (parentDiv && submenu) {
+                let isExpanded = submenu.classList.contains('expanded');
+
+                parentDiv.addEventListener('click', (e) => {
+                    // Permite o toggle se a sidebar estiver expandida (por hover OU por fixação)
+                    if (sidebar.clientWidth > 100 || sidebar.classList.contains('sidebar-fixed')) {
+                        e.stopPropagation();
+                        isExpanded = !isExpanded;
+                        submenu.classList.toggle('expanded', isExpanded);
+                        // Aplicar rotação na seta
+                        if(arrow) {
+                            arrow.classList.toggle('rotate-180', isExpanded);
                         }
                     }
                 });
+            }
+        });
+
+        // 3. AJUSTE VISUAL DA SETA NO FIM DA TRANSIÇÃO
+        sidebar.addEventListener('transitionend', () => {
+            const isSidebarExpanded = sidebar.clientWidth > 100 || sidebar.classList.contains('sidebar-fixed');
+
+            navItems.forEach(item => {
+                const submenu = item.querySelector('.submenu');
+                const arrow = item.querySelector('.submenu').previousElementSibling.querySelector('svg:last-child');
+
+                if (!isSidebarExpanded) {
+                    // Fechar o submenu se a sidebar for compactada
+                    submenu.classList.remove('expanded');
+                    // Resetar a seta para não rotacionada
+                    if(arrow) {
+                        arrow.classList.remove('rotate-180');
+                    }
+                }
             });
         });
-    </script>
+    });
+</script>
+<livewire:scripts />
 </body>
-
 </html>
