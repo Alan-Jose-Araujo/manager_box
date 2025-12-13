@@ -15,6 +15,10 @@ return new class extends Migration {
             $table->id();
             $table->enum('movement_type', collect(StockMovementType::cases())->pluck('value')->toArray());
             $table->decimal('quantity_moved', 10, 2);
+            $table->foreignId('company_id')
+            ->constrained('companies', 'id')
+            ->onUpdate('cascade')
+            ->onDelete('cascade');
             $table->foreignId('item_in_stock_id')
             ->constrained('items_in_stock', 'id')
             ->onUpdate('cascade')
