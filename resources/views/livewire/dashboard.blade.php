@@ -1,8 +1,6 @@
 <div>
     <div class="p-4 bg-white h-full">
 
-        {{-- {{ dd($this->getStockMovementsGroupedByMonth(\App\Enums\StockMovementType::CHECKIN)) }} --}}
-
         @livewire('navigation.breadcrumps', [
             'links' => [
                 'Relatórios' => '#',
@@ -62,7 +60,7 @@
                         class="bg-white rounded-xl shadow-lg p-6 h-36 flex flex-col justify-center border border-gray-900">
                         <h2 class="text-md font-semibold text-gray-800 mb-2">Rotatividade de estoque</h2>
                         {{-- BACKEND DATA: metrics['turnover'] --}}
-                        <p class="text-2xl font-bold text-gray-800">{{ $metricas['rotatividade'] }}</p>
+                        <p class="text-2xl font-bold text-gray-800">{{ $this->getWeeklyStockTurnover() }} itens esta semana</p>
                     </div>
 
                     <div class="bg-white rounded-xl shadow-lg p-6 h-36 border border-gray-900">

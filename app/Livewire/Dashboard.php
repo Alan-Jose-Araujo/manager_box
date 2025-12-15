@@ -18,6 +18,12 @@ class Dashboard extends Component
         $this->dashboardDataService = new DashboardDataService();
     }
 
+    public function getWeeklyStockTurnover()
+    {
+        $result = $this->dashboardDataService->getWeeklyStockTurnoverData();
+        return (float) $result->first()->quantity_moved;
+    }
+
     public function getStockMovementsGroupedByMonth(StockMovementType $movementType)
     {
         $result = $this->dashboardDataService->getThisYearStockMovementsGroupedByMonthData($movementType);

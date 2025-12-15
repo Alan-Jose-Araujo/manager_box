@@ -9,32 +9,54 @@ use Illuminate\Support\Facades\DB;
 
 class DashboardDataService
 {
+    public function getWeeklyStockTurnoverData()
+    {
+        $startOfWeek = Carbon::now()->startOfWeek()->format('Y-m-d');
+        $endOfWeek = Carbon::now()->endOfWeek()->format('Y-m-d');
+        $companyId = Auth::user()->company_id;
+        $results = DB::table('item_in_stock_movements as movements')
+            ->select(
+                DB::raw('SUM(movements.quantity_moved) as quantity_moved')
+            )->where(
+                'movements.company_id',
+                $companyId,
+            )->whereBetween(
+                'movements.created_at',
+                [
+                    $startOfWeek,
+                    $endOfWeek
+                ]
+            )->get();
+
+        return $results;
+    }
+
     public function getThisYearStockMovementsGroupedByMonthData(StockMovementType $movementType)
     {
         $companyId = Auth::user()->company_id;
         $firstDayOfYearDate = Carbon::parse('first day of January this year')->format('Y-m-d');
         $lastDayOfYearDate = Carbon::parse('last day of December this year')->format('Y-m-d');
         $results = DB::table('item_in_stock_movements as movements')
-        ->select(
-            DB::raw('MONTH(movements.created_at) as movement_month'),
-            DB::raw('SUM(movements.quantity_moved) as quantity_moved'),
-        )->where(
-            'movements.company_id',
-            $companyId,
-        )->where(
-            'movements.movement_type',
-            $movementType->value
-        )->whereBetween(
-            'movements.created_at',
-            [
-                $firstDayOfYearDate,
-                $lastDayOfYearDate,
-            ]
-        )->groupBy(
-            'movement_month',
-        )->orderBy(
-            'movement_month'
-        )->get();
+            ->select(
+                DB::raw('MONTH(movements.created_at) as movement_month'),
+                DB::raw('SUM(movements.quantity_moved) as quantity_moved'),
+            )->where(
+                'movements.company_id',
+                $companyId,
+            )->where(
+                'movements.movement_type',
+                $movementType->value
+            )->whereBetween(
+                'movements.created_at',
+                [
+                    $firstDayOfYearDate,
+                    $lastDayOfYearDate,
+                ]
+            )->groupBy(
+                'movement_month',
+            )->orderBy(
+                'movement_month'
+            )->get();
 
         return $results;
     }
