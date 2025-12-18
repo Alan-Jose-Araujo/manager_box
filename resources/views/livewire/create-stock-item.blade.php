@@ -14,8 +14,32 @@
             'subtitle' => 'Preencha todos os campos necessários'
         ])
 
-    @if ($currentTab === 1)
-        <form>
+        <div class="flex mb-4">
+            <button wire:click="setTab(1)" class="px-4 py-2 text-sm font-medium border-b-2
+                @if ($currentTab === 1)
+                    border-green-700 text-white bg-green-700
+                @else
+                    border-transparent text-gray-700 hover:text-green-700 hover:border-green-300
+                @endif
+                rounded-t-md transition-colors duration-150">
+                Geral
+            </button>
+            <button wire:click="setTab(2)" class="px-4 py-2 text-sm font-medium border-b-2
+                @if ($currentTab === 2)
+                    border-green-700 text-white bg-green-700
+                @else
+                    border-transparent text-gray-700 hover:text-green-700 hover:border-green-300
+                @endif
+                rounded-t-md transition-colors duration-150">
+                Complementos
+            </button>
+        </div>
+
+        <form method="" action="" class="" id="" >
+
+            @csrf
+
+            <div id="tab-1-content" class="{{ $currentTab === 1 ? '' : 'hidden' }}">
 
             <div class="space-y-4 mb-6">
                 <label for="nome" class="block text-sm font-medium text-red-600">Nome *</label>
@@ -84,10 +108,10 @@
                 <button type="button" class="px-4 py-2 text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300">Limpar</button>
                 <button wire:click.prevent="setTab(2)" type="button" class="px-4 py-2 text-white bg-green-700 rounded-lg hover:bg-green-600 transition duration-150">Próxima Aba</button>
             </div>
-        </form>
-    @endif
 
-    @if ($currentTab === 2)
+        </div>
+
+        <div id="tab-2-content" class="{{ $currentTab === 2 ? '' : 'hidden' }}">
         <div class="bg-white rounded-lg shadow-lg p-6">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
 
@@ -121,7 +145,10 @@
                 <button type="submit" class="px-4 py-2 text-white bg-green-700 rounded-lg hover:bg-green-600 transition duration-150">Salvar Item</button>
             </div>
         </div>
-    @endif
+
+    </div>
+        </form>
+
 
     </div>
 
