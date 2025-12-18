@@ -2,12 +2,17 @@
 
 namespace App\Livewire;
 
+use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
 class CreateStockItem extends Component
 {
     use WithFileUploads;
+
+    #[Title('Adicionar novo item ao estoque')]
+    #[Layout('components.layouts.app')]
 
     public $currentTab = 1;
 

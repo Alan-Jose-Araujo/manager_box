@@ -1,34 +1,21 @@
 <div>
 
-    {{-- HEADER E ABAS (TABS) --}}
-    <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
-        <h1 class="text-xl font-semibold text-gray-800 mb-2">Adicionar novo item ao estoque</h1>
-        <p class="text-gray-500 mb-4">Preencha todos os campos necessários</p>
+    <div class="p-4">
 
-        <div class="flex border-b border-gray-200">
-            <button wire:click="setTab(1)" class="px-4 py-2 text-sm font-medium border-b-2
-                @if ($currentTab === 1)
-                    border-green-700 text-white bg-green-700
-                @else
-                    border-transparent text-gray-700 hover:text-green-700 hover:border-green-300
-                @endif
-                rounded-t-md transition-colors duration-150">
-                Geral
-            </button>
-            <button wire:click="setTab(2)" class="px-4 py-2 text-sm font-medium border-b-2
-                @if ($currentTab === 2)
-                    border-green-700 text-white bg-green-700
-                @else
-                    border-transparent text-gray-700 hover:text-green-700 hover:border-green-300
-                @endif
-                rounded-t-md transition-colors duration-150">
-                Complementos
-            </button>
-        </div>
-    </div>
+         @livewire('navigation.breadcrumps', [
+            'links' => [
+                'Estoque' => '#',
+                'Adicionar novo' => '#'
+            ]
+        ])
+
+        @livewire('navigation.section-head-info', [
+            'title' => 'Adicionar novo item ao estoque',
+            'subtitle' => 'Preencha todos os campos necessários'
+        ])
 
     @if ($currentTab === 1)
-        <form class="bg-white rounded-lg shadow-lg p-6">
+        <form>
 
             <div class="space-y-4 mb-6">
                 <label for="nome" class="block text-sm font-medium text-red-600">Nome *</label>
@@ -135,5 +122,7 @@
             </div>
         </div>
     @endif
+
+    </div>
 
 </div>
