@@ -14,21 +14,35 @@ class DashboardDataService
         $startOfWeek = Carbon::now()->startOfWeek()->format('Y-m-d');
         $endOfWeek = Carbon::now()->endOfWeek()->format('Y-m-d');
         $companyId = Auth::user()->company_id;
-        $results = DB::table('item_in_stock_movements as movements')
+        $getResults = fn(StockMovementType $stockMovementType) =>
+         DB::table('item_in_stock_movements as movements')
             ->select(
                 DB::raw('SUM(movements.quantity_moved) as quantity_moved')
             )->where(
                 'movements.company_id',
                 $companyId,
+            )
+            ->where(
+                'movements.movement_type',
+                '=',
+                $stockMovementType->value
             )->whereBetween(
                 'movements.created_at',
                 [
                     $startOfWeek,
                     $endOfWeek
                 ]
-            )->get();
+            )->get()
+            ->first()
+            ->quantity_moved;
 
-        return $results;
+        $checkinMovedQuantity = $getResults(StockMovementType::CHECKIN);
+        $checkoutMovedQuantity = $getResults(StockMovementType::CHECKOUT);
+
+        return [
+            'checkin' => (float) $checkinMovedQuantity,
+            'checkout' => (float) $checkoutMovedQuantity
+        ];
     }
 
     public function getThisYearStockMovementsGroupedByMonthData(StockMovementType $movementType)
