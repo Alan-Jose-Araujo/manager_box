@@ -9,6 +9,24 @@ use Illuminate\Support\Facades\DB;
 
 class DashboardDataService
 {
+    public function getKPIReportsData()
+    {
+        $authUser = Auth::user();
+        $authCompany = $authUser->company;
+        $totalOfItems = $authCompany->itemsInStock()->count();
+        $totalOfCategories = $authCompany->itemInStockCategories()->count();
+        $totalStockValue = $authCompany->itemsInStock->reduce(function($carry, $item) {
+           return $carry + ($item->cost_price ?? 0);
+        }, 0);
+
+        return [
+            'total_of_items' => $totalOfItems,
+            'total_of_categories' => $totalOfCategories,
+            'total_stock_value' => $totalStockValue,
+            // 'total_stock_value' => 0,
+        ];
+    }
+
     public function getWeeklyStockTurnoverData()
     {
         $startOfWeek = Carbon::now()->startOfWeek()->format('Y-m-d');

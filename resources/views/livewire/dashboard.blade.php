@@ -15,6 +15,7 @@
 
         @php
             $weeklyTurnover = $this->getWeeklyStockTurnover();
+            $kpiReports = $this->getKPIReports();
         @endphp
 
         {{-- The main grid is the key, with 3 columns. --}}
@@ -73,11 +74,11 @@
                         <div class="h-20 flex flex-col justify-center items-start text-sm">
                             {{-- BACKEND DATA: Detailed Metrics --}}
                             <p class="text-gray-600">Total de itens: <span
-                                    class="font-bold text-gray-800">{{ $metricas['total_itens'] }}</span></p>
+                                    class="font-bold text-gray-800">{{ $kpiReports['total_of_items'] }}</span></p>
                             <p class="text-gray-600">Total de categorias: <span
-                                    class="font-bold text-gray-800">{{ $metricas['total_categorias'] }}</span></p>
+                                    class="font-bold text-gray-800">{{ $kpiReports['total_of_categories'] }}</span></p>
                             <p class="text-gray-600">Valor do estoque: <span
-                                    class="font-bold text-green-600">{{ $metricas['valor_estoque'] }}</span></p>
+                                    class="font-bold text-green-600">R$ {{ $kpiReports['total_stock_value'] }}</span></p>
                         </div>
                     </div>
                 </div>

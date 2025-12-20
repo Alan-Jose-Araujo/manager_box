@@ -18,6 +18,11 @@ class Dashboard extends Component
         $this->dashboardDataService = new DashboardDataService();
     }
 
+    public function getKPIReports()
+    {
+        return $this->dashboardDataService->getKPIReportsData();
+    }
+
     public function getWeeklyStockTurnover()
     {
         $result = $this->dashboardDataService->getWeeklyStockTurnoverData();
