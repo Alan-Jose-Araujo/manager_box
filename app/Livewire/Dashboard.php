@@ -18,6 +18,19 @@ class Dashboard extends Component
         $this->dashboardDataService = new DashboardDataService();
     }
 
+    public function getMonthlyCheckouts()
+    {
+        $result = $this->dashboardDataService->getMonthlyCheckoutsData();
+        $labels = $result->pluck('category_name')->toArray();
+        $colors = $result->pluck('category_color')->toArray();
+        $values = $result->pluck('total_quantity_moved')->toArray();
+        return [
+            'labels' => $labels,
+            'colors' => $colors,
+            'values' => $values,
+        ];
+    }
+
     public function getKPIReports()
     {
         return $this->dashboardDataService->getKPIReportsData();
@@ -42,7 +55,6 @@ class Dashboard extends Component
             $monthDate = Carbon::create(date('Y'), $label);
             return $monthDate->format('F');
         }, $labels);
-
         return [
             'labels' => $labelsAsMonthNames,
             'values' => $values,
