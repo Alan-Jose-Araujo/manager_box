@@ -3,20 +3,43 @@
 namespace App\Services;
 
 use App\Enums\StockMovementType;
+use App\Models\ItemInStockCategory;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class DashboardDataService
 {
+    public function getMonthlyCheckoutsData()
+    {
+        $companyId = Auth::user()->company_id;
+        $startOfTheMonth = Carbon::now()->startOfMonth()->format('Y-m-d');
+        $endOfTheMonth = Carbon::now()->endOfMonth()->format('Y-m-d');
+        $results = DB::table('item_in_stock_categories as c')
+        ->select(
+            'c.name as category_name',
+            'c.color_hex_code as category_color',
+            DB::raw('SUM(m.quantity_moved) as total_quantity_moved')
+        )->join('item_in_stock_has_category as ic', 'ic.item_in_stock_category_id', '=', 'c.id')
+        ->join('items_in_stock as i', 'i.id', '=', 'ic.item_in_stock_id')
+        ->join('item_in_stock_movements as m', 'm.item_in_stock_id', '=', 'i.id')
+        ->where('m.movement_type', 'checkout')
+        ->where('m.company_id', $companyId)
+        ->whereBetween('m.created_at', [$startOfTheMonth, $endOfTheMonth])
+        ->groupBy('c.id', 'c.name', 'c.color_hex_code')
+        ->orderByDesc('total_quantity_moved')
+        ->get();
+        return $results;
+    }
+
     public function getKPIReportsData()
     {
         $authUser = Auth::user();
         $authCompany = $authUser->company;
         $totalOfItems = $authCompany->itemsInStock()->count();
         $totalOfCategories = $authCompany->itemInStockCategories()->count();
-        $totalStockValue = $authCompany->itemsInStock->reduce(function($carry, $item) {
-           return $carry + ($item->cost_price ?? 0);
+        $totalStockValue = $authCompany->itemsInStock->reduce(function ($carry, $item) {
+            return $carry + ($item->cost_price ?? 0);
         }, 0);
 
         return [
@@ -33,26 +56,26 @@ class DashboardDataService
         $endOfWeek = Carbon::now()->endOfWeek()->format('Y-m-d');
         $companyId = Auth::user()->company_id;
         $getResults = fn(StockMovementType $stockMovementType) =>
-         DB::table('item_in_stock_movements as movements')
-            ->select(
-                DB::raw('SUM(movements.quantity_moved) as quantity_moved')
-            )->where(
-                'movements.company_id',
-                $companyId,
-            )
-            ->where(
-                'movements.movement_type',
-                '=',
-                $stockMovementType->value
-            )->whereBetween(
-                'movements.created_at',
-                [
-                    $startOfWeek,
-                    $endOfWeek
-                ]
-            )->get()
-            ->first()
-            ->quantity_moved;
+            DB::table('item_in_stock_movements as movements')
+                ->select(
+                    DB::raw('SUM(movements.quantity_moved) as quantity_moved')
+                )->where(
+                    'movements.company_id',
+                    $companyId,
+                )
+                ->where(
+                    'movements.movement_type',
+                    '=',
+                    $stockMovementType->value
+                )->whereBetween(
+                    'movements.created_at',
+                    [
+                        $startOfWeek,
+                        $endOfWeek
+                    ]
+                )->get()
+                ->first()
+                ->quantity_moved;
 
         $checkinMovedQuantity = $getResults(StockMovementType::CHECKIN);
         $checkoutMovedQuantity = $getResults(StockMovementType::CHECKOUT);
