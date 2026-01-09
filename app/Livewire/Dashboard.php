@@ -20,7 +20,7 @@ class Dashboard extends Component
 
     public function getMonthlyCheckouts()
     {
-        $result = $this->dashboardDataService->getMonthlyCheckoutsData();
+        $result = $this->dashboardDataService->getMonthlyCheckoutsGroupedByCategoryData();
         $labels = $result->pluck('category_name')->toArray();
         $colors = $result->pluck('category_color')->toArray();
         $values = $result->pluck('total_quantity_moved')->toArray();

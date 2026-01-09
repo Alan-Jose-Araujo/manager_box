@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use App\Enums\StockMovementType;
-use App\Models\ItemInStockCategory;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -15,24 +14,24 @@ class DashboardDataService
         $companyId = Auth::user()->company_id;
         $startOfTheMonth = Carbon::now()->startOfMonth()->toDateTimeString();
         $endOfTheMonth = Carbon::now()->endOfMonth()->toDateTimeString();
-        $results = DB::table('item_in_stock_categories as c')
-            ->select(
-                'c.name as category_name',
-                'c.color_hex_code as category_color',
-                DB::raw('SUM(m.quantity_moved) as total_quantity_moved')
-            )->join('item_in_stock_categories as c', 'ic.item_in_stock_category_id', '=', 'c.id')
-            ->join('items_in_stock as i', 'i.id', '=', 'ic.item_in_stock_id')
-            ->join('item_in_stock_movements as m', 'm.item_in_stock_id', '=', 'i.id')
-            ->where('m.company_id', $companyId)
-            ->where('m.movement_type', StockMovementType::CHECKOUT->value)
-            ->where('m.created_at', '>=', $startOfTheMonth)
-            ->where('m.created_at', '<=', $endOfTheMonth)
-            ->groupBy(
-                'c.id',
-                'c.name',
-                'c.color_hex_code'
-            )->orderBy('total_quantity_moved', 'desc')
-            ->get();
+        $results = DB::table('item_in_stock_categories AS c')
+        ->select(
+            'c.name as category_name',
+            'c.color_hex_code as category_color',
+            DB::raw('SUM(m.quantity_moved) as total_quantity_moved')
+        )->join('item_in_stock_has_category as ic', 'ic.item_in_stock_category_id', '=', 'c.id')
+        ->join('items_in_stock as i', 'i.id', '=', 'ic.item_in_stock_id')
+        ->join('item_in_stock_movements as m', 'm.item_in_stock_id', '=', 'i.id')
+        ->where('m.company_id', $companyId)
+        ->where('m.movement_type', StockMovementType::CHECKOUT->value)
+        ->where('m.created_at', '>=', $startOfTheMonth)
+        ->where('m.created_at', '<=', $endOfTheMonth)
+        ->groupBy(
+            'c.id',
+            'c.name',
+            'c.color_hex_code'
+        )->orderBy('total_quantity_moved', 'desc')
+        ->get();
         return $results;
     }
 
