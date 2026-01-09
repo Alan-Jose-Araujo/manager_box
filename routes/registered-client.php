@@ -8,6 +8,7 @@
  */
 
 use App\Http\Controllers\RegisteredClientController;
+use App\Http\Middleware\RedirectToDashboardIfAlreadyAuthenticated;
 use App\Livewire\Register;
 use Illuminate\Support\Facades\Route;
 use Spatie\Permission\Middleware\RoleMiddleware;
@@ -21,7 +22,10 @@ Route::prefix('client')
          * Component: Register
          * Name: client.show_register_form
          */
-        Route::get('/register', Register::class)->name('client.show_register_form');
+        Route::get('/register', Register::class)
+        ->middleware([
+            RedirectToDashboardIfAlreadyAuthenticated::class,
+        ])->name('client.show_register_form');
 
         /**
          * Url: client/register
