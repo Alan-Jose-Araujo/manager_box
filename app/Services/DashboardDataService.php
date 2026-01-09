@@ -10,25 +10,29 @@ use Illuminate\Support\Facades\DB;
 
 class DashboardDataService
 {
-    public function getMonthlyCheckoutsData()
+    public function getMonthlyCheckoutsGroupedByCategoryData()
     {
         $companyId = Auth::user()->company_id;
-        $startOfTheMonth = Carbon::now()->startOfMonth()->format('Y-m-d');
-        $endOfTheMonth = Carbon::now()->endOfMonth()->format('Y-m-d');
+        $startOfTheMonth = Carbon::now()->startOfMonth()->toDateTimeString();
+        $endOfTheMonth = Carbon::now()->endOfMonth()->toDateTimeString();
         $results = DB::table('item_in_stock_categories as c')
-        ->select(
-            'c.name as category_name',
-            'c.color_hex_code as category_color',
-            DB::raw('SUM(m.quantity_moved) as total_quantity_moved')
-        )->join('item_in_stock_has_category as ic', 'ic.item_in_stock_category_id', '=', 'c.id')
-        ->join('items_in_stock as i', 'i.id', '=', 'ic.item_in_stock_id')
-        ->join('item_in_stock_movements as m', 'm.item_in_stock_id', '=', 'i.id')
-        ->where('m.movement_type', 'checkout')
-        ->where('m.company_id', $companyId)
-        ->whereBetween('m.created_at', [$startOfTheMonth, $endOfTheMonth])
-        ->groupBy('c.id', 'c.name', 'c.color_hex_code')
-        ->orderByDesc('total_quantity_moved')
-        ->get();
+            ->select(
+                'c.name as category_name',
+                'c.color_hex_code as category_color',
+                DB::raw('SUM(m.quantity_moved) as total_quantity_moved')
+            )->join('item_in_stock_categories as c', 'ic.item_in_stock_category_id', '=', 'c.id')
+            ->join('items_in_stock as i', 'i.id', '=', 'ic.item_in_stock_id')
+            ->join('item_in_stock_movements as m', 'm.item_in_stock_id', '=', 'i.id')
+            ->where('m.company_id', $companyId)
+            ->where('m.movement_type', StockMovementType::CHECKOUT->value)
+            ->where('m.created_at', '>=', $startOfTheMonth)
+            ->where('m.created_at', '<=', $endOfTheMonth)
+            ->groupBy(
+                'c.id',
+                'c.name',
+                'c.color_hex_code'
+            )->orderBy('total_quantity_moved', 'desc')
+            ->get();
         return $results;
     }
 
