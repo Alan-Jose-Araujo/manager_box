@@ -16,6 +16,7 @@
         @php
             $weeklyTurnover = $this->getWeeklyStockTurnover();
             $kpiReports = $this->getKPIReports();
+            $monthlyCheckouts = $this->getMonthlyCheckouts();
         @endphp
 
         {{-- The main grid is the key, with 3 columns. --}}
@@ -42,18 +43,27 @@
                     </div>
 
                     <div class="bg-white rounded-xl shadow-lg p-6 h-36 relative border border-gray-900">
+                        @php
+                            $monthlyCheckoutsLabels = $monthlyCheckouts->pluck('category_name')->toArray();
+                            $monthlyCheckoutsColors = $monthlyCheckouts->pluck('category_color')->toArray();
+                            $monthlyCheckoutsValues = $monthlyCheckouts->pluck('total_quantity_moved')->toArray();
+                            $monthlyCheckoutsSplittedData = [
+                                'labels' => $monthlyCheckoutsLabels,
+                                'colors' => $monthlyCheckoutsColors,
+                                'values' => $monthlyCheckoutsValues,
+                            ];
+                        @endphp
                         <h2 class="text-md font-semibold text-gray-800 mb-2">Saídas neste mês</h2>
                         <div class="h-20 flex items-center justify-start relative">
                             <div class="w-1/2 h-full">
                                 <canvas id="saidasMesChart"></canvas>
                             </div>
                             <div class="text-xs ml-4 space-y-1">
-                                <div class="flex items-center"><span
-                                        class="w-2 h-2 rounded-full bg-blue-500 mr-2"></span>Placas de vídeo</div>
-                                <div class="flex items-center"><span
-                                        class="w-2 h-2 rounded-full bg-red-500 mr-2"></span>Processadores</div>
-                                <div class="flex items-center"><span
-                                        class="w-2 h-2 rounded-full bg-yellow-500 mr-2"></span>Placas mãe</div>
+                               @foreach ($monthlyCheckouts as $monthlyCheckout)
+                                    <div class="flex items-center"><span
+                                        style="background-color: {{ $monthlyCheckout->category_color }}"
+                                        class="w-2 h-2 rounded-full mr-2"></span>{{ $monthlyCheckout->category_name }}</div>
+                               @endforeach
                             </div>
                             <div
                                 class="absolute top-1/2 left-[18%] transform -translate-x-1/2 -translate-y-1/2 font-bold text-2xl text-gray-800">
@@ -108,6 +118,7 @@
         window.itensCategoriaData = @json($this->getItemsCountByCategory());
         window.precoMedioData = @json($this->getAveragePriceByCategory());
         window.metricasData = @json($metricas);
+        window.monthlyCheckoutsData = @json($monthlyCheckoutsSplittedData);
 
         document.addEventListener("DOMContentLoaded", function () {
 
