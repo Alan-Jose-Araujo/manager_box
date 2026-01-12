@@ -52,13 +52,16 @@
                                 'colors' => $monthlyCheckoutsColors,
                                 'values' => $monthlyCheckoutsValues,
                             ];
+                            $totalMonthlyCheckoutsValues = array_reduce($monthlyCheckoutsSplittedData['values'], function($carry, $value) {
+                                return $carry + $value;
+                            }, 0);
                         @endphp
                         <h2 class="text-md font-semibold text-gray-800 mb-2">Saídas neste mês</h2>
                         <div class="h-20 flex items-center justify-start relative">
-                            <div class="w-1/2 h-full">
+                            <div class="h-full">
                                 <canvas id="saidasMesChart"></canvas>
                             </div>
-                            <div class="text-xs ml-4 space-y-1">
+                            <div class="text-xs ml-[15%] space-y-1">
                                @foreach ($monthlyCheckouts as $monthlyCheckout)
                                     <div class="flex items-center"><span
                                         style="background-color: {{ $monthlyCheckout->category_color }}"
@@ -66,8 +69,8 @@
                                @endforeach
                             </div>
                             <div
-                                class="absolute top-1/2 left-[18%] transform -translate-x-1/2 -translate-y-1/2 font-bold text-2xl text-gray-800">
-                                {{ $metricas['saidas_mes'] }}</div>
+                                class="absolute top-1/2 left-[22%] transform -translate-x-1/2 -translate-y-1/2 font-bold text-2xl text-gray-800">
+                                {{ $totalMonthlyCheckoutsValues }}</div>
                         </div>
                     </div>
 
@@ -229,15 +232,15 @@
             new Chart(document.getElementById('saidasMesChart'), {
                 type: 'doughnut',
                 data: {
-                    labels: ['Saídas', 'Meta Restante'],
+                    labels: monthlyCheckoutsData.labels,
                     // USANDO DADOS DO BACKEND
                     datasets: [{
-                        data: [metricasData.saidas_mes, 100 - metricasData.saidas_mes],
-                        backgroundColor: [COLORS[3], '#E5E7EB'],
+                        data: monthlyCheckoutsData.values,
+                        backgroundColor: monthlyCheckoutsData.colors,
                         borderWidth: 0,
-                        circumference: 180,
-                        rotation: 270,
-                        cutout: '80%',
+                        // circumference: 180,
+                        // rotation: 270,
+                        // cutout: '80%',
                     }]
                 },
                 options: {
@@ -245,7 +248,7 @@
                     maintainAspectRatio: true,
                     plugins: {
                         legend: { display: false },
-                        tooltip: { enabled: false },
+                        tooltip: { enabled: true },
                         datalabels: { display: false }
                     },
                 }
