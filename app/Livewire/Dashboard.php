@@ -20,15 +20,9 @@ class Dashboard extends Component
 
     public function getMonthlyCheckouts()
     {
+        // The labels, colors and values will be extracted on the view.
         $result = $this->dashboardDataService->getMonthlyCheckoutsGroupedByCategoryData();
-        $labels = $result->pluck('category_name')->toArray();
-        $colors = $result->pluck('category_color')->toArray();
-        $values = $result->pluck('total_quantity_moved')->toArray();
-        return [
-            'labels' => $labels,
-            'colors' => $colors,
-            'values' => $values,
-        ];
+        return $result;
     }
 
     public function getKPIReports()
