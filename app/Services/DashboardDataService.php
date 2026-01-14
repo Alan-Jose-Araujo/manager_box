@@ -9,6 +9,27 @@ use Illuminate\Support\Facades\DB;
 
 class DashboardDataService
 {
+    public function getTopItemsWithoutTurnover(int $limit = 5)
+    {
+        $companyId = Auth::user()->company_id;
+        $now = Carbon::now()->toDateTimeString();
+        $results = DB::table('items_in_stock as i')
+        ->selectRaw(
+            'i.id as item_id, i.name as item_name, DATEDIFF(?, MAX(m.created_at)) as stuck_days',
+            [$now]
+        )->join('item_in_stock_movements as m', 'm.item_in_stock_id', '=', 'i.id')
+        ->where('m.company_id', $companyId)
+        ->groupBy(
+            'i.id',
+            'i.name'
+        )->orderBy(
+            'stuck_days',
+            'DESC'
+        )->limit($limit)
+        ->get();
+        return $results;
+    }
+
     public function getMonthlyCheckoutsGroupedByCategoryData()
     {
         $companyId = Auth::user()->company_id;
