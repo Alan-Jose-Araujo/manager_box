@@ -37,7 +37,7 @@
                 <div class="grid grid-cols-2 gap-6">
                     <div class="bg-white rounded-xl shadow-lg p-6 h-36 border border-gray-900">
                         <h2 class="text-md font-semibold text-gray-800 mb-2">Produtos sem rotatividade</h2>
-                        <div class="h-20 p-1">
+                        <div class="h-full p-1">
                             <canvas id="produtosSemRotatividadeChart"></canvas>
                         </div>
                     </div>
@@ -122,6 +122,7 @@
         window.precoMedioData = @json($this->getAveragePriceByCategory());
         window.metricasData = @json($metricas);
         window.monthlyCheckoutsData = @json($monthlyCheckoutsSplittedData);
+        window.topItemsWithoutTurnover = @json($this->getTopItemsWithoutTurnover());
 
         document.addEventListener("DOMContentLoaded", function () {
 
@@ -206,25 +207,61 @@
             new Chart(document.getElementById('produtosSemRotatividadeChart'), {
                 type: 'bar',
                 data: {
-                    labels: metricasData.produtos_parados.labels,
+                    labels: topItemsWithoutTurnover.labels,
                     datasets: [{
                         label: 'Dias parados',
-                        data: metricasData.produtos_parados.data,
-                        backgroundColor: COLORS[5],
-                        barThickness: 10,
+                        data: topItemsWithoutTurnover.values,
+                        backgroundColor: Array.isArray(topItemsWithoutTurnover.colors) ? topItemsWithoutTurnover.colors : [topItemsWithoutTurnover.colors],
+                        maxBarThickness: 14, // Lower thickness for more space
+                        minBarLength: 4,
+                        borderRadius: 6,
+                        barPercentage: 0.35, // More margin between bars
+                        categoryPercentage: 0.5 // More margin between groups
                     }]
                 },
                 options: {
                     indexAxis: 'y',
                     responsive: true,
                     maintainAspectRatio: false,
+                    layout: {
+                        padding: {
+                            top: 8,
+                            bottom: 8,
+                            left: 0,
+                            right: 0
+                        }
+                    },
                     plugins: {
-                        legend: { position: 'bottom' },
+                        legend: { display: false },
+                        tooltip: {
+                            enabled: true,
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) label += ': ';
+                                    if (context.parsed.x !== null) label += context.parsed.x + ' dias';
+                                    return label;
+                                }
+                            }
+                        },
                         datalabels: { display: false }
                     },
                     scales: {
-                        x: { beginAtZero: true, grid: { display: false } },
-                        y: { grid: { display: false } }
+                        x: {
+                            beginAtZero: true,
+                            grid: { display: false },
+                            title: { display: true, text: 'Dias parados', font: { size: 12 } }
+                        },
+                        y: {
+                            grid: { display: false },
+                            ticks: {
+                                autoSkip: false,
+                                font: { size: 12 },
+                                callback: function(value, index, values) {
+                                    return topItemsWithoutTurnover.labels && topItemsWithoutTurnover.labels[index] ? topItemsWithoutTurnover.labels[index] : value;
+                                }
+                            }
+                        }
                     }
                 }
             });

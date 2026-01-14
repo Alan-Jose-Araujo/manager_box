@@ -18,11 +18,22 @@ class Dashboard extends Component
         $this->dashboardDataService = new DashboardDataService();
     }
 
+    public function getTopItemsWithoutTurnover(int $limit = 5, int $stuckDays = 5)
+    {
+        $result = $this->dashboardDataService->getTopItemsWithoutTurnoverData($limit, $stuckDays);
+        $itemsName = $result->pluck('item_name')->toArray();
+        $stuckDays = $result->pluck('stuck_days')->toArray();
+        $categoryColors = $result->pluck('category_color')->toArray();
+        return [
+            'labels' => $itemsName,
+            'values' => $stuckDays,
+            'colors' => $categoryColors,
+        ];
+    }
+
     public function getMonthlyCheckouts()
     {
-        // The labels, colors and values will be extracted on the view.
-        $result = $this->dashboardDataService->getMonthlyCheckoutsGroupedByCategoryData();
-        return $result;
+        return $this->dashboardDataService->getMonthlyCheckoutsGroupedByCategoryData();
     }
 
     public function getKPIReports()

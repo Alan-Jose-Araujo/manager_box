@@ -9,25 +9,36 @@ use Illuminate\Support\Facades\DB;
 
 class DashboardDataService
 {
-    public function getTopItemsWithoutTurnover(int $limit = 5)
+    public function getTopItemsWithoutTurnoverData(int $limit, int $stuckDays)
     {
         $companyId = Auth::user()->company_id;
         $now = Carbon::now()->toDateTimeString();
+        // Query items and left join category
         $results = DB::table('items_in_stock as i')
-        ->selectRaw(
-            'i.id as item_id, i.name as item_name, DATEDIFF(?, MAX(m.created_at)) as stuck_days',
-            [$now]
-        )->join('item_in_stock_movements as m', 'm.item_in_stock_id', '=', 'i.id')
-        ->where('m.company_id', $companyId)
-        ->groupBy(
-            'i.id',
-            'i.name'
-        )->orderBy(
-            'stuck_days',
-            'DESC'
-        )->limit($limit)
-        ->get();
-        return $results;
+            ->selectRaw(
+                'i.id as item_id, i.name as item_name, DATEDIFF(?, MAX(m.created_at)) as stuck_days, c.color_hex_code as category_color',
+                [$now]
+            )
+            ->join('item_in_stock_movements as m', 'm.item_in_stock_id', '=', 'i.id')
+            ->leftJoin('item_in_stock_has_category as ic', 'ic.item_in_stock_id', '=', 'i.id')
+            ->leftJoin('item_in_stock_categories as c', 'c.id', '=', 'ic.item_in_stock_category_id')
+            ->where('m.company_id', $companyId)
+            ->having('stuck_days', '>', $stuckDays)
+            ->groupBy('i.id', 'i.name', 'c.color_hex_code')
+            ->orderBy('stuck_days', 'DESC')
+            ->limit($limit)
+            ->get();
+
+        // Map results to ensure every item has a color
+        $finalResults = $results->map(function ($item, $idx) {
+            if (!$item->category_color) {
+                // Assign a random color from the palette if no category color
+                $item->category_color = fake()->hexColor();
+            }
+            return $item;
+        });
+
+        return $finalResults;
     }
 
     public function getMonthlyCheckoutsGroupedByCategoryData()
