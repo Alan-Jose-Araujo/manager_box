@@ -35,7 +35,7 @@
             </button>
         </div>
 
-        <form method="" action="" class="" id="">
+        <form method="POST" action="" class="" id="" enctype="multipart/form-data">
 
             @csrf
 
