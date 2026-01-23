@@ -34,7 +34,7 @@ class ItemInStockFactory extends Factory
             'cost_price' => fake()->randomFloat(2, 1, 1000),
             'sale_price' => fake()->randomFloat(2, 0, 1000),
             'is_active' => true,
-            'company_id' => Company::factory(),
+            'company_id' => Company::first()->id,
             'brand_id' => Brand::factory(),
             'warehouse_id' => Warehouse::factory(),
         ];
