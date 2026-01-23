@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Services\ItemInStockService;
 use Exception;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
 class ItemInStockController extends Controller
@@ -48,10 +49,11 @@ class ItemInStockController extends Controller
             'maximum_quantity' => 'nullable|numeric',
             'cost_price' => 'required|numeric',
             'sale_price' => 'nullable|numeric',
-            'company_id' => 'required|integer|exists:companies,id',
+            'brand_id' => 'nullable|numeric|exists:brands,id',
             'warehouse_id' => 'required|integer|exists:warehouses,id',
             'illustration_picture_path' => 'nullable|file|image|max:2048',
         ]);
+        $data['company_id'] = Auth::user()->company_id;
 
         $item = $this->itemInStockService->create($data);
         return response()->json([
