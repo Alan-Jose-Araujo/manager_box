@@ -1,6 +1,8 @@
 import axios from 'axios';
 import { Chart } from 'chart.js/auto';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
+import Alpine from 'alpinejs';
+import { mask } from '@alpinejs/mask';
 
 window.axios = axios;
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
@@ -24,3 +26,5 @@ const CHARTJS_NO_DATA_PLUGIN = {
 Chart.register(ChartDataLabels);
 Chart.register(CHARTJS_NO_DATA_PLUGIN);
 window.Chart = Chart;
+
+Alpine.plugin(mask);
