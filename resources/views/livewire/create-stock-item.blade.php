@@ -81,11 +81,10 @@
                 </div>
 
                 <div class="mb-6">
-                     <x-textarea label="Complemento" class="resize-none" wire:model="complemento" name="description" placeholder="Adicione informações adicionais..." maxlength="500" hint="Máximo de 500 caracteres" rows="4" />
+                     <x-textarea label="Complemento" class="resize-none" wire:model="complemento" name="description" placeholder="Adicione informações adicionais..." maxlength="500" hint="Máximo de 500 caracteres." rows="4" />
                 </div>
 
                 <div class="flex justify-end space-x-4">
-                    <button type="button" class="px-4 py-2 text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300">Limpar</button>
                     <button wire:click.prevent="setTab(2)" type="button" class="px-4 py-2 text-white bg-green-700 rounded-lg hover:bg-green-600 transition duration-150">Próxima Aba</button>
                 </div>
 
