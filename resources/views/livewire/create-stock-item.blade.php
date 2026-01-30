@@ -58,7 +58,7 @@
 
                 <div class="grid grid-cols-3 gap-6 mb-6">
                     <div>
-                        <x-input x-mask="9999999999.99" label="Quantidade" wire:model.live.debounce.500ms="quantidade" name="quantity" id="quantity" maxlength="13" />
+                        <x-input x-mask="9999999999.99" label="Quantidade" wire:model.live.debounce.500ms="quantidade" required name="quantity" id="quantity" maxlength="13" />
                     </div>
                     <div>
                         <x-input x-mask="9999999999.99" label="Quantidade mínima" wire:model.live.debounce.500ms="quantidade_minima" name="minimum_quantity" id="minimum_quantity" maxlength="13" />
