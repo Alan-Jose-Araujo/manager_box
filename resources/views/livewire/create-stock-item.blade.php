@@ -35,7 +35,7 @@
             </button>
         </div>
 
-        <form method="POST" action="" class="" id="" enctype="multipart/form-data">
+        <form method="POST" action="{{ route('stock.create_item') }}" class="" id="" enctype="multipart/form-data" novalidate>
 
             @csrf
 

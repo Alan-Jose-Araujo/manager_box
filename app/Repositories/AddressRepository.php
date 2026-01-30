@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Interfaces\Interfaces\FilteredIndexer;
+use App\Interfaces\FilteredIndexer;
 use App\Models\Address;
 use App\Traits\Traits\DefineFilters;
 use Illuminate\Pagination\LengthAwarePaginator;
