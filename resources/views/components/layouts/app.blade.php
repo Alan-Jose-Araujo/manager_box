@@ -220,7 +220,7 @@
                 <div id="profileMenu" class="profile-menu relative cursor-pointer">
                     <div
                         class="w-10 h-10 rounded-full overflow-hidden shrink-0 border-2 border-transparent hover:border-gray-500 transition-colors duration-200">
-                        <img src="{{ asset('storage/' . $authUser->profile_picture_path ) ?? asset('images/default_user_icon.png') }}" alt="{{ $authUser->name }}"
+                        <img src="{{ $authUser->profile_picture_path ? asset('storage/' . $authUser->profile_picture_path) : asset('images/default_user_icon.png') }}" alt="{{ $authUser->name }}"
                             class="w-full h-full object-cover">
                     </div>
 
@@ -229,7 +229,7 @@
                         <div class="p-4 border-b border-gray-200">
                             <div class="flex items-center space-x-3">
                                 <div class="w-12 h-12 rounded-full overflow-hidden shrink-0">
-                                    <img src="{{ asset('storage/' . $authUser->profile_picture_path ) ?? asset('images/default_user_icon.png') }}" alt="{{ $authUser->name }}"
+                                    <img src="{{ $authUser->profile_picture_path ? asset('storage/' . $authUser->profile_picture_path) : asset('images/default_user_icon.png') }}" alt="{{ $authUser->name }}"
                                         class="w-full h-full object-cover">
                                 </div>
                                 <div>
