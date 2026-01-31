@@ -34,7 +34,7 @@
             </button>
         </div>
 
-        <form method="POST" action="{{ route('stock.create_item') }}" class="" id="" wire:submit.prevent="submit" enctype="multipart/form-data" novalidate>
+        <form method="POST" action="{{ route('stock.create_item') }}" class="" id="" enctype="multipart/form-data" novalidate>
 
             @csrf
 
