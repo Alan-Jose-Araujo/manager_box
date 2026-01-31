@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\Stock\ItemInStockCreated;
 use Illuminate\Http\Request;
 use App\Services\ItemInStockService;
 use Exception;
@@ -42,7 +43,9 @@ class ItemInStockController extends Controller
         $data = $request->all();
         $data['company_id'] = Auth::user()->company_id;
 
-        $this->itemInStockService->create($data);
+        $item = $this->itemInStockService->create($data);
+
+        event(new ItemInStockCreated($item));
 
         Alert::success('Item cadastrado com sucesso!');
 
