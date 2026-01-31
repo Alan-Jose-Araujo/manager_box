@@ -3,4 +3,5 @@
 return [
     App\Providers\AppServiceProvider::class,
     App\Providers\MacroServiceProvider::class,
+    \RealRashid\SweetAlert\SweetAlertServiceProvider::class,
 ];

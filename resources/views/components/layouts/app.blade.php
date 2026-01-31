@@ -97,7 +97,7 @@
 </head>
 
 <body class="flex h-screen overflow-hidden">
-
+    @include('sweetalert::alert')
     <aside id="sidebar" class="sidebar flex flex-col p-4 z-20">
         <div class="flex items-center justify-start h-16 mb-4">
             <img src="{{ asset('images/manager_box_logo.svg') }}" alt="Logo" class="w-12 h-12 shrink-0">
