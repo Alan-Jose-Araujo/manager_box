@@ -105,8 +105,12 @@
                     </div>
 
                     {{-- (Toggle Switch) --}}
-                    <div class="flex items-center space-x-4 mb-6">
+                    <div class="flex items-center space-x-4 mb-3">
                         <x-checkbox label="Ativo" wire:model="ativo" name="is_active" />
+                    </div>
+
+                    <div class="flex items-center space-x-4 mb-6">
+                        <x-checkbox label="Ir para listagem após o cadastro" wire:model="ir_para_listagem" name="go_to_list" />
                     </div>
 
                     <div class="flex justify-start space-x-4 mt-6">

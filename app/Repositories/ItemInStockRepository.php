@@ -59,6 +59,7 @@ class ItemInStockRepository implements FilteredIndexer
         $data['maximum_quantity'] = (double) $data['maximum_quantity'];
         $data['cost_price'] = (double) $data['cost_price'];
         $data['sale_price'] = (double) $data['sale_price'];
+        $data['is_active'] = (boolean) $data['is_active'];
 
         return ItemInStock::create($data);
     }

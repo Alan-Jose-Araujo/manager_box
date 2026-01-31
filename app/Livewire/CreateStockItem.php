@@ -100,7 +100,10 @@ class CreateStockItem extends Component
     public $armazem;
 
     #[Validate('boolean')]
-    public $ativo = true; // toggle
+    public $ativo = true;
+
+    #[Validate('boolean')]
+    public $ir_para_listagem = false;
 
     public $unidades_medida_disponiveis = [];
 

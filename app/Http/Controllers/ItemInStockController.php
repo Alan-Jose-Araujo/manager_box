@@ -7,6 +7,7 @@ use App\Services\ItemInStockService;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class ItemInStockController extends Controller
 {
@@ -41,11 +42,15 @@ class ItemInStockController extends Controller
         $data = $request->all();
         $data['company_id'] = Auth::user()->company_id;
 
-        $item = $this->itemInStockService->create($data);
-        return response()->json([
-            'success' => true,
-            'item' => $item,
-        ], 201);
+        $this->itemInStockService->create($data);
+
+        Alert::success('Item cadastrado com sucesso!');
+
+        if(isset($data['go_to_list'])) {
+            return redirect()->route('stock.list');
+        }
+
+        return redirect()->back();
     }
 
     public function show(string $id)
