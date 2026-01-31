@@ -54,6 +54,12 @@ class ItemInStockRepository implements FilteredIndexer
      */
     public function createItemInStock(array $data): ItemInStock
     {
+        $data['quantity'] = (double) $data['quantity'];
+        $data['minimum_quantity'] = (double) $data['minimum_quantity'];
+        $data['maximum_quantity'] = (double) $data['maximum_quantity'];
+        $data['cost_price'] = (double) $data['cost_price'];
+        $data['sale_price'] = (double) $data['sale_price'];
+
         return ItemInStock::create($data);
     }
 

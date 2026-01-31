@@ -38,22 +38,7 @@ class ItemInStockController extends Controller
 
     public function store(Request $request)
     {
-        dd($request);
-        // $data = $request->validate([
-        //     'name' => 'required|string|max:255',
-        //     'trade_name' => 'nullable|string',
-        //     'description' => 'nullable|string',
-        //     'sku' => 'nullable|string|max:50|unique:items_in_stock,sku',
-        //     'unity_of_measure' => 'required|string',
-        //     'quantity' => 'numeric',
-        //     'minimum_quantity' => 'numeric',
-        //     'maximum_quantity' => 'nullable|numeric',
-        //     'cost_price' => 'required|numeric',
-        //     'sale_price' => 'nullable|numeric',
-        //     'brand_id' => 'nullable|numeric|exists:brands,id',
-        //     'warehouse_id' => 'required|integer|exists:warehouses,id',
-        //     'illustration_picture_path' => 'nullable|file|image|max:2048',
-        // ]);
+        $data = $request->all();
         $data['company_id'] = Auth::user()->company_id;
 
         $item = $this->itemInStockService->create($data);
