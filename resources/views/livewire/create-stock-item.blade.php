@@ -1,5 +1,4 @@
 <div>
-
     <div class="p-4">
 
         @livewire('navigation.breadcrumps', [
@@ -35,7 +34,7 @@
             </button>
         </div>
 
-        <form method="POST" action="{{ route('stock.create_item') }}" class="" id="" enctype="multipart/form-data" novalidate>
+        <form method="POST" action="{{ route('stock.create_item') }}" class="" id="" wire:submit.prevent="submit" enctype="multipart/form-data" novalidate>
 
             @csrf
 
@@ -70,7 +69,7 @@
 
                 <div class="grid grid-cols-3 gap-6 mb-6">
                     <div>
-                        <x-input required money prefix="R$" x-mask="9999999999.99" label="Preço de custo" wire:model.live.debounce.500ms="preco_custo" name="cost_price" id="cost_price" maxlength="13" />
+                        <x-input required money prefix="R$" x-mask="9999999999.99" label="Preço de custo" wire:model.live.debounce.500ms="preco_custo" required name="cost_price" id="cost_price" maxlength="13" />
                     </div>
                     <div>
                         <x-input money prefix="R$" x-mask="9999999999.99" label="Preço de venda" wire:model.live.debounce.500ms="preco_venda" name="sale_price" id="sale_price" maxlength="13" />

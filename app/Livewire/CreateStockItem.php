@@ -105,6 +105,8 @@ class CreateStockItem extends Component
     #[Validate('boolean')]
     public $ir_para_listagem = false;
 
+    public $has_error = false;
+
     public $unidades_medida_disponiveis = [];
 
     public $marcas_disponiveis = [];
