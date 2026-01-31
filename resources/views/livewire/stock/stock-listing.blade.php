@@ -34,10 +34,16 @@
 
     @else
         <x-card shadow separator>
-            <x-table :headers="$this->headers()" :rows="$this->items_in_stock()" :sort-by="$sortBy" with-pagination/>
+            <x-table :headers="$this->headers()" :rows="$this->items_in_stock()" :sort-by="$sortBy" @row-click="($event) => goToShowItemPageFromTable($event)" with-pagination/>
         </x-card>
     @endif
 
     </div>
+
+    <script defer>
+        function goToShowItemPageFromTable(event) {
+            window.location.href = `{{url('stock/show')}}/${event.detail.id}`;
+        }
+    </script>
 
 </div>
