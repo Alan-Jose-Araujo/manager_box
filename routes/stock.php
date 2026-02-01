@@ -42,4 +42,14 @@ Route::prefix('stock')
         Route::post('/create-item', [ItemInStockController::class, 'store'])
         ->name('stock.create_item');
 
+        /**
+         * Url: stock/delete-item
+         * HTTP Method: DELETE
+         * Middlewares: custom.auth, signed
+         * Controller: ItemInStockController
+         * Name: stock.delete_item
+         */
+        Route::delete('/delete-item/{id}', [ItemInStockController::class, 'destroy'])
+        ->name('stock.delete_item');
+
     })->middleware(['custom.auth', 'signed']);

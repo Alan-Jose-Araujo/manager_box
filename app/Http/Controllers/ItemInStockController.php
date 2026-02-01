@@ -98,9 +98,7 @@ class ItemInStockController extends Controller
         if (!$deleted) {
             return response()->json(['success' => false], 404);
         }
-        return response()->json([
-            'success' => true,
-        ], 201);
+        return redirect()->back()->with('success', 'Item excluído com sucesso!');
     }
 
     public function restore($id)

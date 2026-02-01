@@ -62,7 +62,8 @@ class StockListing extends Component
 
     public function render()
     {
-
+        confirmDelete('Tem certeza que deseja excluir este item?');
+        session()->reflash();
         return view('livewire.stock.stock-listing',[
             'items_in_stock' => $this->items_in_stock()
         ]);

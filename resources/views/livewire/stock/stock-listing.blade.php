@@ -34,7 +34,35 @@
 
     @else
         <x-card shadow separator>
-            <x-table :headers="$this->headers()" :rows="$this->items_in_stock()" :sort-by="$sortBy" @row-click="($event) => goToShowItemPageFromTable($event)" with-pagination/>
+            <x-table :headers="$this->headers()" :rows="$this->items_in_stock()" :sort-by="$sortBy" with-pagination>
+                @scope('cell_id', $itemInStock)
+                    <a href="#">
+                        {{$itemInStock->id}}
+                    </a>
+                @endscope
+
+                @scope('cell_name', $itemInStock)
+                    <a href="#">
+                        {{$itemInStock->name}}
+                    </a>
+                @endscope
+
+                @scope('actions', $itemInStock)
+                    <div class="flex flex-row items-center">
+                        <a href="{{ route('stock.delete_item', ['id' => $itemInStock->id]) }}"
+                           class="btn btn-sm text-white bg-green-700 rounded-md"
+                           data-confirm-delete="true">
+                            <x-icon name="o-eye" class="w-4 h-4" />
+                        </a>
+
+                        <a href="{{ route('stock.delete_item', ['id' => $itemInStock->id]) }}"
+                           class="btn btn-sm text-white bg-red-500 rounded-md"
+                           data-confirm-delete="true">
+                            <x-icon name="o-trash" class="w-4 h-4" />
+                        </a>
+                    </div>
+                @endscope
+            </x-table>
         </x-card>
     @endif
 
