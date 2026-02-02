@@ -100,7 +100,9 @@
     @include('sweetalert::alert')
     <aside id="sidebar" class="sidebar flex flex-col p-4 z-20">
         <div class="flex items-center justify-start h-16 mb-4">
-            <img src="{{ asset('images/manager_box_logo.svg') }}" alt="Logo" class="w-12 h-12 shrink-0">
+            <a href="/">
+                <img src="{{ asset('images/manager_box_logo.svg') }}" alt="Logo" class="w-12 h-12 shrink-0">
+            </a>
         </div>
 
         <nav class="flex-1 space-y-2">
