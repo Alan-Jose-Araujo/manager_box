@@ -20,6 +20,12 @@
         </x-slot:middle>
     </x-header>
 
+    <div class="flex flex-row w-full align-middle justify-end">
+        <a href="{{ route('stock.show_create_item_form') }}" class="btn btn-sm text-white bg-green-700 rounded-md">
+            <x-icon name="o-plus" class="w-4 h-4" />
+            Adicionar novo item
+        </a>
+    </div>
 
     @if ($items_in_stock->isEmpty())
 
@@ -29,7 +35,6 @@
                 <div class="p-4 text-center text-gray-500">
                     Não possui itens cadastrados.
                 </div>
-
         </x-card>
 
     @else
