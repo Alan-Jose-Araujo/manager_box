@@ -38,16 +38,26 @@
 
                 <div class="md:col-span-2 p-8 flex flex-col justify-start">
 
-                    <div class="mb-6">
-                        <h2 class="text-sm font-bold tracking-widest text-green-800 uppercase mb-1">
-                            {{ $item->trade_name }}
-                        </h2>
-                        <h1 class="text-3xl font-extrabold text-gray-900">
-                            {{ $item->name }}
-                        </h1>
+                    <div class="mb-3">
+                        <div class="flex flex-row w-full align-middle justify-between mb-3">
+                            <h1 class="text-3xl font-extrabold text-gray-900 mb-3">
+                                {{ $item->name }}
+                            </h1>
+
+                            <a href="#"
+                               class="btn btn-sm text-white bg-green-700 rounded-md">
+                                <x-icon name="o-pencil" class="w-4 h-4" />
+                            </a>
+                        </div>
+                        @if($item->trade_name)
+                            <h2 class="text-sm font-bold tracking-widest uppercase mb-1">
+                                Nome Comercial:
+                                <span class="text-green-800">{{ $item->trade_name }}</span>
+                            </h2>
+                        @endif
                     </div>
 
-                    <div class="prose prose-sm text-gray-600 mb-8">
+                    <div class="prose prose-sm text-gray-600">
                         <h3 class="text-gray-900 font-semibold mb-2">Descrição do Produto</h3>
                         <p class="leading-relaxed">
                             {{ $item->description ?: 'Nenhuma descrição disponível para este item.' }}
@@ -60,7 +70,9 @@
                                 Código: #{{ $item->id }}
                             </p>
                             <p>
-                                Quantidade em estoque: {{ number_format($item->quantity, 2) }} <span class="bg-green-100 p-2 rounded-xl font-bold">({{ ucfirst($item->unity_of_measure->value)  }})</span>
+                                Quantidade em estoque:
+                                <span class="font-bold">{{ number_format($item->quantity, 2) }}</span>
+                                <span class="bg-green-100 p-2 rounded-xl font-bold">({{ ucfirst($item->unity_of_measure->value)  }})</span>
                             </p>
                         </span>
 
@@ -77,6 +89,6 @@
             </div>
         </div>
 
-
+    @livewire('stock.movement-listing', ['item' => $item])
 
 </div>

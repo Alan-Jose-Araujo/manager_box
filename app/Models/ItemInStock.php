@@ -69,4 +69,9 @@ class ItemInStock extends Model
             'item_in_stock_category_id'
         );
     }
+
+    public function movements()
+    {
+        return $this->hasMany(ItemInStockMovement::class, 'item_in_stock_id');
+    }
 }
