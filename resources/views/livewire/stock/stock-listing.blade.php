@@ -41,22 +41,21 @@
         <x-card shadow separator>
             <x-table :headers="$this->headers()" :rows="$this->items_in_stock()" :sort-by="$sortBy" with-pagination>
                 @scope('cell_id', $itemInStock)
-                    <a href="#">
+                    <a href="{{ route('stock.show_item', ['item' => $itemInStock]) }}" class="hover:text-blue-500">
                         {{$itemInStock->id}}
                     </a>
                 @endscope
 
                 @scope('cell_name', $itemInStock)
-                    <a href="#">
+                    <a href="{{ route('stock.show_item', ['item' => $itemInStock]) }}" class="hover:text-blue-500">
                         {{$itemInStock->name}}
                     </a>
                 @endscope
 
                 @scope('actions', $itemInStock)
                     <div class="flex flex-row items-center">
-                        <a href="{{ route('stock.delete_item', ['id' => $itemInStock->id]) }}"
-                           class="btn btn-sm text-white bg-green-700 rounded-md"
-                           data-confirm-delete="true">
+                        <a href="{{ route('stock.show_item', ['item' => $itemInStock]) }}"
+                           class="btn btn-sm text-white bg-green-700 rounded-md">
                             <x-icon name="o-eye" class="w-4 h-4" />
                         </a>
 

@@ -7,6 +7,7 @@
 use App\Http\Controllers\ItemInStockController;
 use App\Livewire\CreateStockItem;
 use App\Livewire\Stock\StockListing;
+use App\Livewire\Stock\ShowItem;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('stock')
@@ -41,6 +42,16 @@ Route::prefix('stock')
          */
         Route::post('/create-item', [ItemInStockController::class, 'store'])
         ->name('stock.create_item');
+
+        /**
+         * Url: stock/show-item
+         * HTTP Method: GET
+         * Middlewares: custom.auth, signed
+         * Controller: ItemInStockController
+         * Name: stock.show_item
+         */
+        Route::get('/show-item/{item}', ShowItem::class)
+        ->name('stock.show_item');
 
         /**
          * Url: stock/delete-item
